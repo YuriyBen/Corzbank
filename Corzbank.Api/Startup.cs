@@ -1,4 +1,6 @@
 using Corzbank.Data;
+using Corzbank.Services;
+using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +30,8 @@ namespace Corzbank.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddScoped<IUserService, UserService>();
 
             services.AddDbContext<CorzbankDbContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("CorzbankDb")));
