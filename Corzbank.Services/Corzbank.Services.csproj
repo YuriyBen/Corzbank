@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Corzbank.Data.Entities\Corzbank.Data.Entities.csproj" />
     <ProjectReference Include="..\Corzbank.Data\Corzbank.Data.csproj" />
     <ProjectReference Include="..\Corzbank.Helpers\Corzbank.Helpers.csproj" />
