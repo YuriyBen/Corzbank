@@ -8,20 +8,19 @@ namespace Corzbank.Data.Entities
 {
     public class Transfer: KeyEntity
     {
-        [Required]
+        [Required(ErrorMessage = "TransferType is required")]
         public TransferType TransferType { get; set; }
        
-        public string ToPhoneNumber { get; set; }
+        public string ReceiverPhoneNumber { get; set; }
 
-        [Required]
-        public decimal Amount { get; set; } = 0;
+        [Required(ErrorMessage = "Amount is required")]
+        public decimal Amount { get; set; }
         
         public DateTime Date { get; set; }
         
         public string Note { get; set; }
         
         public bool IsSuccessful { get; set; }
-
 
         public List<TransferCard> TransferCards { get; set; }
     }

@@ -13,7 +13,7 @@ namespace Corzbank.Data.Entities
 
         public int SenderCardId { get; set; }
         
-        public int ReceiverCardId { get; set; }
+        public int? ReceiverCardId { get; set; }
 
 
         public Card SenderCard { get; set; }
