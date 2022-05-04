@@ -19,37 +19,41 @@ namespace Corzbank.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<DepositCard>().HasKey(x => new { x.CardId, x.DepositId });
-            modelBuilder.Entity<TransferCard>().HasKey(x => new { x.TransferId, x.SenderCardId, x.ReceiverCardId });
+            modelBuilder.Entity<DepositCard>().HasKey(dc => new { dc.CardId, dc.DepositId });
+            modelBuilder.Entity<TransferCard>().HasKey(tc => new { tc.TransferId, tc.SenderCardId, tc.ReceiverCardId });
 
             modelBuilder.Entity<DepositCard>()
-                .HasOne(x => x.Deposit)
-                .WithMany(y => y.DepositCards)
-                .HasForeignKey(z => z.DepositId);
+                .HasOne(d => d.Deposit)
+                .WithMany(dc => dc.DepositCards)
+                .HasForeignKey(d => d.DepositId);
 
             modelBuilder.Entity<DepositCard>()
-               .HasOne(x => x.Card)
-               .WithMany(y => y.DepositCards)
-               .HasForeignKey(z => z.CardId);
+               .HasOne(d => d.Card)
+               .WithMany(dc => dc.DepositCards)
+               .HasForeignKey(c => c.CardId);
 
 
 
             modelBuilder.Entity<TransferCard>()
-                   .HasOne(x => x.Transfer)
-                   .WithMany(y => y.TransferCards)
-                   .HasForeignKey(z => z.TransferId);
+                .HasOne(t => t.Transfer)
+                .WithMany(tc => tc.TransferCards)
+                .HasForeignKey(t => t.TransferId);
 
             modelBuilder.Entity<TransferCard>()
-               .HasOne(x => x.Card)
-               .WithMany(y => y.TransferCards)
-               .HasForeignKey(z => z.ReceiverCardId)
-               .IsRequired(false);
+                .HasOne(sd => sd.SenderCard)
+                .WithMany(st => st.SendTransfers)
+                .HasForeignKey(z => z.SenderCardId);
 
             modelBuilder.Entity<TransferCard>()
-               .HasOne(x => x.Card)
-               .WithMany(y => y.TransferCards)
-               .HasForeignKey(z => z.SenderCardId)
-               .IsRequired(false);
+                .HasOne(rc => rc.ReceiverCard)
+                .WithMany(rt => rt.ReceiveTransfers)
+                .HasForeignKey(rc => rc.ReceiverCardId)
+                .IsRequired(false);
+
+
+            modelBuilder.Entity<Card>()
+                .HasIndex(c => c.CardNumber)
+                .IsUnique();
         }
 
         public DbSet<User> Users { get; set; }

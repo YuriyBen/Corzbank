@@ -7,9 +7,12 @@ namespace Corzbank.Data.Entities
 {
     public class Exchange: KeyEntity
     {
-        public CurrencyEnum ExchangeCurrency { get; set; }
-        public CurrencyEnum BaseCurrency { get; set; }
+        public Currency ExchangeCurrency { get; set; }
+      
+        public Currency BaseCurrency { get; set; }
+        
         public decimal BuyPrice { get; set; }
+        
         public decimal SellPrice { get; set; }
     }
 }

@@ -4,10 +4,10 @@ using System.Text;
 
 namespace Corzbank.Data.Enums
 {
-    public enum CardTypeEnum
+    public enum Currency
     {
-        Credit,
-        Debit, 
-        Universal
+        UAH = 1,
+        USD,
+        EUR
     }
 }

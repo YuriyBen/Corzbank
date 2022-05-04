@@ -4,9 +4,10 @@ using System.Text;
 
 namespace Corzbank.Data.Enums
 {
-    public enum PaymentSystemEnum
+    public enum CardType
     {
-        visa,
-        mastercard
+        Credit = 1,
+        Debit, 
+        Universal
     }
 }

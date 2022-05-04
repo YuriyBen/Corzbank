@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Corzbank.Data.Enums
 {
-    public enum TransferTypeEnum
+    public enum TransferType
     {
-        card,
-        phoneNumber
+        Card = 1,
+        PhoneNumber
     }
 }
