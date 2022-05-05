@@ -32,19 +32,32 @@ namespace Corzbank.Services
         public async Task<Card> CreateCard(CardModel card)
         {
             var result = card.GenerateCard();
+            var duplicateCard = _context.Cards.AnyAsync(c => c.CardNumber == result.CardNumber);
+
+            while (duplicateCard.Result)
+            {
+                result = card.GenerateCard();
+                duplicateCard = _context.Cards.AnyAsync(c => c.CardNumber == result.CardNumber);
+            }
 
             await _context.Cards.AddAsync(result);
-
             await _context.SaveChangesAsync();
 
             return result;
         }
 
-        public void DeleteCard(int id)
+        public async Task<bool> DeleteCard(int id)
         {
-            _context.Cards.Remove(new Card() { Id = id });
+            var card = await GetCardById(id);
 
-            _context.SaveChangesAsync();
+            if (card != null)
+            {
+                _context.Cards.Remove(card);
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            return false;
         }
     }
 }

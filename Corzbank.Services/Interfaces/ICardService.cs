@@ -12,6 +12,6 @@ namespace Corzbank.Services.Interfaces
         Task<IEnumerable<Card>> GetCards();
         Task<Card> GetCardById(int id);
         Task<Card> CreateCard(CardModel card);
-        void DeleteCard(int id);
+        Task<bool> DeleteCard(int id);
     }
 }
