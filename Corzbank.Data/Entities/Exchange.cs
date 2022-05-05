@@ -11,8 +11,8 @@ namespace Corzbank.Data.Entities
       
         public Currency BaseCurrency { get; set; }
         
-        public decimal BuyPrice { get; set; }
+        public decimal Buy { get; set; }
         
-        public decimal SellPrice { get; set; }
+        public decimal Sell { get; set; }
     }
 }

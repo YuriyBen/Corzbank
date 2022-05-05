@@ -11,7 +11,6 @@ namespace Corzbank.Data.Entities
       
         public string Lastname { get; set; }
 
-
         public List<Card> Cards { get; set; }
     }
 }

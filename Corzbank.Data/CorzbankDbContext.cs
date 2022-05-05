@@ -32,8 +32,6 @@ namespace Corzbank.Data
                .WithMany(dc => dc.DepositCards)
                .HasForeignKey(c => c.CardId);
 
-
-
             modelBuilder.Entity<TransferCard>()
                 .HasOne(t => t.Transfer)
                 .WithMany(tc => tc.TransferCards)
@@ -49,7 +47,6 @@ namespace Corzbank.Data
                 .WithMany(rt => rt.ReceiveTransfers)
                 .HasForeignKey(rc => rc.ReceiverCardId)
                 .IsRequired(false);
-
 
             modelBuilder.Entity<Card>()
                 .HasIndex(c => c.CardNumber)

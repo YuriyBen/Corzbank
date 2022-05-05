@@ -10,7 +10,6 @@ namespace Corzbank.Data.Entities
        
         public Deposit Deposit { get; set; }
 
-     
         public int CardId { get; set; }
        
         public Card Card { get; set; }
