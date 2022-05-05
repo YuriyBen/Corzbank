@@ -13,35 +13,34 @@ namespace Corzbank.Services
 {
     public class CardService : ICardService
     {
-        private readonly CorzbankDbContext _context;
+        private readonly GenericService<Card> _genericService;
 
-        public CardService(CorzbankDbContext context)
+        public CardService(GenericService<Card> genericService)
         {
-            _context = context;
+            _genericService = genericService;
         }
 
         public async Task<IEnumerable<Card>> GetCards()
         {
-            return await _context.Cards.ToListAsync();
+            return await _genericService.GetRange();
         }
         public async Task<Card> GetCardById(int id)
         {
-            return await _context.Cards.FirstOrDefaultAsync(x => x.Id == id);
+            return await _genericService.Get(id);
         }
 
         public async Task<Card> CreateCard(CardModel card)
         {
             var result = card.GenerateCard();
-            var duplicateCard = _context.Cards.AnyAsync(c => c.CardNumber == result.CardNumber);
+            var duplicateCard = _genericService.CheckByCondition(c => c.CardNumber.Equals(result.CardNumber));
 
-            while (duplicateCard.Result)
+            while (duplicateCard)
             {
                 result = card.GenerateCard();
-                duplicateCard = _context.Cards.AnyAsync(c => c.CardNumber == result.CardNumber);
+                duplicateCard = _genericService.CheckByCondition(c => c.CardNumber.Equals(result.CardNumber));
             }
 
-            await _context.Cards.AddAsync(result);
-            await _context.SaveChangesAsync();
+            await _genericService.Insert(result);
 
             return result;
         }
@@ -52,8 +51,7 @@ namespace Corzbank.Services
 
             if (card != null)
             {
-                _context.Cards.Remove(card);
-                await _context.SaveChangesAsync();
+                await _genericService.Remove(card);
 
                 return true;
             }

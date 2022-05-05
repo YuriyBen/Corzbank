@@ -25,7 +25,8 @@ namespace Corzbank.Data.Entities
         public decimal Balance { get; set; }
         
         public bool IsActive { get; set; }
-        
+
+        [Range(5, 20, ErrorMessage = "SecretWord length should be from 5 to 20 characters")]
         public string SecretWord { get; set; }
 
         public User User { get; set; }

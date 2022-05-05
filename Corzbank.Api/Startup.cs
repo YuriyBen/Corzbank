@@ -30,13 +30,14 @@ namespace Corzbank.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers()
-  .AddNewtonsoftJson(options =>
-      options.SerializerSettings.ReferenceLoopHandling =
-        Newtonsoft.Json.ReferenceLoopHandling.Ignore
-   );
+              .AddNewtonsoftJson(options =>
+                  options.SerializerSettings.ReferenceLoopHandling = 
+                  Newtonsoft.Json.ReferenceLoopHandling.Ignore
+               );
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICardService, CardService>();
+            services.AddScoped(typeof(GenericService<>));
 
             services.AddDbContext<CorzbankDbContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("CorzbankDb")));
