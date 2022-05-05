@@ -11,7 +11,7 @@ namespace Corzbank.Helpers
     {
         public static Card GenerateCard(this CardModel card)
         {
-            Card card1 = new Card
+            Card cardForResponse = new Card
             {
                 CardNumber = GenerateCardNumber(card.PaymentSystem),
                 ExpirationDate = GenerateExpirationDate(DateTime.Now.AddYears(4)),
@@ -21,7 +21,7 @@ namespace Corzbank.Helpers
                 SecretWord = card.SecretWord
             };
 
-            return card1;
+            return cardForResponse;
         }
 
         private static string GenerateExpirationDate(DateTime date)
