@@ -4,14 +4,16 @@ using Corzbank.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Corzbank.Data.Migrations
 {
     [DbContext(typeof(CorzbankDbContext))]
-    partial class CorzbankDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220504152152_refactoredRelationships")]
+    partial class refactoredRelationships
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,15 +32,18 @@ namespace Corzbank.Data.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("CardNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CardType")
                         .HasColumnType("int");
 
-                    b.Property<int>("CvvCode")
-                        .HasColumnType("int");
+                    b.Property<string>("CvvCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ExpirationDate")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
@@ -48,6 +53,7 @@ namespace Corzbank.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("SecretWord")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
@@ -56,8 +62,7 @@ namespace Corzbank.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CardNumber")
-                        .IsUnique()
-                        .HasFilter("[CardNumber] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -144,8 +149,7 @@ namespace Corzbank.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Note")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReceiverPhoneNumber")
                         .HasColumnType("nvarchar(max)");

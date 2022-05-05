@@ -4,14 +4,16 @@ using Corzbank.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Corzbank.Data.Migrations
 {
     [DbContext(typeof(CorzbankDbContext))]
-    partial class CorzbankDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220504130809_addConstraints")]
+    partial class addConstraints
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,16 +32,22 @@ namespace Corzbank.Data.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("CardNumber")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
 
                     b.Property<int>("CardType")
                         .HasColumnType("int");
 
-                    b.Property<int>("CvvCode")
-                        .HasColumnType("int");
+                    b.Property<string>("CvvCode")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.Property<string>("ExpirationDate")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -48,16 +56,17 @@ namespace Corzbank.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("SecretWord")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CardNumber")
-                        .IsUnique()
-                        .HasFilter("[CardNumber] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -113,13 +122,13 @@ namespace Corzbank.Data.Migrations
                     b.Property<int>("BaseCurrency")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Buy")
+                    b.Property<decimal>("BuyPrice")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ExchangeCurrency")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Sell")
+                    b.Property<decimal>("SellPrice")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
@@ -144,10 +153,9 @@ namespace Corzbank.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Note")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ReceiverPhoneNumber")
+                    b.Property<string>("ToPhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TransferType")
@@ -166,7 +174,7 @@ namespace Corzbank.Data.Migrations
                     b.Property<int>("SenderCardId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ReceiverCardId")
+                    b.Property<int>("ReceiverCardId")
                         .HasColumnType("int");
 
                     b.Property<int>("Id")
@@ -243,7 +251,9 @@ namespace Corzbank.Data.Migrations
                 {
                     b.HasOne("Corzbank.Data.Entities.User", "User")
                         .WithMany("Cards")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });

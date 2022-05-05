@@ -4,14 +4,16 @@ using Corzbank.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Corzbank.Data.Migrations
 {
     [DbContext(typeof(CorzbankDbContext))]
-    partial class CorzbankDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220503163432_addEntities")]
+    partial class addEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,13 +32,13 @@ namespace Corzbank.Data.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("CardNumber")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CardType")
                         .HasColumnType("int");
 
-                    b.Property<int>("CvvCode")
-                        .HasColumnType("int");
+                    b.Property<string>("CvvCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ExpirationDate")
                         .HasColumnType("nvarchar(max)");
@@ -54,10 +56,6 @@ namespace Corzbank.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CardNumber")
-                        .IsUnique()
-                        .HasFilter("[CardNumber] IS NOT NULL");
 
                     b.HasIndex("UserId");
 
@@ -113,13 +111,13 @@ namespace Corzbank.Data.Migrations
                     b.Property<int>("BaseCurrency")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Buy")
+                    b.Property<decimal>("BuyPrice")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ExchangeCurrency")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Sell")
+                    b.Property<decimal>("SellPrice")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
@@ -144,14 +142,13 @@ namespace Corzbank.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Note")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("ReceiverPhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TransferType")
                         .HasColumnType("int");
+
+                    b.Property<string>("toPhoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -166,15 +163,13 @@ namespace Corzbank.Data.Migrations
                     b.Property<int>("SenderCardId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ReceiverCardId")
+                    b.Property<int>("ReceiverCardId")
                         .HasColumnType("int");
 
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.HasKey("TransferId", "SenderCardId", "ReceiverCardId");
-
-                    b.HasIndex("ReceiverCardId");
 
                     b.HasIndex("SenderCardId");
 
@@ -198,10 +193,10 @@ namespace Corzbank.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Firstname")
+                    b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Lastname")
+                    b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -269,15 +264,9 @@ namespace Corzbank.Data.Migrations
 
             modelBuilder.Entity("Corzbank.Data.Entities.TransferCard", b =>
                 {
-                    b.HasOne("Corzbank.Data.Entities.Card", "ReceiverCard")
-                        .WithMany("ReceiveTransfers")
-                        .HasForeignKey("ReceiverCardId");
-
-                    b.HasOne("Corzbank.Data.Entities.Card", "SenderCard")
-                        .WithMany("SendTransfers")
-                        .HasForeignKey("SenderCardId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Corzbank.Data.Entities.Card", "Card")
+                        .WithMany("TransferCards")
+                        .HasForeignKey("SenderCardId");
 
                     b.HasOne("Corzbank.Data.Entities.Transfer", "Transfer")
                         .WithMany("TransferCards")
@@ -285,9 +274,7 @@ namespace Corzbank.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ReceiverCard");
-
-                    b.Navigation("SenderCard");
+                    b.Navigation("Card");
 
                     b.Navigation("Transfer");
                 });
@@ -296,9 +283,7 @@ namespace Corzbank.Data.Migrations
                 {
                     b.Navigation("DepositCards");
 
-                    b.Navigation("ReceiveTransfers");
-
-                    b.Navigation("SendTransfers");
+                    b.Navigation("TransferCards");
                 });
 
             modelBuilder.Entity("Corzbank.Data.Entities.Deposit", b =>
