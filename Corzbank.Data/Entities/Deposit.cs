@@ -7,7 +7,6 @@ namespace Corzbank.Data.Entities
 {
     public class Deposit: KeyEntity
     {
-        [Required(ErrorMessage = "Amount is required")]
         public decimal Amount { get; set; }
         
         public int Duration { get; set; }

@@ -10,11 +10,9 @@ namespace Corzbank.Data.Entities
       
         public Transfer Transfer { get; set; }
 
-
         public int SenderCardId { get; set; }
         
         public int? ReceiverCardId { get; set; }
-
 
         public Card SenderCard { get; set; }
         
