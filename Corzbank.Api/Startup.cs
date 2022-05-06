@@ -1,4 +1,5 @@
 using Corzbank.Data;
+using Corzbank.Extensions;
 using Corzbank.Services;
 using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
@@ -35,9 +36,10 @@ namespace Corzbank.Api
                   Newtonsoft.Json.ReferenceLoopHandling.Ignore
                );
 
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ICardService, CardService>();
-            services.AddScoped(typeof(GenericService<>));
+            services.ConfigureServices();
+
+            services.AddAuthentication();
+            services.ConfigureIdentity();
 
             services.AddDbContext<CorzbankDbContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("CorzbankDb")));
@@ -55,6 +57,7 @@ namespace Corzbank.Api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

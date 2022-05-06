@@ -1,4 +1,5 @@
 ﻿using Corzbank.Data.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace Corzbank.Data
 {
-    public class CorzbankDbContext: DbContext
+    public class CorzbankDbContext: IdentityDbContext<User>
     {
         public CorzbankDbContext()
         {
@@ -19,6 +20,8 @@ namespace Corzbank.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<DepositCard>().HasKey(dc => new { dc.CardId, dc.DepositId });
             modelBuilder.Entity<TransferCard>().HasKey(tc => new { tc.TransferId, tc.SenderCardId, tc.ReceiverCardId });
 
@@ -53,7 +56,6 @@ namespace Corzbank.Data
                 .IsUnique();
         }
 
-        public DbSet<User> Users { get; set; }
         public DbSet<Card> Cards { get; set; }
         public DbSet<Deposit> Deposits { get; set; }
         public DbSet<Transfer> Transfers { get; set; }

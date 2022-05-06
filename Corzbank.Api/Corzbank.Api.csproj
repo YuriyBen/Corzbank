@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Corzbank.Data\Corzbank.Data.csproj" />
     <ProjectReference Include="..\Corzbank.Services\Corzbank.Services.csproj" />
+    <ProjectReference Include="..\Corzebank.Extensions\Corzbank.Extensions.csproj" />
   </ItemGroup>
 
 
