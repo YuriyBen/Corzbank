@@ -47,8 +47,8 @@ namespace Corzbank.Services
         {
             if (userForUpdate != null)
             {
-                var user = _mapper.Map<User>(userForUpdate);
-                user.Id = id.ToString();
+                var user = GetUserById(id).Result;
+                user = _mapper.Map(userForUpdate, user);
 
                 await _genericService.Update(user);
 

@@ -38,7 +38,7 @@ namespace Corzbank.Services
 
 		public async Task<T> GetByGuid(Guid id)
 		{
-			return await _dbContext.Set<T>().FindAsync(id);
+			return await _dbContext.Set<T>().FindAsync(id.ToString());
 		}
 
 		public async Task Insert(T entity, bool saveChanges = true)
