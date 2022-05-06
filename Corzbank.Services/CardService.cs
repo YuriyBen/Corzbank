@@ -24,6 +24,7 @@ namespace Corzbank.Services
         {
             return await _genericService.GetRange();
         }
+        
         public async Task<Card> GetCardById(int id)
         {
             return await _genericService.Get(id);

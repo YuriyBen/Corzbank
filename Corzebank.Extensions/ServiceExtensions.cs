@@ -16,6 +16,7 @@ namespace Corzbank.Extensions
         {
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICardService, CardService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped(typeof(GenericService<>));
         }
 
