@@ -12,7 +12,7 @@ using static Corzbank.Helpers.Constants;
 
 namespace Corzbank.Services
 {
-    internal class GenericService<T> where T : class
+    public class GenericService<T> where T : class
 	{
 		public readonly CorzbankDbContext _dbContext;
 
@@ -24,6 +24,16 @@ namespace Corzbank.Services
 		public async Task<int> SaveChanges()
 		{
 			return await _dbContext.SaveChangesAsync();
+		}
+
+		public async Task<IEnumerable<T>> GetRange()
+		{
+			return await _dbContext.Set<T>().ToListAsync();
+		}
+
+		public async Task<T> Get(int id)
+		{
+			return await _dbContext.Set<T>().FindAsync(id);
 		}
 
 		public async Task Insert(T entity, bool saveChanges = true)
@@ -98,5 +108,10 @@ namespace Corzbank.Services
 					_dbContext.Entry(item).State = EntityState.Detached;
 			}
 		}
+
+		public bool CheckByCondition(Expression<Func<T, bool>> expression)
+        {
+			return _dbContext.Set<T>().Any(expression);
+        }
 	}
 }
