@@ -21,5 +21,8 @@ namespace Corzbank.Data.Entities.Models
 
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
+
+        [Required(ErrorMessage = "ConfirmPassword is required")]
+        public string ConfirmPassword { get; set; }
     }
 }

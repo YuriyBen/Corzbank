@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using Corzbank.Data.Entities;
 using Corzbank.Data.Entities.Models;
+using Corzbank.Helpers.Validations;
 using Corzbank.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,33 +15,37 @@ namespace Corzbank.Services
     public class UserService : IUserService
     {
         private readonly IMapper _mapper;
-        private readonly GenericService<User> _genericService;
-        public UserService(IMapper mapper, GenericService<User> genericService)
+        private readonly UserManager<User> _userManager;
+        private readonly ValidateUser _validateUser;
+        public UserService(IMapper mapper, UserManager<User> userManager, ValidateUser validateUser)
         {
             _mapper = mapper;
-            _genericService = genericService;
+            _userManager = userManager;
+            _validateUser = validateUser;
         }
 
         public async Task<User> GetUserById(Guid id)
         {
-            return await _genericService.GetByGuid(id);
+            return await _userManager.FindByIdAsync(id.ToString());
         }
 
         public async Task<IEnumerable<User>> GetUsers()
         {
-            return await _genericService.GetRange();
+            return await _userManager.Users.ToListAsync();
         }
 
         public async Task<User> RegisterUser(UserModel userForRegistration)
         {
-
-            if (userForRegistration != null)
+            if (userForRegistration != null && userForRegistration.Password == userForRegistration.ConfirmPassword)
             {
                 var user = _mapper.Map<User>(userForRegistration);
 
-                await _genericService.Insert(user);
+                if (_validateUser.UserIsValid(user))
+                {
+                    await _userManager.CreateAsync(user, userForRegistration.Password);
 
-                return user;
+                    return user;
+                }
             }
             return null;
         }
@@ -50,7 +57,7 @@ namespace Corzbank.Services
                 var user = GetUserById(id).Result;
                 user = _mapper.Map(userForUpdate, user);
 
-                await _genericService.Update(user);
+                await _userManager.UpdateAsync(user);
 
                 return user;
             }
@@ -63,7 +70,7 @@ namespace Corzbank.Services
 
             if (user != null)
             {
-                await _genericService.Remove(user);
+                await _userManager.DeleteAsync(user);
 
                 return true;
             }
