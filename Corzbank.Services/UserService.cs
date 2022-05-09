@@ -17,6 +17,7 @@ namespace Corzbank.Services
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
         private readonly ValidateUser _validateUser;
+
         public UserService(IMapper mapper, UserManager<User> userManager, ValidateUser validateUser)
         {
             _mapper = mapper;
@@ -36,7 +37,7 @@ namespace Corzbank.Services
 
         public async Task<User> RegisterUser(UserModel userForRegistration)
         {
-            if (userForRegistration != null && userForRegistration.Password == userForRegistration.ConfirmPassword)
+            if (userForRegistration != null)
             {
                 var user = _mapper.Map<User>(userForRegistration);
 
@@ -54,12 +55,12 @@ namespace Corzbank.Services
         {
             if (userForUpdate != null)
             {
-                var user = GetUserById(id).Result;
-                user = _mapper.Map(userForUpdate, user);
+                var user = await GetUserById(id);
+                var mappedUser = _mapper.Map(userForUpdate, user);
 
-                await _userManager.UpdateAsync(user);
+                await _userManager.UpdateAsync(mappedUser);
 
-                return user;
+                return mappedUser;
             }
             return null;
         }

@@ -12,8 +12,11 @@ namespace Corzbank.Services.Interfaces
         Task<IEnumerable<User>> GetUsers();
 
         Task<User> GetUserById(Guid id);
+
         Task<User> UpdateUser(Guid id, UserModel userForUpdate);
+
         Task<User> RegisterUser(UserModel user);
+
         Task<bool> DeleteUser(Guid id);
     }
 }

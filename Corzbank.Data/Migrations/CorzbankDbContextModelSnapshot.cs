@@ -21,10 +21,9 @@ namespace Corzbank.Data.Migrations
 
             modelBuilder.Entity("Corzbank.Data.Entities.Card", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Balance")
                         .HasColumnType("decimal(18,2)");
@@ -66,10 +65,9 @@ namespace Corzbank.Data.Migrations
 
             modelBuilder.Entity("Corzbank.Data.Entities.Deposit", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("APY")
                         .HasColumnType("float");
@@ -87,14 +85,14 @@ namespace Corzbank.Data.Migrations
 
             modelBuilder.Entity("Corzbank.Data.Entities.DepositCard", b =>
                 {
-                    b.Property<int>("CardId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CardId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("DepositId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("DepositId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("CardId", "DepositId");
 
@@ -105,10 +103,9 @@ namespace Corzbank.Data.Migrations
 
             modelBuilder.Entity("Corzbank.Data.Entities.Exchange", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("BaseCurrency")
                         .HasColumnType("int");
@@ -129,10 +126,9 @@ namespace Corzbank.Data.Migrations
 
             modelBuilder.Entity("Corzbank.Data.Entities.Transfer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
@@ -147,8 +143,14 @@ namespace Corzbank.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<Guid?>("ReceiverCardId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("ReceiverPhoneNumber")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("SenderCardId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("TransferType")
                         .HasColumnType("int");
@@ -160,17 +162,17 @@ namespace Corzbank.Data.Migrations
 
             modelBuilder.Entity("Corzbank.Data.Entities.TransferCard", b =>
                 {
-                    b.Property<int>("TransferId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("TransferId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("SenderCardId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("SenderCardId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("ReceiverCardId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("ReceiverCardId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("TransferId", "SenderCardId", "ReceiverCardId");
 

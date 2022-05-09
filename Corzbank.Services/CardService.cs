@@ -25,7 +25,7 @@ namespace Corzbank.Services
             return await _genericService.GetRange();
         }
         
-        public async Task<Card> GetCardById(int id)
+        public async Task<Card> GetCardById(Guid id)
         {
             return await _genericService.Get(id);
         }
@@ -46,7 +46,7 @@ namespace Corzbank.Services
             return result;
         }
 
-        public async Task<bool> DeleteCard(int id)
+        public async Task<bool> DeleteCard(Guid id)
         {
             var card = await GetCardById(id);
 

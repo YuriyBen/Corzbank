@@ -29,7 +29,7 @@ namespace Corzbank.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetCardById(int id)
+        public IActionResult GetCardById(Guid id)
         {
             var result = _cardService.GetCardById(id);
 
@@ -45,7 +45,7 @@ namespace Corzbank.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteCard(int id)
+        public IActionResult DeleteCard(Guid id)
         {
             var result = _cardService.DeleteCard(id);
 

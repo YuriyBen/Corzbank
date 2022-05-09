@@ -10,8 +10,11 @@ namespace Corzbank.Services.Interfaces
     public interface ICardService
     {
         Task<IEnumerable<Card>> GetCards();
-        Task<Card> GetCardById(int id);
+
+        Task<Card> GetCardById(Guid id);
+
         Task<Card> CreateCard(CardModel card);
-        Task<bool> DeleteCard(int id);
+
+        Task<bool> DeleteCard(Guid id);
     }
 }
