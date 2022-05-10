@@ -21,35 +21,35 @@ namespace Corzbank.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetCards()
+        public async Task<IActionResult> GetCards()
         {
-            var result = _cardService.GetCards();
+            var result = await _cardService.GetCards();
 
-            return Ok(result.Result);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetCardById(Guid id)
+        public async Task<IActionResult> GetCardById(Guid id)
         {
-            var result = _cardService.GetCardById(id);
+            var result = await _cardService.GetCardById(id);
 
-            return Ok(result.Result);
+            return Ok(result);
         }
 
         [HttpPost]
-        public IActionResult CreateCard([FromBody] CardModel card)
+        public async Task<IActionResult> CreateCard([FromBody] CardModel card)
         {
-            var result = _cardService.CreateCard(card);
+            var result = await _cardService.CreateCard(card);
 
-            return Ok(result.Result);
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteCard(Guid id)
+        public async Task<IActionResult> DeleteCard(Guid id)
         {
-            var result = _cardService.DeleteCard(id);
+            var result = await _cardService.DeleteCard(id);
 
-            return Ok(result.Result);
+            return Ok(result);
         }
     }
 }

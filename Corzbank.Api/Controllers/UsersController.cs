@@ -2,12 +2,13 @@
 using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 
 namespace Corzbank.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class UsersController: ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
         public UsersController(IUserService userService)
@@ -16,43 +17,43 @@ namespace Corzbank.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
-            var result = _userService.GetUsers();
+            var result = await _userService.GetUsers();
 
-            return Ok(result.Result);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetUserById(Guid id)
+        public async Task<IActionResult> GetUserById(Guid id)
         {
-            var result = _userService.GetUserById(id);
+            var result = await _userService.GetUserById(id);
 
-            return Ok(result.Result);
+            return Ok(result);
         }
 
         [HttpPost]
-        public IActionResult RegsiterUser([FromBody] UserModel user)
+        public async Task<IActionResult> RegsiterUser([FromBody] UserModel user)
         {
-            var result = _userService.RegisterUser(user);
+            var result = await _userService.RegisterUser(user);
 
-            return Ok(result.Result);
+            return Ok(result);
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdsteUser(Guid id, [FromBody] UserModel user)
+        public async Task<IActionResult> UpdsteUser(Guid id, [FromBody] UserModel user)
         {
-            var result = _userService.UpdateUser(id, user);
+            var result = await _userService.UpdateUser(id, user);
 
-            return Ok(result.Result);
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteUser(Guid id)
+        public async Task<IActionResult> DeleteUser(Guid id)
         {
-            var result = _userService.DeleteUser(id);
+            var result = await _userService.DeleteUser(id);
 
-            return Ok(result.Result);
+            return Ok(result);
         }
     }
 }

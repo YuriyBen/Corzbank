@@ -21,35 +21,35 @@ namespace Corzbank.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetTransfers()
+        public async Task<IActionResult> GetTransfers()
         {
-            var result = _transferService.GetTransfers();
+            var result = await _transferService.GetTransfers();
 
-            return Ok(result.Result);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetTransfer(Guid id)
+        public async Task<IActionResult> GetTransfer(Guid id)
         {
-            var result = _transferService.GetTransferById(id);
+            var result = await _transferService.GetTransferById(id);
 
-            return Ok(result.Result);
+            return Ok(result);
         }
 
         [HttpPost]
-        public IActionResult CreateTransfer([FromBody] TransferModel transfer)
+        public async Task<IActionResult> CreateTransfer([FromBody] TransferModel transfer)
         {
-            var result = _transferService.CreateTransfer(transfer);
+            var result = await _transferService.CreateTransfer(transfer);
 
-            return Ok(result.Result);
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteTransfer(Guid id)
+        public async Task<IActionResult> DeleteTransfer(Guid id)
         {
-            var result = _transferService.DeleteTransfer(id);
+            var result = await _transferService.DeleteTransfer(id);
 
-            return Ok(result.Result);
+            return Ok(result);
         }
     }
 }
