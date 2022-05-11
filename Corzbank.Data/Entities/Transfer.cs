@@ -22,6 +22,10 @@ namespace Corzbank.Data.Entities
         
         public bool IsSuccessful { get; set; }
 
+        public Guid SenderCardId { get; set; }
+
+        public Guid? ReceiverCardId { get; set; }
+
         public List<TransferCard> TransferCards { get; set; }
     }
 }

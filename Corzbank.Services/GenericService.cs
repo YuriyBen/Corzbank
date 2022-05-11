@@ -31,7 +31,7 @@ namespace Corzbank.Services
 			return await _dbContext.Set<T>().ToListAsync();
 		}
 
-		public async Task<T> Get(int id)
+		public async Task<T> Get(Guid id)
 		{
 			return await _dbContext.Set<T>().FindAsync(id);
 		}
@@ -111,7 +111,9 @@ namespace Corzbank.Services
 
 		public bool CheckByCondition(Expression<Func<T, bool>> expression)
         {
-			return _dbContext.Set<T>().Any(expression);
+			var result = _dbContext.Set<T>().Any(expression);
+
+			return result;
         }
 	}
 }

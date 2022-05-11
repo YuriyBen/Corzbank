@@ -1,5 +1,6 @@
 ﻿using Corzbank.Data;
 using Corzbank.Data.Entities;
+using Corzbank.Helpers.Validations;
 using Corzbank.Services;
 using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -16,7 +17,12 @@ namespace Corzbank.Extensions
         {
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICardService, CardService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITransferService, TransferService>();
+            services.AddScoped<IDepositService, DepositService>();
             services.AddScoped(typeof(GenericService<>));
+
+            services.AddScoped<ValidateUser>();
         }
 
         public static void ConfigureIdentity(this IServiceCollection services)

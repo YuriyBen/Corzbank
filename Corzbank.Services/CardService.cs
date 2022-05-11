@@ -22,11 +22,16 @@ namespace Corzbank.Services
 
         public async Task<IEnumerable<Card>> GetCards()
         {
-            return await _genericService.GetRange();
+            var result = await _genericService.GetRange();
+
+            return result;
         }
-        public async Task<Card> GetCardById(int id)
+        
+        public async Task<Card> GetCardById(Guid id)
         {
-            return await _genericService.Get(id);
+            var result = await _genericService.Get(id);
+
+            return result;
         }
 
         public async Task<Card> CreateCard(CardModel card)
@@ -45,7 +50,7 @@ namespace Corzbank.Services
             return result;
         }
 
-        public async Task<bool> DeleteCard(int id)
+        public async Task<bool> DeleteCard(Guid id)
         {
             var card = await GetCardById(id);
 

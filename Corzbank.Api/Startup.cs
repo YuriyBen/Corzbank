@@ -1,5 +1,7 @@
+using AutoMapper;
 using Corzbank.Data;
 using Corzbank.Extensions;
+using Corzbank.Helpers;
 using Corzbank.Services;
 using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
@@ -30,16 +32,21 @@ namespace Corzbank.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers()
-              .AddNewtonsoftJson(options =>
-                  options.SerializerSettings.ReferenceLoopHandling = 
-                  Newtonsoft.Json.ReferenceLoopHandling.Ignore
-               );
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             services.ConfigureServices();
 
             services.AddAuthentication();
             services.ConfigureIdentity();
+
+            services.AddControllers()
+              .AddNewtonsoftJson(options =>
+                  options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddDbContext<CorzbankDbContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("CorzbankDb")));
