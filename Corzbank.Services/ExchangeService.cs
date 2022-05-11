@@ -1,4 +1,6 @@
-﻿using Corzbank.Data.Entities;
+﻿using AutoMapper;
+using Corzbank.Data.Entities;
+using Corzbank.Data.Entities.Models;
 using Corzbank.Data.Enums;
 using Corzbank.Helpers;
 using Corzbank.Services.Interfaces;
@@ -16,9 +18,11 @@ namespace Corzbank.Services
     public class ExchangeService : IExchangeService
     {
         private readonly GenericService<Exchange> _genericService;
+        private readonly IMapper _mapper;
 
-        public ExchangeService(GenericService<Exchange> genericService)
+        public ExchangeService(GenericService<Exchange> genericService, IMapper mapper)
         {
+            _mapper = mapper;
             _genericService = genericService;
         }
         
@@ -38,24 +42,13 @@ namespace Corzbank.Services
 
         public async Task<bool> CreateExchage()
         {
-            dynamic valuesArray = GetValuesForExchange.GetValues();
-
             if (!_genericService.CheckByCondition(e => e.ExchangeCurrency == Currency.EUR || e.ExchangeCurrency == Currency.USD))
             {
-                foreach (var value in valuesArray)
-                {
-                    if (value.ccy == "BTC")
-                        continue;
+                var listOfValues = GetValuesForExchange.GetValues();
 
-                    var exchange = new Exchange
-                    {
-                        ExchangeCurrency = value.ccy,
-                        BaseCurrency = value.base_ccy,
-                        Buy = value.buy,
-                        Sell = value.sale
-                    };
-                    await _genericService.Insert(exchange);
-                }
+                var mappedValues = _mapper.Map<IEnumerable<Exchange>>(listOfValues);
+
+                await _genericService.InsertRange(mappedValues);
 
                 return true;
             }
@@ -67,20 +60,22 @@ namespace Corzbank.Services
         {
             var valuesFromDb = await GetValues();
 
-            dynamic valuesArray = GetValuesForExchange.GetValues();
+            var listOfValues = GetValuesForExchange.GetValues();
 
+            //var mappedValues = _mapper.Map(listOfValues, valuesFromDb);
+            //await _genericService.UpdateRange(mappedValues);
+            
+            // I wanted to make in that way, but mappedValues will have new id's(afteer commit I'll delete this text, don't pay attention for this)
+            
             foreach (var valueFromDb in valuesFromDb)
             {
-                foreach (var value in valuesArray)
+                foreach (var value in listOfValues)
                 {
-                    if (value.ccy == valueFromDb.ExchangeCurrency)
+                    if (value.ExchangeCurrency == valueFromDb.ExchangeCurrency)
                     {
-                        valueFromDb.ExchangeCurrency = value.ccy;
-                        valueFromDb.BaseCurrency = value.base_ccy;
-                        valueFromDb.Buy = value.buy;
-                        valueFromDb.Sell = value.sale;
-
-                        await _genericService.Update(valueFromDb);
+                        var mappedValue = _mapper.Map(value, valueFromDb);
+                        
+                        await _genericService.Update(mappedValue);
                         break;
                     }
                 }

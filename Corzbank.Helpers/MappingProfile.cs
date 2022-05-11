@@ -18,6 +18,8 @@ namespace Corzbank.Helpers
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(src => DateTime.Now));
 
             CreateMap<DepositModel, Deposit>();
+
+            CreateMap<ExchangeModel, Exchange>();
         }
     }
 }
