@@ -27,12 +27,16 @@ namespace Corzbank.Services
 
         public async Task<User> GetUserById(Guid id)
         {
-            return await _userManager.FindByIdAsync(id.ToString());
+            var result = await _userManager.FindByIdAsync(id.ToString());
+
+            return result;
         }
 
         public async Task<IEnumerable<User>> GetUsers()
         {
-            return await _userManager.Users.ToListAsync();
+            var result = await _userManager.Users.ToListAsync();
+
+            return result;
         }
 
         public async Task<User> RegisterUser(UserModel userForRegistration)

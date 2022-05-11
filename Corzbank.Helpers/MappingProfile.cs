@@ -12,7 +12,7 @@ namespace Corzbank.Helpers
         public MappingProfile()
         {
             CreateMap<UserModel, User>()
-                .ForMember(u => u.UserName, opt=>opt.MapFrom(um=>string.Join('0', um.Firstname, um.Lastname)));
+                .ForMember(u => u.UserName, opt => opt.MapFrom(um => string.Join('0', um.Firstname, um.Lastname)));
 
             CreateMap<TransferModel, Transfer>()
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(src => DateTime.Now));

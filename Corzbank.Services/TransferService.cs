@@ -22,12 +22,16 @@ namespace Corzbank.Services
         }
         public async Task<IEnumerable<Transfer>> GetTransfers()
         {
-            return await _genericService.GetRange();
+            var result = await _genericService.GetRange();
+
+            return result;
         }
 
         public async Task<Transfer> GetTransferById(Guid id)
         {
-            return await _genericService.Get(id);
+            var result = await _genericService.Get(id);
+
+            return result;
         }
 
         public async Task<Transfer> CreateTransfer(TransferModel transferRequest)
