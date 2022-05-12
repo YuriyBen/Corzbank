@@ -37,9 +37,9 @@ namespace Corzbank.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddValues()
+        public async Task<IActionResult> AddValues() //TODO background job
         {
-            var result = await _exchangeService.CreateExchage();
+            var result = await _exchangeService.CreateExchage(); 
 
             return Ok(result);
         }

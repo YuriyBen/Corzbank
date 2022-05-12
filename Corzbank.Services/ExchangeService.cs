@@ -62,11 +62,6 @@ namespace Corzbank.Services
 
             var listOfValues = GetValuesForExchange.GetValues();
 
-            //var mappedValues = _mapper.Map(listOfValues, valuesFromDb);
-            //await _genericService.UpdateRange(mappedValues);
-            
-            // I wanted to make in that way, but mappedValues will have new id's(afteer commit I'll delete this text, don't pay attention for this)
-            
             foreach (var valueFromDb in valuesFromDb)
             {
                 foreach (var value in listOfValues)

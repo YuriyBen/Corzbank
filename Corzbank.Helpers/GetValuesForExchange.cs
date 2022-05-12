@@ -23,9 +23,6 @@ namespace Corzbank.Helpers
 
             foreach (var value in valuesArray)
             {
-                if (value.ccy == "BTC")
-                    continue;
-
                 ExchangeModel exchangeModel = new ExchangeModel
                 {
                     BaseCurrency = (Currency)Enum.Parse(typeof(Currency), value.base_ccy),
