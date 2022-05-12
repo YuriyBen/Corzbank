@@ -39,11 +39,11 @@ namespace Corzbank.Api.Controllers
 
             if (result != null)
             {
-                foreach (var error in result)
+                foreach (var errorList in result)
                 {
-                    foreach (var item in error.Errors)
+                    foreach (var error in errorList.Errors)
                     {
-                        ModelState.AddModelError(item.Description, item.Code);
+                        ModelState.AddModelError(error.Code, error.Description);
                     }
                 }
 
