@@ -32,12 +32,25 @@ namespace Corzbank.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<IActionResult> RegsiterUser([FromBody] UserModel user)
         {
             var result = await _userService.RegisterUser(user);
 
-            return Ok(result);
+            if (result != null)
+            {
+                foreach (var error in result)
+                {
+                    foreach (var item in error.Errors)
+                    {
+                        ModelState.AddModelError(item.Description, item.Code);
+                    }
+                }
+
+                return BadRequest(ModelState);
+            }
+
+            return Ok("User was successfully registered");
         }
 
         [HttpPut("{id}")]

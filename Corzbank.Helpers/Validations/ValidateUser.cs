@@ -21,22 +21,30 @@ namespace Corzbank.Helpers.Validations
 
         public bool FirstNameValid(User user)
         {
-            const string expression = "[a-zA-Z]{0,20}$";
-
-            if (StringToCheck(user.Firstname, expression))
+            if (user.Firstname != null)
             {
-                return true;
+                const string expression = "[a-zA-Z]{0,20}$";
+
+                if (StringToCheck(user.Firstname, expression))
+                {
+                    return true;
+                }
+                return false;
             }
             return false;
         }
 
         public bool LastnameValid(User user)
         {
-            const string expression = "[a-zA-Z]{0,20}$";
-
-            if (StringToCheck(user.Lastname, expression))
+            if (user.Lastname != null)
             {
-                return true;
+                const string expression = "[a-zA-Z]{0,20}$";
+
+                if (StringToCheck(user.Lastname, expression))
+                {
+                    return true;
+                }
+                return false;
             }
             return false;
         }
@@ -45,13 +53,13 @@ namespace Corzbank.Helpers.Validations
         {
             const string expression = "[+]?[0-9]{10,12}";
 
-            if (user.PhoneNumber.Length < 9 || user.PhoneNumber.Length > 13)
+            if (user.PhoneNumber == null || user.PhoneNumber.Length < 9 || user.PhoneNumber.Length > 13)
             {
                 return false;
             }
             if (StringToCheck(user.PhoneNumber, expression))
             {
-                if(_userManager.Users.Any(x => x.PhoneNumber == user.PhoneNumber))
+                if (_userManager.Users.Any(x => x.PhoneNumber == user.PhoneNumber))
                 {
                     return false;
                 }
@@ -62,16 +70,20 @@ namespace Corzbank.Helpers.Validations
 
         public bool EmailValid(User user)
         {
-            string email = user.Email.ToLower();
-            const string expression = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
-
-            if (StringToCheck(email, expression))
+            if (user.Email != null)
             {
-                if (_userManager.Users.Any(x => x.Email == user.Email))
+                string email = user.Email.ToLower();
+                const string expression = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
+
+                if (StringToCheck(email, expression))
                 {
-                    return false;
+                    if (_userManager.Users.Any(x => x.Email == user.Email) || user.Email == null)
+                    {
+                        return false;
+                    }
+                    return true;
                 }
-                return true;
+                return false;
             }
             return false;
         }
@@ -89,33 +101,55 @@ namespace Corzbank.Helpers.Validations
             return false;
         }
 
-        public bool UserIsValid(User user)
+        public List<IdentityResult> UserIsValid(User user)
         {
+            List<IdentityResult> validationErrors = new List<IdentityResult>();
+
             if (!FirstNameValid(user))
             {
                 _logger.LogError($"FirstName: {user.Firstname} was failed");
-                return false;
+                var errorMessage = new IdentityError
+                {
+                    Code = "firstName failed",
+                    Description = $"FirstName: {user.Firstname} was failed"
+                };
+
+                var result = IdentityResult.Failed(errorMessage);
+                validationErrors.Add(result);
             }
 
             if (!LastnameValid(user))
             {
                 _logger.LogError($"LastName:{user.Lastname} was failed");
-                return false;
+                var errorMessage = new IdentityError
+                {
+                    Code = "lastName failed",
+                    Description = $"LastName:{user.Lastname} was failed"
+                };
+
+                var result = IdentityResult.Failed(errorMessage);
+                validationErrors.Add(result);
             }
 
             if (!PhoneNumberValid(user))
             {
                 _logger.LogError($"PhoneNumber: {user.PhoneNumber} was failed or it is already in use");
-                return false;
+                var errorMessage = new IdentityError
+                {
+                    Code = "phoneNumber failed",
+                    Description = $"PhoneNumber: {user.PhoneNumber} was failed or it is already in use"
+                };
+
+                var result = IdentityResult.Failed(errorMessage);
+                validationErrors.Add(result);
             }
 
             if (!EmailValid(user))
             {
                 _logger.LogError($"Email: {user.Email} was failed or it is already in use");
-                return false;
             }
 
-            return true;
+            return validationErrors;
         }
     }
 }

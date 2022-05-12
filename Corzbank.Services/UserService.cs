@@ -39,19 +39,39 @@ namespace Corzbank.Services
             return result;
         }
 
-        public async Task<User> RegisterUser(UserModel userForRegistration)
+        public async Task<IEnumerable<IdentityResult>> RegisterUser(UserModel userForRegistration)
         {
             if (userForRegistration != null)
             {
-                var user = _mapper.Map<User>(userForRegistration);
+                var mappedUser = _mapper.Map<User>(userForRegistration);
 
-                if (_validateUser.UserIsValid(user))
+                var validationErrors = _validateUser.UserIsValid(mappedUser);
+
+
+                var validators = _userManager.PasswordValidators;
+
+                foreach (var validator in validators)
                 {
-                    await _userManager.CreateAsync(user, userForRegistration.Password);
+                    var validPassword = await validator.ValidateAsync(_userManager, null, userForRegistration.Password);
 
-                    return user;
+                    if (!validPassword.Succeeded)
+                    {
+                        validationErrors.Add(validPassword);
+                    }
                 }
+
+                var validUser = await _userManager.CreateAsync(mappedUser, userForRegistration.Password);
+
+                if (!validUser.Succeeded)
+                {
+                    validationErrors.Add(validUser);
+                    return validationErrors;
+                }
+
+                if (validationErrors.Count > 0)
+                    return validationErrors;
             }
+
             return null;
         }
 
