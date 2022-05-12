@@ -8,6 +8,7 @@ namespace Corzbank.Data.Enums
     {
         UAH = 1,
         USD,
-        EUR
+        EUR,
+        BTC
     }
 }
