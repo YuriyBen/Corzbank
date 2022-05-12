@@ -35,6 +35,7 @@ namespace Corzbank.Extensions
                 o.Password.RequireUppercase = true;
                 o.Password.RequiredLength = 6;
                 o.User.RequireUniqueEmail = true;
+                o.User.RequireUniqueEmail = false;
             });
 
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);

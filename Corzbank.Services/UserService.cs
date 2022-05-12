@@ -75,16 +75,38 @@ namespace Corzbank.Services
             return null;
         }
 
-        public async Task<User> UpdateUser(Guid id, UserModel userForUpdate)
+        public async Task<IEnumerable<IdentityResult>> UpdateUser(Guid id, UserModel userForUpdate)
         {
             if (userForUpdate != null)
             {
                 var user = await GetUserById(id);
                 var mappedUser = _mapper.Map(userForUpdate, user);
 
-                await _userManager.UpdateAsync(mappedUser);
+                var validationErrors = _validateUser.UserIsValid(mappedUser);
 
-                return mappedUser;
+
+                var validators = _userManager.PasswordValidators;
+
+                foreach (var validator in validators)
+                {
+                    var validPassword = await validator.ValidateAsync(_userManager, null, userForUpdate.Password);
+
+                    if (!validPassword.Succeeded)
+                    {
+                        validationErrors.Add(validPassword);
+                    }
+                }
+
+                var validUser = await _userManager.UpdateAsync(mappedUser);
+
+                if (!validUser.Succeeded)
+                {
+                    validationErrors.Add(validUser);
+                    return validationErrors;
+                }
+
+                if (validationErrors.Count > 0)
+                    return validationErrors;
             }
             return null;
         }

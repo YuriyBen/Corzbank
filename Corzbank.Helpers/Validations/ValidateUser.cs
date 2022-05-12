@@ -53,13 +53,13 @@ namespace Corzbank.Helpers.Validations
         {
             const string expression = "[+]?[0-9]{10,12}";
 
-            if (user.PhoneNumber == null || user.PhoneNumber.Length < 9 || user.PhoneNumber.Length > 13)
+            if (user.PhoneNumber == null || user.PhoneNumber.Length < 9 || user.PhoneNumber.Length > 13 )
             {
                 return false;
             }
             if (StringToCheck(user.PhoneNumber, expression))
             {
-                if (_userManager.Users.Any(x => x.PhoneNumber == user.PhoneNumber))
+                if (_userManager.Users.Any(x => x.PhoneNumber == user.PhoneNumber && x.Id != user.Id))
                 {
                     return false;
                 }
@@ -77,7 +77,7 @@ namespace Corzbank.Helpers.Validations
 
                 if (StringToCheck(email, expression))
                 {
-                    if (_userManager.Users.Any(x => x.Email == user.Email) || user.Email == null)
+                    if (_userManager.Users.Any(x => x.Email == user.Email && x.Id != user.Id) || user.Email == null)
                     {
                         return false;
                     }
@@ -147,6 +147,14 @@ namespace Corzbank.Helpers.Validations
             if (!EmailValid(user))
             {
                 _logger.LogError($"Email: {user.Email} was failed or it is already in use");
+                var errorMessage = new IdentityError
+                {
+                    Code = "email failed",
+                    Description = $"Email: {user.Email} was failed or it is already in use"
+                };
+
+                var result = IdentityResult.Failed(errorMessage);
+                validationErrors.Add(result);
             }
 
             return validationErrors;

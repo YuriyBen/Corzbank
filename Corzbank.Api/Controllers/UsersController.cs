@@ -58,7 +58,20 @@ namespace Corzbank.Api.Controllers
         {
             var result = await _userService.UpdateUser(id, user);
 
-            return Ok(result);
+            if (result != null)
+            {
+                foreach (var errorList in result)
+                {
+                    foreach (var error in errorList.Errors)
+                    {
+                        ModelState.AddModelError(error.Code, error.Description);
+                    }
+                }
+
+                return BadRequest(ModelState);
+            }
+
+            return Ok("User was successfully updated");
         }
 
         [HttpDelete("{id}")]
