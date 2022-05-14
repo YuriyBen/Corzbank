@@ -62,5 +62,6 @@ namespace Corzbank.Data
         public DbSet<Exchange> Exchanges { get; set; }
         public DbSet<DepositCard> DepositCards { get; set; }
         public DbSet<TransferCard> TransferCards { get; set; }
+        public DbSet<Token> Tokens { get; set; }
     }
 }

@@ -17,12 +17,16 @@ namespace Corzbank.Services
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
         private readonly ValidateUser _validateUser;
+        private readonly IAuthenticationService _authenticationService;
+        private readonly GenericService<Token> _genericService;
 
-        public UserService(IMapper mapper, UserManager<User> userManager, ValidateUser validateUser)
+        public UserService(IMapper mapper, UserManager<User> userManager, ValidateUser validateUser, IAuthenticationService authenticationService, GenericService<Token> genericService)
         {
+            _authenticationService = authenticationService;
             _mapper = mapper;
             _userManager = userManager;
             _validateUser = validateUser;
+            _genericService = genericService;
         }
 
         public async Task<User> GetUserById(Guid id)
@@ -37,6 +41,29 @@ namespace Corzbank.Services
             var result = await _userManager.Users.ToListAsync();
 
             return result;
+        }
+
+        public async Task<Token> Login(UserForLoginModel userForLogin)
+        {
+
+            var result = await _authenticationService.ValidateUser(userForLogin);
+
+            if (result)
+            {
+                var user = await _userManager.FindByEmailAsync(userForLogin.Email);
+
+                var tokens = new Token
+                {
+                    AccessToken = await _authenticationService.GenerateAccessToken(user),
+                    RefreshToken = await _authenticationService.GenerateRefreshToken(),
+                    User = user
+                };
+
+                await _genericService.Insert(tokens);
+
+                return tokens;
+            }
+            return null;
         }
 
         public async Task<IEnumerable<IdentityResult>> RegisterUser(UserModel userForRegistration)
@@ -60,12 +87,15 @@ namespace Corzbank.Services
                     }
                 }
 
-                var validUser = await _userManager.CreateAsync(mappedUser, userForRegistration.Password);
-
-                if (!validUser.Succeeded)
+                if (validationErrors.Count == 0)
                 {
-                    validationErrors.Add(validUser);
-                    return validationErrors;
+                    var validUser = await _userManager.CreateAsync(mappedUser, userForRegistration.Password);
+
+                    if (!validUser.Succeeded)
+                    {
+                        validationErrors.Add(validUser);
+                        return validationErrors;
+                    }
                 }
 
                 if (validationErrors.Count > 0)

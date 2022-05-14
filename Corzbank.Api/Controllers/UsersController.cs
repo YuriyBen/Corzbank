@@ -1,5 +1,8 @@
-﻿using Corzbank.Data.Entities.Models;
+﻿using Corzbank.Data.Entities;
+using Corzbank.Data.Entities.Models;
+using Corzbank.Helpers;
 using Corzbank.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -16,7 +19,7 @@ namespace Corzbank.Api.Controllers
             _userService = userService;
         }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public async Task<IActionResult> GetUsers()
         {
             var result = await _userService.GetUsers();
@@ -32,22 +35,25 @@ namespace Corzbank.Api.Controllers
             return Ok(result);
         }
 
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] UserForLoginModel user)
+        {
+            var result = await _userService.Login(user);
+
+            if (result == null)
+                return Unauthorized();
+
+            return Ok(result);
+        }
+
         [HttpPost("register")]
         public async Task<IActionResult> RegsiterUser([FromBody] UserModel user)
         {
             var result = await _userService.RegisterUser(user);
 
-            if (result != null)
+            if (result.CheckForaErrors(ModelState) != null)
             {
-                foreach (var errorList in result)
-                {
-                    foreach (var error in errorList.Errors)
-                    {
-                        ModelState.AddModelError(error.Code, error.Description);
-                    }
-                }
-
-                return BadRequest(ModelState);
+                return BadRequest(result);
             }
 
             return Ok("User was successfully registered");
@@ -58,17 +64,9 @@ namespace Corzbank.Api.Controllers
         {
             var result = await _userService.UpdateUser(id, user);
 
-            if (result != null)
+            if (result.CheckForaErrors(ModelState) != null)
             {
-                foreach (var errorList in result)
-                {
-                    foreach (var error in errorList.Errors)
-                    {
-                        ModelState.AddModelError(error.Code, error.Description);
-                    }
-                }
-
-                return BadRequest(ModelState);
+                return BadRequest(result.CheckForaErrors(ModelState));
             }
 
             return Ok("User was successfully updated");

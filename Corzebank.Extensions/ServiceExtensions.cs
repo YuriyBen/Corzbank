@@ -3,8 +3,11 @@ using Corzbank.Data.Entities;
 using Corzbank.Helpers.Validations;
 using Corzbank.Services;
 using Corzbank.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,6 +24,7 @@ namespace Corzbank.Extensions
             services.AddScoped<ITransferService, TransferService>();
             services.AddScoped<IDepositService, DepositService>();
             services.AddScoped<IExchangeService, ExchangeService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped(typeof(GenericService<>));
 
             services.AddScoped<ValidateUser>();
@@ -40,7 +44,33 @@ namespace Corzbank.Extensions
 
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
 
-            builder.AddEntityFrameworkStores<CorzbankDbContext>().AddDefaultTokenProviders();
+            builder.AddEntityFrameworkStores<CorzbankDbContext>().AddRoles<IdentityRole>().AddDefaultTokenProviders();
+        }
+
+        public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
+        {
+            var jwtSettings = configuration.GetSection("JwtSettings");
+            var secretKey = Environment.GetEnvironmentVariable("SECRET");
+
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+
+                        ValidIssuer = jwtSettings.GetSection("Issuer").Value,
+                        ValidAudience = jwtSettings.GetSection("Audience").Value,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+                    };
+                });
         }
     }
 }

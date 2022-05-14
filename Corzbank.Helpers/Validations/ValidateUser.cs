@@ -21,7 +21,7 @@ namespace Corzbank.Helpers.Validations
 
         public bool FirstNameValid(User user)
         {
-            if (user.Firstname != null)
+            if (!string.IsNullOrWhiteSpace(user.Firstname))
             {
                 const string expression = "[a-zA-Z]{0,20}$";
 
@@ -36,7 +36,7 @@ namespace Corzbank.Helpers.Validations
 
         public bool LastnameValid(User user)
         {
-            if (user.Lastname != null)
+            if (!string.IsNullOrWhiteSpace(user.Lastname))
             {
                 const string expression = "[a-zA-Z]{0,20}$";
 
@@ -53,7 +53,7 @@ namespace Corzbank.Helpers.Validations
         {
             const string expression = "[+]?[0-9]{10,12}";
 
-            if (user.PhoneNumber == null || user.PhoneNumber.Length < 9 || user.PhoneNumber.Length > 13 )
+            if (string.IsNullOrWhiteSpace(user.PhoneNumber) || user.PhoneNumber.Length < 9 || user.PhoneNumber.Length > 13 )
             {
                 return false;
             }
@@ -70,7 +70,7 @@ namespace Corzbank.Helpers.Validations
 
         public bool EmailValid(User user)
         {
-            if (user.Email != null)
+            if (!string.IsNullOrWhiteSpace(user.Email))
             {
                 string email = user.Email.ToLower();
                 const string expression = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";

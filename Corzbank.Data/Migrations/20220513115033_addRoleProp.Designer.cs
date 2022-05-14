@@ -4,14 +4,16 @@ using Corzbank.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Corzbank.Data.Migrations
 {
     [DbContext(typeof(CorzbankDbContext))]
-    partial class CorzbankDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220513115033_addRoleProp")]
+    partial class addRoleProp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,28 +141,6 @@ namespace Corzbank.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Exchanges");
-                });
-
-            modelBuilder.Entity("Corzbank.Data.Entities.Token", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("AccessToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Tokens");
                 });
 
             modelBuilder.Entity("Corzbank.Data.Entities.Transfer", b =>
@@ -462,15 +442,6 @@ namespace Corzbank.Data.Migrations
                     b.Navigation("Card");
 
                     b.Navigation("Deposit");
-                });
-
-            modelBuilder.Entity("Corzbank.Data.Entities.Token", b =>
-                {
-                    b.HasOne("Corzbank.Data.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Corzbank.Data.Entities.TransferCard", b =>
