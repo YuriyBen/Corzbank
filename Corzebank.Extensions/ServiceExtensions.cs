@@ -4,6 +4,7 @@ using Corzbank.Helpers.Validations;
 using Corzbank.Services;
 using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +26,8 @@ namespace Corzbank.Extensions
             services.AddScoped<IDepositService, DepositService>();
             services.AddScoped<IExchangeService, ExchangeService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IForgotPasswordService, ForgotPasswordService>();
+            services.AddScoped<IEmailRegistrationService, EmailRegistrationService>();
             services.AddScoped(typeof(GenericService<>));
 
             services.AddScoped<ValidateUser>();

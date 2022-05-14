@@ -9,10 +9,6 @@ namespace Corzbank.Data
 {
     public class CorzbankDbContext: IdentityDbContext<User>
     {
-        public CorzbankDbContext()
-        {
-        }
-
         public CorzbankDbContext(DbContextOptions<CorzbankDbContext> options)
             : base(options)
         {
@@ -63,5 +59,6 @@ namespace Corzbank.Data
         public DbSet<DepositCard> DepositCards { get; set; }
         public DbSet<TransferCard> TransferCards { get; set; }
         public DbSet<Token> Tokens { get; set; }
+        public DbSet<ForgotPasswordToken> ForgotPasswordTokens { get; set; }
     }
 }

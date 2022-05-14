@@ -14,9 +14,11 @@ namespace Corzbank.Api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-        public UsersController(IUserService userService)
+        private readonly IForgotPasswordService _forgotPasswordService;
+        public UsersController(IUserService userService, IForgotPasswordService forgotPasswordService)
         {
             _userService = userService;
+            _forgotPasswordService = forgotPasswordService;
         }
 
         [HttpGet, Authorize]
@@ -84,6 +86,14 @@ namespace Corzbank.Api.Controllers
         public async Task<IActionResult> RefreshTokens(string refreshToken)
         {
             var result = await _userService.RefreshTokens(refreshToken);
+
+            return Ok(result);
+        }
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            var result = await _forgotPasswordService.ForgotPassword(email);
 
             return Ok(result);
         }
