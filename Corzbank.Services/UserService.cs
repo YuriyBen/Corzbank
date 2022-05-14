@@ -114,7 +114,6 @@ namespace Corzbank.Services
 
                 var validationErrors = _validateUser.UserIsValid(mappedUser);
 
-
                 var validators = _userManager.PasswordValidators;
 
                 foreach (var validator in validators)

@@ -26,7 +26,6 @@ namespace Corzbank.Services
             _configuration = configuration;
         }
 
-
         public async Task<bool> ValidateUser(UserForLoginModel userForAuth)
         {
              user = await _userManager.FindByEmailAsync(userForAuth.Email);
@@ -35,7 +34,6 @@ namespace Corzbank.Services
 
             return result;
         }
-
 
         public async Task<string> GenerateAccessToken(User user)
         {
