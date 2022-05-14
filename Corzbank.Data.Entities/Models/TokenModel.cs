@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Corzbank.Data.Entities
+namespace Corzbank.Data.Entities.Models
 {
-    public class Token: KeyEntity
+    public class TokenModel
     {
         public string AccessToken { get; set; }
 

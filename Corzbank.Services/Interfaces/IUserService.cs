@@ -21,5 +21,7 @@ namespace Corzbank.Services.Interfaces
         Task<IEnumerable<IdentityResult>> RegisterUser(UserModel user);
 
         Task<bool> DeleteUser(Guid id);
+
+        Task<Token> RefreshTokens(string refreshToken);
     }
 }

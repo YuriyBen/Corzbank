@@ -153,12 +153,10 @@ namespace Corzbank.Data.Migrations
                     b.Property<string>("RefreshToken")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Tokens");
                 });
@@ -462,15 +460,6 @@ namespace Corzbank.Data.Migrations
                     b.Navigation("Card");
 
                     b.Navigation("Deposit");
-                });
-
-            modelBuilder.Entity("Corzbank.Data.Entities.Token", b =>
-                {
-                    b.HasOne("Corzbank.Data.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Corzbank.Data.Entities.TransferCard", b =>

@@ -56,7 +56,7 @@ namespace Corzbank.Services
                 {
                     AccessToken = await _authenticationService.GenerateAccessToken(user),
                     RefreshToken = await _authenticationService.GenerateRefreshToken(),
-                    User = user
+                    UserId = Guid.Parse(user.Id)
                 };
 
                 await _genericService.Insert(tokens);
@@ -151,6 +151,33 @@ namespace Corzbank.Services
                 return true;
             }
             return false;
+        }
+
+        public async Task<Token> RefreshTokens(string refreshToken)
+        {
+            var token = await _genericService.FindByCondition(t => t.RefreshToken == refreshToken);
+            var user = await _userManager.FindByIdAsync(token.UserId.ToString());
+
+            if (token != null)
+            {
+                var generatedAccessToken = await _authenticationService.GenerateAccessToken(user);
+                var generatedRefreshToken = await _authenticationService.GenerateRefreshToken();
+
+                TokenModel newlyToken = new TokenModel
+                {
+                    AccessToken = generatedAccessToken,
+                    RefreshToken = generatedRefreshToken,
+                    UserId = token.UserId
+                };
+
+                var mappedTokens = _mapper.Map(newlyToken, token);
+
+                await _genericService.Update(mappedTokens);
+
+                return mappedTokens;
+            }
+
+            return null;
         }
     }
 }

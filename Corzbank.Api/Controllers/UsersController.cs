@@ -79,5 +79,13 @@ namespace Corzbank.Api.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost("refresh-tokens")]
+        public async Task<IActionResult> RefreshTokens(string refreshToken)
+        {
+            var result = await _userService.RefreshTokens(refreshToken);
+
+            return Ok(result);
+        }
     }
 }

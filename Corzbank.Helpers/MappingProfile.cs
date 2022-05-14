@@ -21,6 +21,8 @@ namespace Corzbank.Helpers
             CreateMap<DepositModel, Deposit>();
 
             CreateMap<ExchangeModel, Exchange>();
+
+            CreateMap<TokenModel, Token>();
         }
     }
 }
