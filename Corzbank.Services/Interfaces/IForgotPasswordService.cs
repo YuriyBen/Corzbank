@@ -11,8 +11,8 @@ namespace Corzbank.Services.Interfaces
     {
         Task<ForgotPasswordToken> ForgotPassword(string email);
 
-        Task<bool> ConfirmResettingPassword(string email, string verificationCode);
+        Task<bool> ConfirmResettingPassword(ConfirmationModel confirmationModel);
 
-        Task SetNewPassword(string email, SetNewPasswordModel newPassword);
+        Task<bool> SetNewPassword(SetNewPasswordModel newPassword);
     }
 }

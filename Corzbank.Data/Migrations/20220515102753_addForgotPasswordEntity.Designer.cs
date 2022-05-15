@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Corzbank.Data.Migrations
 {
     [DbContext(typeof(CorzbankDbContext))]
-    [Migration("20220514213112_addForgotPasswordEntity")]
+    [Migration("20220515102753_addForgotPasswordEntity")]
     partial class addForgotPasswordEntity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

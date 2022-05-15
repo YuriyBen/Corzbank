@@ -97,5 +97,21 @@ namespace Corzbank.Api.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost("confirm-resetting-password")]
+        public async Task<IActionResult> ConfirmResettingPassword(ConfirmationModel confirmationModel)
+        {
+            var result = await _forgotPasswordService.ConfirmResettingPassword(confirmationModel);
+
+            return Ok(result);
+        }
+
+        [HttpPost("set-new-password")]
+        public async Task<IActionResult> SetNewPassword(SetNewPasswordModel setNewPassword)
+        {
+            var result = await _forgotPasswordService.SetNewPassword(setNewPassword);
+
+            return Ok(result);
+        }
     }
 }

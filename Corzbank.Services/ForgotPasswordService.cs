@@ -31,6 +31,13 @@ namespace Corzbank.Services
             {
                 var generatedCode = GenerateVerificationCode.GenerateCode();
 
+                var existingEmail = await _genericService.FindByCondition(fp => fp.UserId == Guid.Parse(user.Id));
+                
+                if (existingEmail != null)
+                {
+                    await _genericService.Remove(existingEmail);
+                }
+
                 var forgotPasswordToken = new ForgotPasswordToken
                 {
                     VerificationCode = generatedCode,
@@ -62,17 +69,20 @@ namespace Corzbank.Services
             return null;
         }
 
-        public async Task<bool> ConfirmResettingPassword(string email, string verificationCode)
+        public async Task<bool> ConfirmResettingPassword(ConfirmationModel confirmationModel)
         {
-            var user = await _userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByEmailAsync(confirmationModel.Email);
 
             ForgotPasswordToken verificationToken = await _genericService.FindByCondition(u => u.UserId == Guid.Parse(user.Id));
 
             if (verificationToken != null)
             {
-                if (verificationToken.ValidTo > DateTime.Now && verificationToken.VerificationCode == verificationCode)
+                if (verificationToken.ValidTo > DateTime.Now && verificationToken.VerificationCode == confirmationModel.VerificationCode)
                 {
                     verificationToken.IsVerified = true;
+
+                    await _genericService.Update(verificationToken);
+
                     return true;
                 }
             }
@@ -80,17 +90,22 @@ namespace Corzbank.Services
             return false;
         }
 
-        public async Task SetNewPassword(string email, SetNewPasswordModel newPassword)
+        public async Task<bool> SetNewPassword(SetNewPasswordModel newPasswordModel)
         {
-            var user = await _userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByEmailAsync(newPasswordModel.Email);
 
             ForgotPasswordToken verificationToken = await _genericService.FindByCondition(u => u.UserId == Guid.Parse(user.Id));
 
-            if (verificationToken.IsVerified && newPassword != null)
+            if (verificationToken.IsVerified && newPasswordModel != null)
             {
                 await _userManager.RemovePasswordAsync(user);
-                await _userManager.AddPasswordAsync(user, newPassword.Password);
+                await _userManager.AddPasswordAsync(user, newPasswordModel.Password);
+
+                await _genericService.Remove(verificationToken);
+                return true;
             }
+
+            return false;
         }
     }
 }
