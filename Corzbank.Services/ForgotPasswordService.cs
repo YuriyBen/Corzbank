@@ -13,67 +13,21 @@ namespace Corzbank.Services
     public class ForgotPasswordService: IForgotPasswordService
     {
         private readonly UserManager<User> _userManager;
-        private readonly GenericService<ForgotPasswordToken> _genericService;
+        private readonly GenericService<Verification> _genericService;
         private readonly IEmailRegistrationService _emailService;
 
-        public ForgotPasswordService(UserManager<User> userManager, GenericService<ForgotPasswordToken> genericService, IEmailRegistrationService emailService)
+        public ForgotPasswordService(UserManager<User> userManager, GenericService<Verification> genericService, IEmailRegistrationService emailService)
         {
             _emailService = emailService;
             _userManager = userManager;
             _genericService = genericService;
         }
 
-        public async Task<ForgotPasswordToken> ForgotPassword(string email)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
-
-            if (user != null)
-            {
-                var generatedCode = GenerateVerificationCode.GenerateCode();
-
-                var existingEmail = await _genericService.FindByCondition(fp => fp.UserId == Guid.Parse(user.Id));
-                
-                if (existingEmail != null)
-                {
-                    await _genericService.Remove(existingEmail);
-                }
-
-                var forgotPasswordToken = new ForgotPasswordToken
-                {
-                    VerificationCode = generatedCode,
-                    ValidTo = DateTime.Now.AddMinutes(10),
-                    UserId = Guid.Parse(user.Id)
-                };
-
-                await _genericService.Insert(forgotPasswordToken);
-
-                _emailService.SendEmail($"{user.Email}", "Reset Password",
-                    @"
-                    <div style='background: #f5ecec; padding: 5px; text-align: center;'>
-                    Confirm Resetting Your Password
-                    <p> Before you confirm the resetting, please verify the target address carefully
-                    .If you confirm a reseting to an erroneous address, Corzbank will be unable to
-                    assist in recovering the assets.If you understand the risks and can confirm
-                    that this was your own action, use this code below:</p>
-                    <p style = 'text-align: center; letter-spacing: 5px; font-size: xx-large;
-                    font-weight: bold; background: radial-gradient(#515462, transparent) ;
-                    color: #000b58' >" + $"{generatedCode}" + @" </p><p style = 'text-align: center;' >
-                    If it wasn't you, dont pay attention for this email:)</p>
-                    <span style = 'color: #808000; background-color: rgba(85, 78, 43, 0.1);'>Corzbank</span>
-                "
-                );
-
-                return forgotPasswordToken;
-            }
-
-            return null;
-        }
-
         public async Task<bool> ConfirmResettingPassword(ConfirmationModel confirmationModel)
         {
             var user = await _userManager.FindByEmailAsync(confirmationModel.Email);
 
-            ForgotPasswordToken verificationToken = await _genericService.FindByCondition(u => u.UserId == Guid.Parse(user.Id));
+            Verification verificationToken = await _genericService.FindByCondition(u => u.UserId == Guid.Parse(user.Id));
 
             if (verificationToken != null)
             {
@@ -94,7 +48,7 @@ namespace Corzbank.Services
         {
             var user = await _userManager.FindByEmailAsync(newPasswordModel.Email);
 
-            ForgotPasswordToken verificationToken = await _genericService.FindByCondition(u => u.UserId == Guid.Parse(user.Id));
+            Verification verificationToken = await _genericService.FindByCondition(u => u.UserId == Guid.Parse(user.Id));
 
             if (verificationToken.IsVerified && newPasswordModel != null)
             {

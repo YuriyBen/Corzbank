@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace Corzbank.Services.Interfaces
 {
-    public interface IForgotPasswordService
+    public interface IWrappedVerificationService
     {
-        Task<bool> ConfirmResettingPassword(ConfirmationModel confirmationModel);
-
-        Task<bool> SetNewPassword(SetNewPasswordModel newPassword);
+        Task<Verification> Verify(VerificationModel verificationModel);
     }
 }

@@ -28,6 +28,7 @@ namespace Corzbank.Extensions
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IForgotPasswordService, ForgotPasswordService>();
             services.AddScoped<IEmailRegistrationService, EmailRegistrationService>();
+            services.AddScoped<IWrappedVerificationService, WrappedVerificationService>();
             services.AddScoped(typeof(GenericService<>));
 
             services.AddScoped<ValidateUser>();

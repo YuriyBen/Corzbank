@@ -1,6 +1,7 @@
 ﻿using Corzbank.Data.Entities;
 using Corzbank.Data.Entities.Models;
 using Corzbank.Helpers;
+using Corzbank.Services;
 using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +16,12 @@ namespace Corzbank.Api.Controllers
     {
         private readonly IUserService _userService;
         private readonly IForgotPasswordService _forgotPasswordService;
-        public UsersController(IUserService userService, IForgotPasswordService forgotPasswordService)
+        private readonly IWrappedVerificationService _verificationService;
+        public UsersController(IUserService userService, IForgotPasswordService forgotPasswordService, IWrappedVerificationService verificationService)
         {
             _userService = userService;
             _forgotPasswordService = forgotPasswordService;
+            _verificationService = verificationService;
         }
 
         [HttpGet, Authorize]
@@ -91,9 +94,9 @@ namespace Corzbank.Api.Controllers
         }
 
         [HttpPost("forgot-password")]
-        public async Task<IActionResult> ForgotPassword(string email)
+        public async Task<IActionResult> ForgotPassword(VerificationModel verificationModel)
         {
-            var result = await _forgotPasswordService.ForgotPassword(email);
+            var result = await _verificationService.Verify(verificationModel);
 
             return Ok(result);
         }
@@ -110,6 +113,14 @@ namespace Corzbank.Api.Controllers
         public async Task<IActionResult> SetNewPassword(SetNewPasswordModel setNewPassword)
         {
             var result = await _forgotPasswordService.SetNewPassword(setNewPassword);
+
+            return Ok(result);
+        }
+
+        [HttpPost("resend-verification")]
+        public async Task<IActionResult> ResendVerification(VerificationModel verificationModel)
+        {
+            var result = await _verificationService.Verify(verificationModel);
 
             return Ok(result);
         }

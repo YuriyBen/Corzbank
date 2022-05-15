@@ -59,6 +59,6 @@ namespace Corzbank.Data
         public DbSet<DepositCard> DepositCards { get; set; }
         public DbSet<TransferCard> TransferCards { get; set; }
         public DbSet<Token> Tokens { get; set; }
-        public DbSet<ForgotPasswordToken> ForgotPasswordTokens { get; set; }
+        public DbSet<Verification> ForgotPasswordTokens { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Corzbank.Data.Entities;
 using Corzbank.Data.Entities.Models;
+using Corzbank.Data.Enums;
 using Corzbank.Helpers.Validations;
 using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -19,14 +20,17 @@ namespace Corzbank.Services
         private readonly ValidateUser _validateUser;
         private readonly IAuthenticationService _authenticationService;
         private readonly GenericService<Token> _genericService;
+        private readonly IWrappedVerificationService _verificationService;
 
-        public UserService(IMapper mapper, UserManager<User> userManager, ValidateUser validateUser, IAuthenticationService authenticationService, GenericService<Token> genericService)
+        public UserService(IMapper mapper, UserManager<User> userManager, ValidateUser validateUser, IAuthenticationService authenticationService,
+            GenericService<Token> genericService, IWrappedVerificationService verificationService)
         {
             _authenticationService = authenticationService;
             _mapper = mapper;
             _userManager = userManager;
             _validateUser = validateUser;
             _genericService = genericService;
+            _verificationService = verificationService;
         }
 
         public async Task<User> GetUserById(Guid id)
@@ -60,6 +64,14 @@ namespace Corzbank.Services
                 };
 
                 await _genericService.Insert(tokens);
+
+                var verificationModel = new VerificationModel
+                {
+                    Email = user.Email,
+                    VerificationType = VerificationType.Email
+                };
+
+                await _verificationService.Verify(verificationModel);
 
                 return tokens;
             }
