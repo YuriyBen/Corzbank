@@ -101,10 +101,10 @@ namespace Corzbank.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost("confirm-resetting-password")]
-        public async Task<IActionResult> ConfirmResettingPassword(ConfirmationModel confirmationModel)
+        [HttpPost("confirm-verification")]
+        public async Task<IActionResult> ConfirmVerification(ConfirmationModel confirmationModel)
         {
-            var result = await _forgotPasswordService.ConfirmResettingPassword(confirmationModel);
+            var result = await _verificationService.ConfirmVerification(confirmationModel);
 
             return Ok(result);
         }

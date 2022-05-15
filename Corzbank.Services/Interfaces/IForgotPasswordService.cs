@@ -9,8 +9,6 @@ namespace Corzbank.Services.Interfaces
 {
     public interface IForgotPasswordService
     {
-        Task<bool> ConfirmResettingPassword(ConfirmationModel confirmationModel);
-
         Task<bool> SetNewPassword(SetNewPasswordModel newPassword);
     }
 }

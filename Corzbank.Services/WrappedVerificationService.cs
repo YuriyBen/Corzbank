@@ -1,5 +1,6 @@
 ﻿using Corzbank.Data.Entities;
 using Corzbank.Data.Entities.Models;
+using Corzbank.Data.Enums;
 using Corzbank.Helpers;
 using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -49,9 +50,9 @@ namespace Corzbank.Services
 
                 _emailService.SendEmail($"{user.Email}", $"{verificationModel.VerificationType} Verification",
                     @"
-                    <div style='background: #f5ecec; padding: 5px; text-align: center;'>
-                    Confirm Resetting Your Password
-                    <p> Before you confirm the operation, please verify the target address carefully
+                    <div style='background: #f5ecec; padding: 5px; text-align: center;'>"+
+                    $"{ verificationModel.VerificationType} Verification" +
+                    @"<p> Before you confirm the operation, please verify the target address carefully
                     .If you confirm operation to an erroneous address, Corzbank will be unable to
                     assist in recovering the assets.If you understand the risks and can confirm
                     that this was your own action, use this code below:</p>
@@ -67,6 +68,34 @@ namespace Corzbank.Services
             }
 
             return null;
+        }
+
+        public async Task<bool> ConfirmVerification(ConfirmationModel confirmationModel)
+        {
+            var user = await _userManager.FindByEmailAsync(confirmationModel.Email);
+
+            Verification verification = await _genericService.FindByCondition(u => u.UserId == Guid.Parse(user.Id));
+
+            if (verification != null)
+            {
+                if (verification.ValidTo > DateTime.Now && verification.VerificationCode == confirmationModel.VerificationCode)
+                {
+                    verification.IsVerified = true;
+
+                    await _genericService.Update(verification);
+
+                    if(verification.VerificationType == VerificationType.Email)
+                    {
+                        user.EmailConfirmed = true;
+                        await _userManager.UpdateAsync(user);
+
+                        await _genericService.Remove(verification);
+                    }
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

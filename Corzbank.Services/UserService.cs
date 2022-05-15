@@ -64,15 +64,7 @@ namespace Corzbank.Services
                 };
 
                 await _genericService.Insert(tokens);
-
-                var verificationModel = new VerificationModel
-                {
-                    Email = user.Email,
-                    VerificationType = VerificationType.Email
-                };
-
-                await _verificationService.Verify(verificationModel);
-
+             
                 return tokens;
             }
             return null;
@@ -100,8 +92,16 @@ namespace Corzbank.Services
                 }
 
                 if (validationErrors.Count == 0)
-                {
+                {                   
                     var validUser = await _userManager.CreateAsync(mappedUser, userForRegistration.Password);
+
+                    var verificationModel = new VerificationModel
+                    {
+                        Email = mappedUser.Email,
+                        VerificationType = VerificationType.Email
+                    };
+
+                    await _verificationService.Verify(verificationModel);
 
                     if (!validUser.Succeeded)
                     {

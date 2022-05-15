@@ -14,34 +14,11 @@ namespace Corzbank.Services
     {
         private readonly UserManager<User> _userManager;
         private readonly GenericService<Verification> _genericService;
-        private readonly IEmailRegistrationService _emailService;
 
-        public ForgotPasswordService(UserManager<User> userManager, GenericService<Verification> genericService, IEmailRegistrationService emailService)
+        public ForgotPasswordService(UserManager<User> userManager, GenericService<Verification> genericService)
         {
-            _emailService = emailService;
             _userManager = userManager;
             _genericService = genericService;
-        }
-
-        public async Task<bool> ConfirmResettingPassword(ConfirmationModel confirmationModel)
-        {
-            var user = await _userManager.FindByEmailAsync(confirmationModel.Email);
-
-            Verification verificationToken = await _genericService.FindByCondition(u => u.UserId == Guid.Parse(user.Id));
-
-            if (verificationToken != null)
-            {
-                if (verificationToken.ValidTo > DateTime.Now && verificationToken.VerificationCode == confirmationModel.VerificationCode)
-                {
-                    verificationToken.IsVerified = true;
-
-                    await _genericService.Update(verificationToken);
-
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         public async Task<bool> SetNewPassword(SetNewPasswordModel newPasswordModel)

@@ -10,5 +10,7 @@ namespace Corzbank.Services.Interfaces
     public interface IWrappedVerificationService
     {
         Task<Verification> Verify(VerificationModel verificationModel);
+
+        Task<bool> ConfirmVerification(ConfirmationModel confirmationModel);
     }
 }
