@@ -10,6 +10,6 @@ namespace Corzbank.Data.Entities.Models
 
         public string RefreshToken { get; set; }
 
-        public Guid UserId { get; set; }
+        public User User { get; set; }
     }
 }

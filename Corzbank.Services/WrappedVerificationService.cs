@@ -32,7 +32,7 @@ namespace Corzbank.Services
             {
                 var generatedCode = GenerateVerificationCode.GenerateCode();
 
-                var existingEmail = await _genericService.FindByCondition(fp => fp.UserId == Guid.Parse(user.Id));
+                var existingEmail = await _genericService.FindByCondition(fp => fp.User == user);
 
                 if (existingEmail != null)
                 {
@@ -43,7 +43,7 @@ namespace Corzbank.Services
                 {
                     VerificationCode = generatedCode,
                     ValidTo = DateTime.Now.AddMinutes(10),
-                    UserId = Guid.Parse(user.Id),
+                    User = user,
                     VerificationType = verificationModel.VerificationType
                 };
 
@@ -75,7 +75,7 @@ namespace Corzbank.Services
         {
             var user = await _userManager.FindByEmailAsync(confirmationModel.Email);
 
-            Verification verification = await _genericService.FindByCondition(u => u.UserId == Guid.Parse(user.Id));
+            Verification verification = await _genericService.FindByCondition(u => u.User == user);
 
             if (verification != null)
             {

@@ -55,16 +55,19 @@ namespace Corzbank.Services
             {
                 var user = await _userManager.FindByEmailAsync(userForLogin.Email);
 
-                var tokens = new Token
+                if(user.EmailConfirmed)
                 {
-                    AccessToken = await _authenticationService.GenerateAccessToken(user),
-                    RefreshToken = await _authenticationService.GenerateRefreshToken(),
-                    UserId = Guid.Parse(user.Id)
-                };
+                    var tokens = new Token
+                    {
+                        AccessToken = await _authenticationService.GenerateAccessToken(user),
+                        RefreshToken = await _authenticationService.GenerateRefreshToken(),
+                        User = user
+                    };
 
-                await _genericService.Insert(tokens);
-             
-                return tokens;
+                    await _genericService.Insert(tokens);
+
+                    return tokens;
+                }
             }
             return null;
         }
@@ -167,7 +170,7 @@ namespace Corzbank.Services
         public async Task<Token> RefreshTokens(string refreshToken)
         {
             var token = await _genericService.FindByCondition(t => t.RefreshToken == refreshToken);
-            var user = await _userManager.FindByIdAsync(token.UserId.ToString());
+            var user = await _userManager.FindByIdAsync(token.User.Id.ToString());
 
             if (token != null)
             {
@@ -178,7 +181,7 @@ namespace Corzbank.Services
                 {
                     AccessToken = generatedAccessToken,
                     RefreshToken = generatedRefreshToken,
-                    UserId = token.UserId
+                    User = token.User
                 };
 
                 var mappedTokens = _mapper.Map(newlyToken, token);

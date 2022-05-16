@@ -25,7 +25,7 @@ namespace Corzbank.Services
         {
             var user = await _userManager.FindByEmailAsync(newPasswordModel.Email);
 
-            Verification verificationToken = await _genericService.FindByCondition(u => u.UserId == Guid.Parse(user.Id));
+            Verification verificationToken = await _genericService.FindByCondition(u => u.User.Id == user.Id);
 
             if (verificationToken.IsVerified && newPasswordModel != null)
             {

@@ -13,8 +13,8 @@ namespace Corzbank.Data.Entities
        
         public bool IsVerified { get; set; }
        
-        public Guid UserId { get; set; }
-
         public VerificationType VerificationType { get; set; }
+
+        public User User { get; set; }
     }
 }

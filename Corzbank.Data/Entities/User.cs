@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Corzbank.Data.Entities
 {
-    public class User: IdentityUser
+    public class User: IdentityUser<Guid>
     {
         public string Firstname { get; set; }
       

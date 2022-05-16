@@ -6,6 +6,7 @@ using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -29,6 +30,7 @@ namespace Corzbank.Extensions
             services.AddScoped<IForgotPasswordService, ForgotPasswordService>();
             services.AddScoped<IEmailRegistrationService, EmailRegistrationService>();
             services.AddScoped<IWrappedVerificationService, WrappedVerificationService>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped(typeof(GenericService<>));
 
             services.AddScoped<ValidateUser>();
@@ -36,18 +38,17 @@ namespace Corzbank.Extensions
 
         public static void ConfigureIdentity(this IServiceCollection services)
         {
-            var builder = services.AddIdentityCore<User>(o =>
+            services.AddIdentity<User, Role>(o =>
             {
                 o.Password.RequireDigit = true;
                 o.Password.RequireLowercase = true;
                 o.Password.RequireUppercase = true;
                 o.Password.RequiredLength = 6;
                 o.User.RequireUniqueEmail = true;
-            });
-
-            builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
-
-            builder.AddEntityFrameworkStores<CorzbankDbContext>().AddRoles<IdentityRole>().AddDefaultTokenProviders();
+            })
+            .AddDefaultTokenProviders()
+            .AddUserStore<UserStore<User, Role, CorzbankDbContext, Guid>>()
+            .AddRoleStore<RoleStore<Role, CorzbankDbContext, Guid>>();
         }
 
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
