@@ -42,7 +42,7 @@ namespace Corzbank.Services
 
         public async Task<bool> CreateExchage()
         {
-            if (!_genericService.CheckByCondition(e => e.ExchangeCurrency == Currency.EUR || e.ExchangeCurrency == Currency.USD))
+            if (_genericService.FindByCondition(e => e.ExchangeCurrency == Currency.EUR || e.ExchangeCurrency == Currency.USD) == null)
             {
                 var listOfValues = GetValuesForExchange.GetValues();
 
@@ -83,7 +83,7 @@ namespace Corzbank.Services
         {
             var values = await GetValues();
 
-            if (_genericService.CheckByCondition(e => e.ExchangeCurrency == Currency.EUR || e.ExchangeCurrency == Currency.USD))
+            if (_genericService.FindByCondition(e => e.ExchangeCurrency == Currency.EUR || e.ExchangeCurrency == Currency.USD) != null)
             {
                 foreach (var value in values)
                 {

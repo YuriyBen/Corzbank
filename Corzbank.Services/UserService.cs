@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Corzbank.Data.Entities;
 using Corzbank.Data.Entities.Models;
+using Corzbank.Data.Enums;
 using Corzbank.Helpers.Validations;
 using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -17,12 +18,19 @@ namespace Corzbank.Services
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
         private readonly ValidateUser _validateUser;
+        private readonly IAuthenticationService _authenticationService;
+        private readonly GenericService<Token> _genericService;
+        private readonly IWrappedVerificationService _verificationService;
 
-        public UserService(IMapper mapper, UserManager<User> userManager, ValidateUser validateUser)
+        public UserService(IMapper mapper, UserManager<User> userManager, ValidateUser validateUser, IAuthenticationService authenticationService,
+            GenericService<Token> genericService, IWrappedVerificationService verificationService)
         {
+            _authenticationService = authenticationService;
             _mapper = mapper;
             _userManager = userManager;
             _validateUser = validateUser;
+            _genericService = genericService;
+            _verificationService = verificationService;
         }
 
         public async Task<User> GetUserById(Guid id)
@@ -39,32 +47,106 @@ namespace Corzbank.Services
             return result;
         }
 
-        public async Task<User> RegisterUser(UserModel userForRegistration)
+        public async Task<Token> Login(UserForLoginModel userForLogin)
         {
-            if (userForRegistration != null)
+            var result = await _authenticationService.ValidateUser(userForLogin);
+
+            if (result)
             {
-                var user = _mapper.Map<User>(userForRegistration);
+                var user = await _userManager.FindByEmailAsync(userForLogin.Email);
 
-                if (_validateUser.UserIsValid(user))
+                var tokens = new Token
                 {
-                    await _userManager.CreateAsync(user, userForRegistration.Password);
+                    AccessToken = await _authenticationService.GenerateAccessToken(user),
+                    RefreshToken = await _authenticationService.GenerateRefreshToken(),
+                    UserId = Guid.Parse(user.Id)
+                };
 
-                    return user;
-                }
+                await _genericService.Insert(tokens);
+             
+                return tokens;
             }
             return null;
         }
 
-        public async Task<User> UpdateUser(Guid id, UserModel userForUpdate)
+        public async Task<IEnumerable<IdentityResult>> RegisterUser(UserModel userForRegistration)
+        {
+            if (userForRegistration != null)
+            {
+                var mappedUser = _mapper.Map<User>(userForRegistration);
+
+                var validationErrors = _validateUser.UserIsValid(mappedUser);
+
+
+                var validators = _userManager.PasswordValidators;
+
+                foreach (var validator in validators)
+                {
+                    var validPassword = await validator.ValidateAsync(_userManager, null, userForRegistration.Password);
+
+                    if (!validPassword.Succeeded)
+                    {
+                        validationErrors.Add(validPassword);
+                    }
+                }
+
+                if (validationErrors.Count == 0)
+                {                   
+                    var validUser = await _userManager.CreateAsync(mappedUser, userForRegistration.Password);
+
+                    var verificationModel = new VerificationModel
+                    {
+                        Email = mappedUser.Email,
+                        VerificationType = VerificationType.Email
+                    };
+
+                    await _verificationService.Verify(verificationModel);
+
+                    if (!validUser.Succeeded)
+                    {
+                        validationErrors.Add(validUser);
+                        return validationErrors;
+                    }
+                }
+
+                if (validationErrors.Count > 0)
+                    return validationErrors;
+            }
+
+            return null;
+        }
+
+        public async Task<IEnumerable<IdentityResult>> UpdateUser(Guid id, UserModel userForUpdate)
         {
             if (userForUpdate != null)
             {
                 var user = await GetUserById(id);
                 var mappedUser = _mapper.Map(userForUpdate, user);
 
-                await _userManager.UpdateAsync(mappedUser);
+                var validationErrors = _validateUser.UserIsValid(mappedUser);
 
-                return mappedUser;
+                var validators = _userManager.PasswordValidators;
+
+                foreach (var validator in validators)
+                {
+                    var validPassword = await validator.ValidateAsync(_userManager, null, userForUpdate.Password);
+
+                    if (!validPassword.Succeeded)
+                    {
+                        validationErrors.Add(validPassword);
+                    }
+                }
+
+                var validUser = await _userManager.UpdateAsync(mappedUser);
+
+                if (!validUser.Succeeded)
+                {
+                    validationErrors.Add(validUser);
+                    return validationErrors;
+                }
+
+                if (validationErrors.Count > 0)
+                    return validationErrors;
             }
             return null;
         }
@@ -80,6 +162,33 @@ namespace Corzbank.Services
                 return true;
             }
             return false;
+        }
+
+        public async Task<Token> RefreshTokens(string refreshToken)
+        {
+            var token = await _genericService.FindByCondition(t => t.RefreshToken == refreshToken);
+            var user = await _userManager.FindByIdAsync(token.UserId.ToString());
+
+            if (token != null)
+            {
+                var generatedAccessToken = await _authenticationService.GenerateAccessToken(user);
+                var generatedRefreshToken = await _authenticationService.GenerateRefreshToken();
+
+                TokenModel newlyToken = new TokenModel
+                {
+                    AccessToken = generatedAccessToken,
+                    RefreshToken = generatedRefreshToken,
+                    UserId = token.UserId
+                };
+
+                var mappedTokens = _mapper.Map(newlyToken, token);
+
+                await _genericService.Update(mappedTokens);
+
+                return mappedTokens;
+            }
+
+            return null;
         }
     }
 }

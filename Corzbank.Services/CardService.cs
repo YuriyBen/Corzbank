@@ -37,12 +37,12 @@ namespace Corzbank.Services
         public async Task<Card> CreateCard(CardModel card)
         {
             var result = card.GenerateCard();
-            var duplicateCard = _genericService.CheckByCondition(c => c.CardNumber.Equals(result.CardNumber));
+            var duplicateCard = await _genericService.FindByCondition(c => c.CardNumber.Equals(result.CardNumber));
 
-            while (duplicateCard)
+            while (duplicateCard != null)
             {
                 result = card.GenerateCard();
-                duplicateCard = _genericService.CheckByCondition(c => c.CardNumber.Equals(result.CardNumber));
+                duplicateCard = await _genericService.FindByCondition(c => c.CardNumber.Equals(result.CardNumber));
             }
 
             await _genericService.Insert(result);

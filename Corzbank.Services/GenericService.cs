@@ -109,9 +109,9 @@ namespace Corzbank.Services
 			}
 		}
 
-		public bool CheckByCondition(Expression<Func<T, bool>> expression)
+		public async Task<T> FindByCondition(Expression<Func<T, bool>> expression)
         {
-			var result = _dbContext.Set<T>().Any(expression);
+			var result = await _dbContext.Set<T>().FirstOrDefaultAsync(expression);
 
 			return result;
         }
