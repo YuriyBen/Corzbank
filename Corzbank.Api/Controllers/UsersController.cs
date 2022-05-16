@@ -24,7 +24,7 @@ namespace Corzbank.Api.Controllers
             _verificationService = verificationService;
         }
 
-        [HttpGet, Authorize]
+        [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
             var result = await _userService.GetUsers();

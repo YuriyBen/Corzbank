@@ -1,5 +1,6 @@
 ﻿using Corzbank.Data.Entities.Models;
 using Corzbank.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 namespace Corzbank.Api.Controllers
 {
     [Route("[controller]")]
+    [Authorize]
     [ApiController]
     public class DepositsController : ControllerBase
     {

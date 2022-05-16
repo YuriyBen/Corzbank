@@ -1,6 +1,7 @@
 ﻿using Corzbank.Data;
 using Corzbank.Data.Entities;
 using Corzbank.Data.Entities.Models;
+using Corzbank.Data.Enums;
 using Corzbank.Helpers;
 using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -18,12 +19,15 @@ namespace Corzbank.Services
         private readonly GenericService<Card> _genericService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UserManager<User> _userManager;
+        private readonly IWrappedVerificationService _verificationService;
 
-        public CardService(GenericService<Card> genericService, IHttpContextAccessor httpContextAccessor, UserManager<User> userManager)
+        public CardService(GenericService<Card> genericService, IHttpContextAccessor httpContextAccessor,
+            UserManager<User> userManager, IWrappedVerificationService verificationService)
         {
             _genericService = genericService;
             _httpContextAccessor = httpContextAccessor;
             _userManager = userManager;
+            _verificationService = verificationService;
         }
 
         public async Task<IEnumerable<Card>> GetCards()
@@ -45,7 +49,7 @@ namespace Corzbank.Services
             var currentUserEmail = _httpContextAccessor.HttpContext.User.Identity.Name;
             var currentUser = await _userManager.FindByEmailAsync(currentUserEmail);
 
-            if (await _genericService.FindByCondition(c => c.CardType.Equals(card.CardType) && c.User.Id == currentUser.Id) != null)
+            if (await _genericService.FindByCondition(c => c.CardType.Equals(card.CardType) && c.User.Id == currentUser.Id && c.IsActive) != null)
                 return null;
 
             var result = card.GenerateCard();
@@ -64,13 +68,22 @@ namespace Corzbank.Services
             return result;
         }
 
-        public async Task<bool> DeleteCard(Guid id)
+        public async Task<bool> CloseCard(Guid id)
         {
             var card = await GetCardById(id);
 
+            var currentUserEmail = _httpContextAccessor.HttpContext.User.Identity.Name;
+
             if (card != null)
             {
-                await _genericService.Remove(card);
+                var verificationModel = new VerificationModel
+                {
+                    Email = currentUserEmail,
+                    VerificationType = VerificationType.CloseCard,
+                    CardId = id
+                };
+
+                await _verificationService.Verify(verificationModel);
 
                 return true;
             }

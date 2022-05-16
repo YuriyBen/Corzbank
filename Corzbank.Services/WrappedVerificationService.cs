@@ -15,13 +15,16 @@ namespace Corzbank.Services
     {
         private readonly UserManager<User> _userManager;
         private readonly GenericService<Verification> _genericService;
+        private readonly GenericService<Card> _genericCardService;
         private readonly IEmailRegistrationService _emailService;
 
-        public WrappedVerificationService(UserManager<User> userManager, GenericService<Verification> genericService, IEmailRegistrationService emailService)
+        public WrappedVerificationService(UserManager<User> userManager, GenericService<Verification> genericService,
+            IEmailRegistrationService emailService, GenericService<Card> genericCardService)
         {
             _emailService = emailService;
             _userManager = userManager;
             _genericService = genericService;
+            _genericCardService = genericCardService;
         }
 
         public async Task<Verification> Verify(VerificationModel verificationModel)
@@ -44,7 +47,8 @@ namespace Corzbank.Services
                     VerificationCode = generatedCode,
                     ValidTo = DateTime.Now.AddMinutes(10),
                     User = user,
-                    VerificationType = verificationModel.VerificationType
+                    VerificationType = verificationModel.VerificationType,
+                    CardId = verificationModel.CardId
                 };
 
                 await _genericService.Insert(verification);
@@ -85,13 +89,23 @@ namespace Corzbank.Services
 
                     await _genericService.Update(verification);
 
-                    if(verification.VerificationType == VerificationType.Email)
+                    if (verification.VerificationType == VerificationType.Email)
                     {
                         user.EmailConfirmed = true;
                         await _userManager.UpdateAsync(user);
 
                         await _genericService.Remove(verification);
                     }
+                    else if (verification.VerificationType == VerificationType.CloseCard)
+                    {
+                        var card = await _genericCardService.Get(verification.CardId);
+                        card.IsActive = false;
+
+                        await _genericCardService.Update(card);
+
+                        await _genericService.Remove(verification);
+                    }
+
                     return true;
                 }
             }

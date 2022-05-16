@@ -7,6 +7,7 @@ namespace Corzbank.Data.Enums
     public enum VerificationType
     {
         Email = 1,
-        ResetPassword
+        ResetPassword,
+        CloseCard
     }
 }
