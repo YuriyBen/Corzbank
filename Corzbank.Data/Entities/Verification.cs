@@ -17,6 +17,8 @@ namespace Corzbank.Data.Entities
 
         public Guid CardId { get; set; }
 
+        public Guid DepositId { get; set; }
+
         public User User { get; set; }
     }
 }

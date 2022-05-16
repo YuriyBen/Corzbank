@@ -8,6 +8,7 @@ namespace Corzbank.Data.Enums
     {
         Email = 1,
         ResetPassword,
-        CloseCard
+        CloseCard,
+        CloseDeposit
     }
 }

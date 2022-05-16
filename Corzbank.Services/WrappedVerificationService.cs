@@ -16,15 +16,17 @@ namespace Corzbank.Services
         private readonly UserManager<User> _userManager;
         private readonly GenericService<Verification> _genericService;
         private readonly GenericService<Card> _genericCardService;
+        private readonly GenericService<Deposit> _genericDepositService;
         private readonly IEmailRegistrationService _emailService;
 
         public WrappedVerificationService(UserManager<User> userManager, GenericService<Verification> genericService,
-            IEmailRegistrationService emailService, GenericService<Card> genericCardService)
+            IEmailRegistrationService emailService, GenericService<Card> genericCardService, GenericService<Deposit> genericDepositService)
         {
             _emailService = emailService;
             _userManager = userManager;
             _genericService = genericService;
             _genericCardService = genericCardService;
+            _genericDepositService = genericDepositService;
         }
 
         public async Task<Verification> Verify(VerificationModel verificationModel)
@@ -102,6 +104,15 @@ namespace Corzbank.Services
                         card.IsActive = false;
 
                         await _genericCardService.Update(card);
+
+                        await _genericService.Remove(verification);
+                    }
+                    else if (verification.VerificationType == VerificationType.CloseDeposit)
+                    {
+                        var deposit = await _genericDepositService.Get(verification.DepositId);
+                        deposit.IsActive = DepositStatus.Closed;
+
+                        await _genericDepositService.Update(deposit);
 
                         await _genericService.Remove(verification);
                     }

@@ -16,10 +16,12 @@ namespace Corzbank.Api.Controllers
     public class DepositsController : ControllerBase
     {
         private readonly IDepositService _depositService;
+        private readonly IWrappedVerificationService _verificationService;
 
-        public DepositsController(IDepositService depositService)
+        public DepositsController(IDepositService depositService, IWrappedVerificationService verificationService)
         {
             _depositService = depositService;
+            _verificationService = verificationService;
         }
 
         [HttpGet]
@@ -46,10 +48,10 @@ namespace Corzbank.Api.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDeposit(Guid id)
+        [HttpPost("confirm-closing")]
+        public async Task<IActionResult> ConfirmVerification(ConfirmationModel confirmationModel)
         {
-            var result = await _depositService.DeleteDeposit(id);
+            var result = await _verificationService.ConfirmVerification(confirmationModel);
 
             return Ok(result);
         }

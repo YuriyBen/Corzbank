@@ -15,5 +15,7 @@ namespace Corzbank.Data.Entities.Models
         public VerificationType VerificationType { get; set; }
 
         public Guid CardId { get; set; }
+
+        public Guid DepositId { get; set; }
     }
 }

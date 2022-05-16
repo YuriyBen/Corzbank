@@ -57,7 +57,7 @@ namespace Corzbank.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost("confirm-deleting")]
+        [HttpPost("confirm-closing")]
         public async Task<IActionResult> ConfirmVerification(ConfirmationModel confirmationModel)
         {
             var result = await _verificationService.ConfirmVerification(confirmationModel);
