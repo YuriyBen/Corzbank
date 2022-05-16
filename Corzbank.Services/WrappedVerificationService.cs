@@ -43,7 +43,8 @@ namespace Corzbank.Services
                 {
                     VerificationCode = generatedCode,
                     ValidTo = DateTime.Now.AddMinutes(10),
-                    UserId = Guid.Parse(user.Id)
+                    UserId = Guid.Parse(user.Id),
+                    VerificationType = verificationModel.VerificationType
                 };
 
                 await _genericService.Insert(verification);

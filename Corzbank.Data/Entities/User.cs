@@ -12,7 +12,7 @@ namespace Corzbank.Data.Entities
       
         public string Lastname { get; set; }
 
-        public Roles Role { get; set; } = Roles.User;
+        public UserRole Role { get; set; } = UserRole.User;
 
         public List<Card> Cards { get; set; }
     }

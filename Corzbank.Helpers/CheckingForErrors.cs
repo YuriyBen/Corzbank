@@ -8,7 +8,7 @@ namespace Corzbank.Helpers
 {
     public static class CheckingForErrors
     {
-        public static ModelStateDictionary CheckForaErrors(this IEnumerable<IdentityResult> result, ModelStateDictionary modelSate)
+        public static ModelStateDictionary ModelStateErrors(this IEnumerable<IdentityResult> result, ModelStateDictionary modelSate)
         {
             if (result != null)
             {

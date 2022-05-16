@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Corzbank.Data.Enums
 {
-    public enum Roles
+    public enum UserRole
     {
         User = 1,
         Admin

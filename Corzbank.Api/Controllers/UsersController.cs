@@ -56,7 +56,7 @@ namespace Corzbank.Api.Controllers
         {
             var result = await _userService.RegisterUser(user);
 
-            if (result.CheckForaErrors(ModelState) != null)
+            if (result.ModelStateErrors(ModelState) != null)
             {
                 return BadRequest(result);
             }
@@ -69,9 +69,9 @@ namespace Corzbank.Api.Controllers
         {
             var result = await _userService.UpdateUser(id, user);
 
-            if (result.CheckForaErrors(ModelState) != null)
+            if (result.ModelStateErrors(ModelState) != null)
             {
-                return BadRequest(result.CheckForaErrors(ModelState));
+                return BadRequest(result.ModelStateErrors(ModelState));
             }
 
             return Ok("User was successfully updated");

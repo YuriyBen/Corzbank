@@ -1,5 +1,6 @@
 using AutoMapper;
 using Corzbank.Data;
+using Corzbank.Data.Entities.Models;
 using Corzbank.Extensions;
 using Corzbank.Helpers;
 using Corzbank.Services;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Logging;
 using System;
 using System.Collections.Generic;
@@ -39,6 +41,10 @@ namespace Corzbank.Api
             });
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
+
+            var emailSettings = new EmailSettingsModel();
+            new ConfigureFromConfigurationOptions<EmailSettingsModel>(Configuration.GetSection("EmailSettings")).Configure(emailSettings);
+            services.AddSingleton(emailSettings);
 
             services.ConfigureServices();
 

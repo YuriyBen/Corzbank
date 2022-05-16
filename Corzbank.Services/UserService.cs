@@ -49,7 +49,6 @@ namespace Corzbank.Services
 
         public async Task<Token> Login(UserForLoginModel userForLogin)
         {
-
             var result = await _authenticationService.ValidateUser(userForLogin);
 
             if (result)
