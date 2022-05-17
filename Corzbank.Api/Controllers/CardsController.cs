@@ -49,7 +49,7 @@ namespace Corzbank.Api.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("{id}")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> CloseCard(Guid id)
         {
             var result = await _cardService.CloseCard(id);

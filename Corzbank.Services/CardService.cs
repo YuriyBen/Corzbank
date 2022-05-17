@@ -1,4 +1,5 @@
-﻿using Corzbank.Data;
+﻿using AutoMapper;
+using Corzbank.Data;
 using Corzbank.Data.Entities;
 using Corzbank.Data.Entities.Models;
 using Corzbank.Data.Enums;
@@ -20,14 +21,16 @@ namespace Corzbank.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UserManager<User> _userManager;
         private readonly IWrappedVerificationService _verificationService;
+        private readonly IMapper _mapper;
 
         public CardService(GenericService<Card> genericService, IHttpContextAccessor httpContextAccessor,
-            UserManager<User> userManager, IWrappedVerificationService verificationService)
+            UserManager<User> userManager, IWrappedVerificationService verificationService, IMapper mapper)
         {
             _genericService = genericService;
             _httpContextAccessor = httpContextAccessor;
             _userManager = userManager;
             _verificationService = verificationService;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<Card>> GetCards()
@@ -49,7 +52,9 @@ namespace Corzbank.Services
             var currentUserEmail = _httpContextAccessor.HttpContext.User.Identity.Name;
             var currentUser = await _userManager.FindByEmailAsync(currentUserEmail);
 
-            if (await _genericService.FindByCondition(c => c.CardType.Equals(card.CardType) && c.User.Id == currentUser.Id && c.IsActive) != null)
+            var userHasCard = await _genericService.FindByCondition(c => c.CardType.Equals(card.CardType) && c.User.Id == currentUser.Id && c.IsActive);
+
+            if (userHasCard != null)
                 return null;
 
             var result = card.GenerateCard();
@@ -66,6 +71,18 @@ namespace Corzbank.Services
             await _genericService.Insert(result);
 
             return result;
+        }
+
+        public async Task<Card> UpdateCard(Card cardForUpdate)
+        {
+            if (cardForUpdate != null)
+            {
+                await _genericService.Update(cardForUpdate);
+
+                return cardForUpdate;
+            }
+
+            return null;
         }
 
         public async Task<bool> CloseCard(Guid id)

@@ -40,7 +40,7 @@ namespace Corzbank.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> OpenDeposit([FromBody] DepositModel card)
         {
             var result = await _depositService.OpenDeposit(card);

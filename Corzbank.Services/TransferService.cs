@@ -66,18 +66,31 @@ namespace Corzbank.Services
 
             var senderCard = await _cardService.GetCardById(transferRequest.SenderCardId);
 
-            if (senderCard != null && currentUser != null)
+            if (senderCard.User == currentUser && senderCard.Balance > transferRequest.Amount)
             {
-                if (currentUser.Id == senderCard.User.Id)
+                senderCard.Balance -= transferRequest.Amount;
+                await _cardService.UpdateCard(senderCard);
+
+                if (transferRequest.ReceiverCardId != null)
                 {
-                    var transfer = _mapper.Map<Transfer>(transferRequest);
+                    var receiverCard = await _cardService.GetCardById(transferRequest.ReceiverCardId ?? Guid.Empty);
 
-                    transfer.IsSuccessful = true;
+                    if (receiverCard != null && senderCard != receiverCard) 
+                    {
+                        receiverCard.Balance += transferRequest.Amount;
+                        await _cardService.UpdateCard(receiverCard);
+                    }
 
-                    await _genericService.Insert(transfer);
-
-                    return transfer;
+                    return null;
                 }
+
+                var transfer = _mapper.Map<Transfer>(transferRequest);
+
+                transfer.IsSuccessful = true;
+
+                await _genericService.Insert(transfer);
+
+                return transfer;
             }
 
             return null;

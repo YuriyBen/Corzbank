@@ -15,6 +15,8 @@ namespace Corzbank.Services.Interfaces
 
         Task<Card> CreateCard(CardModel card);
 
+        Task<Card> UpdateCard(Card cardForUpdate);
+
         Task<bool> CloseCard(Guid id);
     }
 }
