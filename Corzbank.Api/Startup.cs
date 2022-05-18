@@ -1,4 +1,5 @@
 using AutoMapper;
+using BackgroundJobs;
 using Corzbank.Data;
 using Corzbank.Data.Entities.Models;
 using Corzbank.Extensions;
@@ -42,11 +43,9 @@ namespace Corzbank.Api
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            var emailSettings = new EmailSettingsModel();
-            new ConfigureFromConfigurationOptions<EmailSettingsModel>(Configuration.GetSection("EmailSettings")).Configure(emailSettings);
-            services.AddSingleton(emailSettings);
-
             services.ConfigureServices();
+
+            services.ConfigureAppSettings(Configuration);
 
             services.AddAuthentication();
             services.ConfigureIdentity();

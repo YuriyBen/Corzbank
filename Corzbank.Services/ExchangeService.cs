@@ -33,13 +33,6 @@ namespace Corzbank.Services
             return result;
         }
 
-        public async Task<Exchange> GetValueById(Guid id)
-        {
-            var result = await _genericService.Get(id);
-
-            return result;
-        }
-
         public async Task<bool> CreateExchage()
         {
             if (_genericService.FindByCondition(e => e.ExchangeCurrency == Currency.EUR || e.ExchangeCurrency == Currency.USD) == null)
@@ -77,23 +70,6 @@ namespace Corzbank.Services
             }
 
             return true;
-        }
-
-        public async Task<bool> DeleteExchange()
-        {
-            var values = await GetValues();
-
-            if (_genericService.FindByCondition(e => e.ExchangeCurrency == Currency.EUR || e.ExchangeCurrency == Currency.USD) != null)
-            {
-                foreach (var value in values)
-                {
-                    await _genericService.Remove(value);
-                }
-
-                return true;
-            }
-
-            return false;
         }
     }
 }
