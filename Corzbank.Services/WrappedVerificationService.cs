@@ -15,13 +15,18 @@ namespace Corzbank.Services
     {
         private readonly UserManager<User> _userManager;
         private readonly GenericService<Verification> _genericService;
+        private readonly GenericService<Card> _genericCardService;
+        private readonly GenericService<Deposit> _genericDepositService;
         private readonly IEmailRegistrationService _emailService;
 
-        public WrappedVerificationService(UserManager<User> userManager, GenericService<Verification> genericService, IEmailRegistrationService emailService)
+        public WrappedVerificationService(UserManager<User> userManager, GenericService<Verification> genericService,
+            IEmailRegistrationService emailService, GenericService<Card> genericCardService, GenericService<Deposit> genericDepositService)
         {
             _emailService = emailService;
             _userManager = userManager;
             _genericService = genericService;
+            _genericCardService = genericCardService;
+            _genericDepositService = genericDepositService;
         }
 
         public async Task<Verification> Verify(VerificationModel verificationModel)
@@ -32,7 +37,7 @@ namespace Corzbank.Services
             {
                 var generatedCode = GenerateVerificationCode.GenerateCode();
 
-                var existingEmail = await _genericService.FindByCondition(fp => fp.UserId == Guid.Parse(user.Id));
+                var existingEmail = await _genericService.FindByCondition(fp => fp.User == user);
 
                 if (existingEmail != null)
                 {
@@ -43,8 +48,9 @@ namespace Corzbank.Services
                 {
                     VerificationCode = generatedCode,
                     ValidTo = DateTime.Now.AddMinutes(10),
-                    UserId = Guid.Parse(user.Id),
-                    VerificationType = verificationModel.VerificationType
+                    User = user,
+                    VerificationType = verificationModel.VerificationType,
+                    CardId = verificationModel.CardId
                 };
 
                 await _genericService.Insert(verification);
@@ -75,7 +81,7 @@ namespace Corzbank.Services
         {
             var user = await _userManager.FindByEmailAsync(confirmationModel.Email);
 
-            Verification verification = await _genericService.FindByCondition(u => u.UserId == Guid.Parse(user.Id));
+            Verification verification = await _genericService.FindByCondition(u => u.User == user);
 
             if (verification != null)
             {
@@ -85,13 +91,32 @@ namespace Corzbank.Services
 
                     await _genericService.Update(verification);
 
-                    if(verification.VerificationType == VerificationType.Email)
+                    if (verification.VerificationType == VerificationType.Email)
                     {
                         user.EmailConfirmed = true;
                         await _userManager.UpdateAsync(user);
 
                         await _genericService.Remove(verification);
                     }
+                    else if (verification.VerificationType == VerificationType.CloseCard)
+                    {
+                        var card = await _genericCardService.Get(verification.CardId);
+                        card.IsActive = false;
+
+                        await _genericCardService.Update(card);
+
+                        await _genericService.Remove(verification);
+                    }
+                    else if (verification.VerificationType == VerificationType.CloseDeposit)
+                    {
+                        var deposit = await _genericDepositService.Get(verification.DepositId);
+                        deposit.IsActive = DepositStatus.Closed;
+
+                        await _genericDepositService.Update(deposit);
+
+                        await _genericService.Remove(verification);
+                    }
+
                     return true;
                 }
             }

@@ -13,5 +13,9 @@ namespace Corzbank.Data.Entities.Models
 
         [Required(ErrorMessage = "VerificationType is required")]
         public VerificationType VerificationType { get; set; }
+
+        public Guid CardId { get; set; }
+
+        public Guid DepositId { get; set; }
     }
 }

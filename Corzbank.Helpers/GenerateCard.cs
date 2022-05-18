@@ -18,7 +18,8 @@ namespace Corzbank.Helpers
                 CvvCode = GenerateCvvCode(),
                 PaymentSystem = card.PaymentSystem,
                 CardType = card.CardType,
-                SecretWord = card.SecretWord
+                SecretWord = card.SecretWord,
+                IsActive = true
             };
 
             return cardForResponse;

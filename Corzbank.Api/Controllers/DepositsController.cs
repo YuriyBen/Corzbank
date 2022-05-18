@@ -1,5 +1,6 @@
 ﻿using Corzbank.Data.Entities.Models;
 using Corzbank.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,14 +11,17 @@ using System.Threading.Tasks;
 namespace Corzbank.Api.Controllers
 {
     [Route("[controller]")]
+    [Authorize]
     [ApiController]
     public class DepositsController : ControllerBase
     {
         private readonly IDepositService _depositService;
+        private readonly IWrappedVerificationService _verificationService;
 
-        public DepositsController(IDepositService depositService)
+        public DepositsController(IDepositService depositService, IWrappedVerificationService verificationService)
         {
             _depositService = depositService;
+            _verificationService = verificationService;
         }
 
         [HttpGet]
@@ -36,7 +40,7 @@ namespace Corzbank.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> OpenDeposit([FromBody] DepositModel card)
         {
             var result = await _depositService.OpenDeposit(card);
@@ -44,10 +48,10 @@ namespace Corzbank.Api.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDeposit(Guid id)
+        [HttpPost("confirm-closing")]
+        public async Task<IActionResult> ConfirmVerification(ConfirmationModel confirmationModel)
         {
-            var result = await _depositService.DeleteDeposit(id);
+            var result = await _verificationService.ConfirmVerification(confirmationModel);
 
             return Ok(result);
         }

@@ -15,6 +15,6 @@ namespace Corzbank.Services.Interfaces
 
         Task<Deposit> OpenDeposit(DepositModel deposit);
 
-        Task<bool> DeleteDeposit(Guid id);
+        Task<bool> CloseDeposit(Guid id);
     }
 }

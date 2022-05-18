@@ -23,6 +23,8 @@ namespace Corzbank.Helpers
             CreateMap<ExchangeModel, Exchange>();
 
             CreateMap<TokenModel, Token>();
+
+            CreateMap<CardForUpdateModel, Card>();
         }
     }
 }
