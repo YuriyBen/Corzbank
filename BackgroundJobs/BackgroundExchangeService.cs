@@ -29,7 +29,7 @@ namespace BackgroundJobs
             if (!_backgroundModel.IsActive)
                 return;
 
-            _logger.LogInformation("Background Exchange Service start working");
+            _logger.LogInformation("Daily Exchange values began updating");
 
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -49,13 +49,13 @@ namespace BackgroundJobs
 
                 foreach (var value in values)
                 {
-                    _logger.LogInformation("Value from exchange: {0}", value.ExchangeCurrency);
+                    _logger.LogInformation("Display updated value from exchange: {0}", value.ExchangeCurrency);
                 }
             }
         }
         public override Task StopAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Background Exchange Service was stopped");
+            _logger.LogInformation("Exchange values was stopped");
             return base.StopAsync(cancellationToken);
         }
     }
