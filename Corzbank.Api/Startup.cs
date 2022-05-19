@@ -1,6 +1,7 @@
 
 using AutoMapper;
 using Corzbank.Data;
+using Corzbank.Data.Entities.Models;
 using Corzbank.Extensions;
 using Corzbank.Helpers;
 using Corzbank.Services.Interfaces;
@@ -10,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Logging;
 using NLog;
 using System.IO;
@@ -65,7 +67,7 @@ namespace Corzbank.Api
 
             app.UseHttpsRedirection();
 
-           app.ConfigureCustomExceptionMiddleware();
+            app.ConfigureExceptionHandlingMiddleware();
 
             app.UseRouting();
 

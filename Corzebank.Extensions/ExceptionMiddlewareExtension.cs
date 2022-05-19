@@ -13,7 +13,7 @@ namespace Corzbank.Extensions
 {
     public static class ExceptionMiddlewareExtension
     {
-        public static void ConfigureCustomExceptionMiddleware(this IApplicationBuilder app)
+        public static void ConfigureExceptionHandlingMiddleware(this IApplicationBuilder app)
         {
             app.UseMiddleware<ExceptionMiddleware>();
         }
