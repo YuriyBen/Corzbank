@@ -24,18 +24,21 @@ namespace BackgroundJobs
             _backgroundModel = backgroundModel;
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            while (_backgroundModel.IsActive)
+            if (_backgroundModel.IsActive)
             {
                 _logger.LogInformation("Exchange Background Service is working");
 
-                await GetValues(stoppingToken);
-                await Task.Delay(TimeSpan.FromMinutes(_backgroundModel.IntervalMinutes), stoppingToken);
+                while (!cancellationToken.IsCancellationRequested)
+                {
+                    await GetValues();
+                    await Task.Delay(TimeSpan.FromMinutes(_backgroundModel.IntervalMinutes), cancellationToken);
+                }
             }
         }
 
-        private async Task GetValues(CancellationToken cancellationToken)
+        private async Task GetValues()
         {
             using(var scope = _serviceProvider.CreateScope())
             {

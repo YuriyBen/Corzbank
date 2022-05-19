@@ -84,9 +84,9 @@ namespace Corzbank.Extensions
 
         public static void ConfigureAppSettings(this IServiceCollection services, IConfiguration configuration)
         {
-            var backgroundJobУчсрфтпу = new BackgroundJobModel();
-            new ConfigureFromConfigurationOptions<BackgroundJobModel>(configuration.GetSection("BackgroundJob:Exchange")).Configure(backgroundJobУчсрфтпу);
-            services.AddSingleton(backgroundJobУчсрфтпу);
+            var backgroundJobExchange = new BackgroundJobModel();
+            new ConfigureFromConfigurationOptions<BackgroundJobModel>(configuration.GetSection("BackgroundJob:Exchange")).Configure(backgroundJobExchange);
+            services.AddSingleton(backgroundJobExchange);
 
             var emailSettings = new EmailSettingsModel();
             new ConfigureFromConfigurationOptions<EmailSettingsModel>(configuration.GetSection("EmailSettings")).Configure(emailSettings);

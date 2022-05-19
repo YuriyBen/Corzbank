@@ -35,7 +35,9 @@ namespace Corzbank.Services
 
         public async Task<bool> CreateExchage()
         {
-            if (_genericService.FindByCondition(e => e.ExchangeCurrency == Currency.EUR || e.ExchangeCurrency == Currency.USD) == null)
+            var existingValues = _genericService.FindByCondition(e => e.ExchangeCurrency == Currency.EUR || e.ExchangeCurrency == Currency.USD);
+
+            if (existingValues == null)
             {
                 var listOfValues = GetValuesForExchange.GetValues();
 
