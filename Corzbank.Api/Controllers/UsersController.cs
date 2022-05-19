@@ -28,7 +28,6 @@ namespace Corzbank.Api.Controllers
         public async Task<IActionResult> GetUsers()
         {
             var result = await _userService.GetUsers();
-
             return Ok(result);
         }
 

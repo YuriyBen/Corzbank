@@ -32,6 +32,7 @@ namespace Corzbank.Extensions
             services.AddScoped<IWrappedVerificationService, WrappedVerificationService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped(typeof(GenericService<>));
+            services.AddScoped<ILoggerManager, LoggerManager>();
 
             services.AddScoped<ValidateUser>();
         }

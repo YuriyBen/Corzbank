@@ -1,25 +1,18 @@
+
 using AutoMapper;
 using Corzbank.Data;
-using Corzbank.Data.Entities.Models;
 using Corzbank.Extensions;
 using Corzbank.Helpers;
-using Corzbank.Services;
 using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using NLog;
+using System.IO;
 
 namespace Corzbank.Api
 {
@@ -27,6 +20,7 @@ namespace Corzbank.Api
     {
         public Startup(IConfiguration configuration)
         {
+            LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
             Configuration = configuration;
         }
 
@@ -61,7 +55,7 @@ namespace Corzbank.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
         {
             if (env.IsDevelopment())
             {
@@ -70,6 +64,8 @@ namespace Corzbank.Api
             }
 
             app.UseHttpsRedirection();
+
+           app.ConfigureCustomExceptionMiddleware();
 
             app.UseRouting();
 
