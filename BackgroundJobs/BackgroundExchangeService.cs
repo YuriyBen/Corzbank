@@ -26,15 +26,15 @@ namespace BackgroundJobs
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            if (_backgroundModel.IsActive)
-            {
-                _logger.LogInformation("Exchange Background Service is working");
+            if (!_backgroundModel.IsActive)
+                return;
 
-                while (!cancellationToken.IsCancellationRequested)
-                {
-                    await GetValues();
-                    await Task.Delay(TimeSpan.FromMinutes(_backgroundModel.IntervalMinutes), cancellationToken);
-                }
+            _logger.LogInformation("Background Exchange Service start working");
+
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                await GetValues();
+                await Task.Delay(TimeSpan.FromMinutes(_backgroundModel.IntervalMinutes), cancellationToken);
             }
         }
 
@@ -49,13 +49,13 @@ namespace BackgroundJobs
 
                 foreach (var value in values)
                 {
-                    _logger.LogInformation("Value: {0}", value.ExchangeCurrency);
+                    _logger.LogInformation("Value from exchange: {0}", value.ExchangeCurrency);
                 }
             }
         }
         public override Task StopAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Exchange Background Service is stoping");
+            _logger.LogInformation("Background Exchange Service was stopped");
             return base.StopAsync(cancellationToken);
         }
     }
