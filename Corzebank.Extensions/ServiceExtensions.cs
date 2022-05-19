@@ -1,5 +1,7 @@
-﻿using Corzbank.Data;
+﻿using BackgroundJobs;
+using Corzbank.Data;
 using Corzbank.Data.Entities;
+using Corzbank.Data.Entities.Models;
 using Corzbank.Helpers.Validations;
 using Corzbank.Services;
 using Corzbank.Services.Interfaces;
@@ -9,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -35,6 +38,8 @@ namespace Corzbank.Extensions
             services.AddScoped<ILoggerManager, LoggerManager>();
 
             services.AddScoped<ValidateUser>();
+
+            services.AddHostedService<BackgroundExchangeService>();
         }
 
         public static void ConfigureIdentity(this IServiceCollection services)
@@ -76,6 +81,17 @@ namespace Corzbank.Extensions
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
                     };
                 });
+        }
+
+        public static void ConfigureAppSettings(this IServiceCollection services, IConfiguration configuration)
+        {
+            var backgroundJobExchange = new BackgroundJobModel();
+            new ConfigureFromConfigurationOptions<BackgroundJobModel>(configuration.GetSection("BackgroundJob:Exchange")).Configure(backgroundJobExchange);
+            services.AddSingleton(backgroundJobExchange);
+
+            var emailSettings = new EmailSettingsModel();
+            new ConfigureFromConfigurationOptions<EmailSettingsModel>(configuration.GetSection("EmailSettings")).Configure(emailSettings);
+            services.AddSingleton(emailSettings);
         }
     }
 }

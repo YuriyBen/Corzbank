@@ -10,12 +10,8 @@ namespace Corzbank.Services.Interfaces
     {
         Task<IEnumerable<Exchange>> GetValues();
 
-        Task<Exchange> GetValueById(Guid id);
-
         Task<bool> CreateExchage();
 
         Task<bool> UpdateExchage();
-
-        Task<bool> DeleteExchange();
     }
 }

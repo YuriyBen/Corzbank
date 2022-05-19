@@ -45,7 +45,7 @@ namespace Corzbank.Api.Controllers
             var result = await _userService.Login(user);
 
             if (result == null)
-                return Unauthorized();
+                return BadRequest();
 
             return Ok(result);
         }
@@ -60,7 +60,7 @@ namespace Corzbank.Api.Controllers
                 return BadRequest(result);
             }
 
-            return Ok("User was successfully registered");
+            return Ok();
         }
 
         [HttpPut("{id}")]
@@ -73,7 +73,7 @@ namespace Corzbank.Api.Controllers
                 return BadRequest(result.ModelStateErrors(ModelState));
             }
 
-            return Ok("User was successfully updated");
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
