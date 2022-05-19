@@ -1,0 +1,18 @@
+
+.header{
+    background-color: green;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.left-block{
+    display: flex;
+    justify-content: space-between;
+    width: 20%;
+}
+.right-block{
+    display: flex;
+    justify-content: space-between;
+    width: 17%;
+}

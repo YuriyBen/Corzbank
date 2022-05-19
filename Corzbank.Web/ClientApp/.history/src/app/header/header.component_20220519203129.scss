@@ -1,0 +1,58 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: 0;
+}
+.navbar{
+    background-color: green;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 25px;
+    letter-spacing: 1px;
+}
+.left-block , .right-block{
+    display: flex;
+    justify-content: space-between;
+    width: 23%;
+    align-items: baseline;
+    align-items: center;
+}
+.navbar span{
+    color: white;
+    opacity: 65%;
+}
+.left-block .logo{
+    background: transparent;
+    border-radius: 50px;
+    border: 3px solid #2D4A74;
+}
+.left-block img{
+    width: 65px;
+}
+.left-block .services{
+    display: flex;
+    width: 140px;
+    justify-content: space-between;
+    align-items: center;
+}
+.right-block .account{
+    display: -webkit-inline-box;
+    width: 140px;
+    height: 40px;
+    -webkit-box-align: center;
+    border-radius: 32px;
+    background: transparent;
+    border: 3px solid #77D353;
+    padding: 0 10px;
+    -webkit-box-pack: center;
+    font-size: 18px;
+    
+}
+.account p, {
+    color: #77D353;
+}
+.account .far{
+    margin-right: 10px;
+}
