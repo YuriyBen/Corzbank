@@ -1,0 +1,170 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    color: white;
+}
+.homepage{
+    display: grid;
+    grid-auto-rows: 100px;
+    margin-top: 100px;
+    grid-gap: 60px;
+    width: 80%;
+    font-family: sans-serif;
+}
+.services {
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 6;
+    width: 400px;
+}
+.information-banner {
+    grid-column-start: 10;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 4;
+}
+.transfer-card{
+    grid-column-start: 2;
+    grid-column-end: 6;
+    height: 172px;
+}
+.transfer-phone{
+    grid-column-start: 6;
+    grid-column-end: 10;
+    height: 172px;
+}
+.box{
+    background-color: #2B273F;
+}
+.function{
+    display:flex;
+    align-items: center;
+    padding: 40px;
+}
+.function h3{
+    color: #999DA1;
+}
+.icon{
+    border-radius: 10px;
+    height: 35px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+}
+.money-transfers .icon{
+    background-color: #7BE38D;
+}
+.payments .icon{
+    background-color: #FF8638;
+    font-size: 20px;
+}
+.deposits .icon{
+    font-size: 20px;
+    background-color: #B5DC6D;
+}
+.telecomunications .icon{
+    background-color: #2D91FF;
+}
+.charity .icon{
+    background-color: #FF8FD6;
+}
+.terminals .icon{
+    background-color: #3c4f7e;
+}
+.service{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+.fa-chevron-right{
+    color: #D2D2D2;
+}
+.information-banner img{
+    width: 100%;
+    height: 100%;
+}
+.money-transfer .icon{
+    background-color: #7BE38D;
+}
+.money-transfer{
+    display: flex;
+    padding: 20px;
+}
+.money-transfer h3{
+    opacity: 80%;
+}
+.card-number{
+    opacity: 25%;
+    text-align: start;
+    margin: 25px;
+    display: flex;
+    justify-content: space-between;
+}
+.card-number p{
+    font-size: 26px;
+    letter-spacing: 2px;
+}
+.card-number hr{
+    border: 1px solid white;
+    width: 295px;
+}
+.card-number .icon{
+    border: 2px solid #8492A6;
+}
+.mobile-top-up .icon{
+    background-color: #5663d5;
+}
+.mobile-top-up{
+    display: flex;
+    padding: 20px;
+}
+.mobile-top-up h3{
+    opacity: 80%;
+}
+.phone-number{
+    opacity: 25%;
+    text-align: start;
+    margin: 25px;
+    display: flex;
+    justify-content: space-between;
+}
+.phone-number p{
+    font-size: 26px;
+    letter-spacing: 2px;
+}
+.phone-number hr{
+    border: 1px solid white;
+    position: absolute;
+    top: 840px;
+    width: 275px;
+}
+.phone-number .icon{
+    border: 2px solid #8492A6;
+}
+.phone{
+    display: flex;
+    position: relative;
+
+}
+.country-code{
+    display: flex;
+    width: 100px;
+    justify-content: space-between;
+    align-items: center;
+}
+.fa-caret-down{
+    font-size: 25px;
+}
+.vertical-line{
+    margin: auto 16px auto 8px;
+    height: 24px;
+}
+.line{
+    width: 2px;
+    height: 100%;
+    background: rgb(255 255 255);
+}
