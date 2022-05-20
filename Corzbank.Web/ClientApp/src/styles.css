@@ -18,3 +18,7 @@ body{
   text-align: -webkit-center;
   background-color: #24203A;
 }
+.container{
+  max-width: 100%;
+  padding: 0;
+}
