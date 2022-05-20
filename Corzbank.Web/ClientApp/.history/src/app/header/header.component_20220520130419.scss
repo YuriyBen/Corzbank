@@ -10,16 +10,16 @@
     align-items: center;
     font-size: 25px;
     letter-spacing: 1px;
-    width: 80%;
+   // width: 80%;
     margin: 10px 0;
 }
-.main-functions-block , .right-block{
+.left-block , .right-block{
     display: flex;
     justify-content: space-between;
     width: 400px;
     align-items: center;
 }
-.main-functions-block .logo{
+.left-block .logo{
     border: 2px solid #2D4A74;
     border-radius: 50px;
 }
@@ -28,27 +28,28 @@
     opacity: 65%;
     padding: 0 5px;
 }
-.main-functions-block img {
+.left-block img {
     width: 70px;
     transform: scale(1.3);
 }
-.main-functions-block .services{
+.left-block .services{
     display: flex;
     width: 140px;
     justify-content: space-between;
     align-items: center;
 }
 .right-block .account{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: -webkit-inline-box;
     width: 140px;
     height: 40px;
+    -webkit-box-align: center;
     border-radius: 32px;
     background: transparent;
     border: 3px solid #77D353;
     padding: 0 10px;
+    -webkit-box-pack: center;
     font-size: 18px;
+    
 }
 .account p, .far{
     color: #77D353;
