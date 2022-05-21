@@ -7,7 +7,7 @@
 .homepage{
     display: grid;
     grid-auto-rows: 100px;
-    margin-top: 100px;
+    margin: 100px 0 80px 0;
     grid-gap: 60px;
     width: 80%;
     font-family: sans-serif;
@@ -140,7 +140,7 @@
     border: 1px solid white;
     position: absolute;
     top: 840px;
-    width: 275px;
+    width: 320px;
 }
 .phone-number .icon{
     border: 2px solid #8492A6;
@@ -148,7 +148,6 @@
 .phone{
     display: flex;
     position: relative;
-
 }
 .country-code{
     display: flex;

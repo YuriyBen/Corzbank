@@ -8,13 +8,17 @@ import { AppComponent } from './app.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
+import { CardTranformPipe } from './pipes/card-transform.pipe';
+import { PhoneTranformPipe } from './pipes/phone-transform.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    CardTranformPipe,
+    PhoneTranformPipe
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

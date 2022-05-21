@@ -1,0 +1,50 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.footer{
+    height: 250px;
+    background-color: #2B273F;
+}
+.contacts{
+    width: 80%;
+    height: 70px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    color: #a1a1a1;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+.logo{
+    display: flex;
+    align-items: flex-end;
+    font-size: 30px;
+}
+.logo img{
+    width: 61px;
+    transform: scale(1.4);
+    transform-origin: left;
+    margin: 5px;
+}
+.footer hr{
+    height: 2px;
+    margin-top: 10px;
+    background-color: #64616D;
+}
+.menu{
+    width: 80%;
+    color: #9d9595;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 73px;
+    font-size: 20px;
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+.license{
+    margin-top: 40px;
+    color: #5e5e5e;
+}
