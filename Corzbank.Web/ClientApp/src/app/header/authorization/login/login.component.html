@@ -17,11 +17,11 @@
                 <input formControlName="password" type="password" placeholder="Password" class="password">
             </div>
             <span *ngIf="password && password.invalid && password.touched">Password is Required</span>
-            <h4 class="forgot-password">Forgot Password?</h4>
+            <h4 class="forgot-password" (click)="forgotPassword()">Forgot Password?</h4>
         </div>
     </form>
     <div class="auth-buttons">
-        <button class="sign-in" [disabled]="loginForm.invalid">Sign in</button>
+        <button class="sign-in" [disabled]="loginForm.invalid" (click)="login()">Sign in</button>
         <button class="sign-up" (click)="createAccount()">Create Account</button>
     </div>
 </div>

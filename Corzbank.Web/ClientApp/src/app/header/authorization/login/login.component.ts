@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HomepageComponent } from 'src/app/homepage/homepage.component';
+import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
 import { RegistrationComponent } from '../registration/registration.component';
 
 @Component({
@@ -32,8 +33,20 @@ export class LoginComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  login(){
+    this.dialog.closeAll();
+  }
+
   createAccount() {
     const dialogRef = this.dialog.open(RegistrationComponent, { disableClose: true });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  forgotPassword(){
+    const dialogRef = this.dialog.open(ForgotPasswordComponent, { disableClose: true });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');

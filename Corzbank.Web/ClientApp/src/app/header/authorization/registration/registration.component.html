@@ -47,6 +47,6 @@
     </form>
     <div class="confirmation-buttons">
         <button class="sign-in" [disabled]="registartionForm.valid" (click)="register()">Sign up</button>
-        <a [routerLink]="['/resend-verification-email']">Resent verification email</a>
+        <a (click)="resentVerivication()">Resent verification email</a>
     </div>
 </div>

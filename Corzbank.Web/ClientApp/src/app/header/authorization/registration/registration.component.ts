@@ -3,7 +3,7 @@ import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { HomepageComponent } from 'src/app/homepage/homepage.component';
-import { LoginComponent } from '../login/login.component';
+import { ResentVerificationComponent } from '../resent-verification/resent-verification.component';
 import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 
 @Component({
@@ -67,6 +67,10 @@ export class RegistrationComponent implements OnInit {
 
   goBack() {
     this.dialogRef.close();
+  }
+
+  resentVerivication(){
+    this.dialog.open(ResentVerificationComponent, {disableClose: true});
   }
 
   register(){

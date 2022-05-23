@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { HomepageComponent } from 'src/app/homepage/homepage.component';
+import { SetNewPasswordComponent } from '../set-new-password/set-new-password.component';
 
 @Component({
-  selector: 'app-confirm-email',
-  templateUrl: './confirm-email.component.html',
-  styleUrls: ['./confirm-email.component.scss']
+  selector: 'app-confirm-resetting',
+  templateUrl: './confirm-resetting.component.html',
+  styleUrls: ['./confirm-resetting.component.scss']
 })
-export class ConfirmEmailComponent implements OnInit {
+export class ConfirmResettingComponent implements OnInit {
   timeLeft: number = 59;
   code = "";
 
@@ -19,8 +20,11 @@ export class ConfirmEmailComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.code);
-    this.dialog.closeAll();
+    const dialogRef = this.dialog.open(SetNewPasswordComponent, { disableClose: true });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
   
   onCodeCompleted(code: any) {

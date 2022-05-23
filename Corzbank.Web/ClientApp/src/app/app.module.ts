@@ -16,6 +16,10 @@ import { RegistrationComponent } from './header/authorization/registration/regis
 import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './header/authorization/login/login.component';
 import { ConfirmEmailComponent } from './header/authorization/registration/confirm-email/confirm-email.component';
+import { ResentVerificationComponent } from './header/authorization/resent-verification/resent-verification.component';
+import { ForgotPasswordComponent } from './header/authorization/forgot-password/forgot-password.component';
+import { SetNewPasswordComponent } from './header/authorization/forgot-password/set-new-password/set-new-password.component';
+import { ConfirmResettingComponent } from './header/authorization/forgot-password/confirm-resetting/confirm-resetting.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +31,11 @@ import { ConfirmEmailComponent } from './header/authorization/registration/confi
     PhoneTranformPipe,
     RegistrationComponent,
     LoginComponent,
-    ConfirmEmailComponent
+    ConfirmEmailComponent,
+    ResentVerificationComponent,
+    ForgotPasswordComponent,
+    SetNewPasswordComponent,
+    ConfirmResettingComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
