@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {MatDialogModule} from '@angular/material/dialog';
-
+import { CodeInputModule } from 'angular-code-input';
 
 import { AppComponent } from './app.component';
 import { HomepageComponent } from './homepage/homepage.component';
@@ -36,7 +36,8 @@ import { ConfirmEmailComponent } from './header/authorization/registration/confi
     ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatDialogModule
+    MatDialogModule,
+    CodeInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]
