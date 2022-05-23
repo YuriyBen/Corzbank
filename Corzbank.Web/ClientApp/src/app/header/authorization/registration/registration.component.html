@@ -7,7 +7,7 @@
     <form [formGroup]="registartionForm">
         <div class="field">
             <div class="field-input">
-                <i class="fas fa-user"></i>
+                <i class="fas fa-user-circle"></i>
                 <input formControlName="userName" placeholder="User Name" class="userName">
             </div>
             <span *ngIf="userName && userName.invalid && userName.touched">User Name is Required</span>
@@ -21,14 +21,14 @@
         </div>
         <div class="field">
             <div class="field-input">
-                <i class="fas fa-user"></i>
+                <i class="fas fa-phone"></i>
                 <input formControlName="phoneNumber" placeholder="Phone Number" class="phoneNumber">
             </div>
             <span *ngIf="phoneNumber && phoneNumber.invalid && phoneNumber.touched">Phone Number is Required</span>
         </div>
         <div [ngClass]="password.invalid && password.touched ? 'field-password field' : 'field'">
             <div class="field-input">
-                <i class="fas fa-user"></i>
+                <i class="fas fa-lock"></i>
                 <input formControlName="password" placeholder="Password" type="password" class="password">
             </div>
             <span *ngIf="password && password.invalid && password.touched">Password is Required and must contain at
@@ -46,7 +46,7 @@
         </div>
     </form>
     <div class="confirmation-buttons">
-        <button class="sign-in" [disabled]="registartionForm.invalid" (click)="register()">Sign up</button>
+        <button class="sign-in" [disabled]="registartionForm.valid" (click)="register()">Sign up</button>
         <a [routerLink]="['/resend-verification-email']">Resent verification email</a>
     </div>
 </div>

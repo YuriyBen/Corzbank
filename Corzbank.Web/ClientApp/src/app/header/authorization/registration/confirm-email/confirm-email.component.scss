@@ -1,0 +1,41 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.confirmation {
+    background-color: #2b273d;
+    height: 710px;
+    width: 470px;
+}
+.title{
+    color: white;
+    letter-spacing: 1px;
+    padding-top: 40px;
+    font-size: 27px;
+}
+.text{
+    height: 456px;
+    background: white;
+    margin-top: 65px;
+    width: 298px;
+}
+.submit{
+    margin-top: 40px;
+    height: 38px;
+    width: 205px;
+    border-radius: 7px;
+    color: white;
+    background: #6B6D6C;
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+input {
+    width: 198px;
+    font-family: monospace;
+    letter-spacing: 8px;
+    border: 1px solid #000;
+    background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><line style="stroke: #000" x1="20.090665817260742" y1="-0.08398216962814331" x2="20.090665817260742" y2="20.07965660095215"/></svg>');
+    background-repeat: repeat-x;
+  }

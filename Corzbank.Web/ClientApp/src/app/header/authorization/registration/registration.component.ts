@@ -4,6 +4,7 @@ import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { HomepageComponent } from 'src/app/homepage/homepage.component';
 import { LoginComponent } from '../login/login.component';
+import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 
 @Component({
   selector: 'app-registration',
@@ -69,7 +70,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   register(){
-    this.router.navigate(['']);
+    this.dialog.open(ConfirmEmailComponent, {disableClose: true});
   }
 }
 
