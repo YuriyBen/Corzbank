@@ -11,13 +11,13 @@
     font-size: 25px;
     letter-spacing: 1px;
     width: 80%;
-    margin: 10px 0;
 }
 .block{
     display: flex;
     justify-content: space-between;
     width: 400px;
     align-items: center;
+    height: 90px;
 }
 .logo{
     border: 2px solid #2D4A74;
@@ -49,9 +49,12 @@
     border: 3px solid #77D353;
     padding: 0 10px;
     font-size: 18px;
+    transition-duration: 450ms;
+    transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
 }
 .account p, .far{
     color: #77D353;
+    font-size: 18px;
 }
 .services i{
     color: #a1a1a1;
@@ -62,4 +65,29 @@
 hr{
     height: 2px;
     background: #645395;
+}
+.services, .exchange, .wallet{
+    display: flex;
+    transition-duration: 450ms;
+    transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+    align-items: center;
+    cursor: pointer;
+    opacity: 0.54;
+    height: 100%;
+    border-bottom: 3px solid transparent;
+}
+.services:hover, .exchange:hover, .wallet:hover{
+    opacity: 1;
+    border-bottom-color: rgb(92, 89, 89);
+}
+.home{
+    border-radius: 50px;
+    cursor: pointer;
+}
+.account:hover{
+    background-color: #403e4a;
+}
+
+.mat-body p, .mat-body-1 p, .mat-typography .mat-body p, .mat-typography .mat-body-1 p, .mat-typography p {
+    margin: 0;
 }
