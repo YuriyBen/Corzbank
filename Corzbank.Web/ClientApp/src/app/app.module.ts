@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RegistrationComponent } from './header/authorization/registration/registration.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './header/authorization/login/login.component';
+import { ConfirmEmailComponent } from './header/authorization/registartion/confirm-email/confirm-email.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { LoginComponent } from './header/authorization/login/login.component';
     CardTranformPipe,
     PhoneTranformPipe,
     RegistrationComponent,
-    LoginComponent
+    LoginComponent,
+    ConfirmEmailComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
