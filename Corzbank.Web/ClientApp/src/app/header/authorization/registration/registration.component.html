@@ -29,7 +29,7 @@
         <div [ngClass]="password.invalid && password.touched ? 'field-password field' : 'field'">
             <div class="field-input">
                 <i class="fas fa-user"></i>
-                <input formControlName="password" placeholder="Password" class="password">
+                <input formControlName="password" placeholder="Password" type="password" class="password">
             </div>
             <span *ngIf="password && password.invalid && password.touched">Password is Required and must contain at
                 least 6 characters, at least one number and both lower and uppercase letters and special
@@ -46,7 +46,7 @@
         </div>
     </form>
     <div class="confirmation-buttons">
-        <button class="sign-in" [disabled]="registartionForm.invalid">Sign up</button>
+        <button class="sign-in" [disabled]="registartionForm.invalid" (click)="register()">Sign up</button>
         <a [routerLink]="['/resend-verification-email']">Resent verification email</a>
     </div>
 </div>

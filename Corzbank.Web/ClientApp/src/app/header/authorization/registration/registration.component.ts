@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { HomepageComponent } from 'src/app/homepage/homepage.component';
 import { LoginComponent } from '../login/login.component';
 
@@ -12,7 +13,7 @@ import { LoginComponent } from '../login/login.component';
 export class RegistrationComponent implements OnInit {
   registartionForm: FormGroup;
 
-  constructor(private dialogRef: MatDialogRef<HomepageComponent>, private dialog: MatDialog) { }
+  constructor(private dialogRef: MatDialogRef<HomepageComponent>, private dialog: MatDialog, private router: Router) { }
 
   ngOnInit(): void {
     this.registartionForm = new FormGroup({
@@ -67,5 +68,8 @@ export class RegistrationComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  register(){
+    this.router.navigate(['']);
+  }
 }
 
