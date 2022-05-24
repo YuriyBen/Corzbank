@@ -1,0 +1,27 @@
+<div class="registration">
+    <div class="close-button">
+        <button (click)="closeWindow()">x</button>
+    </div>
+    <h3 class="title">Sign in</h3>
+    <form [formGroup]="loginForm">
+        <div class="field">
+            <div class="field-input">
+                <i class="fas fa-user"></i>
+                <input formControlName="email" placeholder="Email" class="email">
+            </div>
+            <span *ngIf="email && email.invalid && email.touched">Email is Required</span>
+        </div>
+        <div class="field field-password">
+            <div class="field-input">
+                <i class="fas fa-lock"></i>
+                <input formControlName="password" type="password" placeholder="Password" class="password">
+            </div>
+            <span *ngIf="password && password.invalid && password.touched">Password is Required</span>
+            <h4 class="forgot-password" (click)="forgotPassword()">Forgot Password?</h4>
+        </div>
+    </form>
+    <div class="auth-buttons">
+        <button class="sign-in" [disabled]="loginForm.invalid" (click)="login()">Sign in</button>
+        <button class="sign-up" (click)="createAccount()">Create Account</button>
+    </div>
+</div>

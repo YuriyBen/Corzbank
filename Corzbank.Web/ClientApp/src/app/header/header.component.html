@@ -1,9 +1,13 @@
 <div class="navbar">
-    <div class="block">    
-        <div class="logo">
-            <img src="assets/images/logo.png" alt="logo">
+    <div class="block">
+        <div class="home">
+            <div class="logo">
+                <img src="assets/images/logo.png" alt="logo">
+            </div>
         </div>
-        <span>Wallet</span>
+        <div class="wallet">
+            <span>Wallet</span>
+        </div>
         <div class="services">
             <span>Services</span>
             <i class="fa fa-angle-down"></i>
@@ -13,10 +17,10 @@
         <div class="exchange">
             <span>$ 32.487 / 36.579</span>
         </div>
-        <div class="account">
+        <button class="account" (click)="openDialog()">
             <i class="far fa-user"></i>
-            <p>Sign up</p>
-        </div>
+            <p>Sign in</p>
+        </button>
     </div>
 </div>
 <hr>

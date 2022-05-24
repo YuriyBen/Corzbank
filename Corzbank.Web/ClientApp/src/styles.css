@@ -22,3 +22,19 @@ body{
   max-width: 100%;
   padding: 0;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.mat-h3, .mat-subheading-2, .mat-typography .mat-h3, .mat-typography .mat-subheading-2, .mat-typography h3,
+.mat-p, .mat-subheading-2, .mat-typography .mat-h3, .mat-typography .mat-subheading-2, .mat-typography p {
+  font-size: 25px;
+    letter-spacing: 0;
+    margin: 0;
+}
+.mat-dialog-container{
+  padding: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: 3px 4px #2e2e2e, -0.3em 0 0.8em #48483f;
+}
