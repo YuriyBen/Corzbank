@@ -42,6 +42,10 @@
     align-items: center;
     padding: 40px;
 }
+.function:hover{
+    background: red;
+    cursor: pointer;
+}
 .function h3{
     color: #999DA1;
 }
