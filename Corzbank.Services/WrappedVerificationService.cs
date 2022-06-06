@@ -29,7 +29,7 @@ namespace Corzbank.Services
             _genericDepositService = genericDepositService;
         }
 
-        public async Task<Verification> Verify(VerificationModel verificationModel)
+        public async Task<bool> Verify(VerificationModel verificationModel)
         {
             var user = await _userManager.FindByEmailAsync(verificationModel.Email);
 
@@ -71,10 +71,10 @@ namespace Corzbank.Services
                 "
                 );
 
-                return verification;
+                return true;
             }
 
-            return null;
+            return false;
         }
 
         public async Task<bool> ConfirmVerification(ConfirmationModel confirmationModel)

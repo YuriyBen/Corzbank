@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { VerificationType } from 'src/app/data/enums/verificationType.enum';
+import { VerificationModel } from 'src/app/data/models/verification.model';
+import { AuthenticationService } from 'src/app/data/services/authentication.service';
+import { NotificationService } from 'src/app/data/services/notification.service';
 import { HomepageComponent } from 'src/app/homepage/homepage.component';
 import { RegistrationComponent } from '../registration/registration.component';
 import { ConfirmResettingComponent } from './confirm-resetting/confirm-resetting.component';
@@ -15,7 +19,8 @@ export class ForgotPasswordComponent implements OnInit {
 
   resendForm: FormGroup;
 
-  constructor(private router: Router, private dialog: MatDialog, private dialogRef: MatDialogRef<HomepageComponent>) { }
+  constructor(private authenticationService: AuthenticationService, private dialog: MatDialog, private dialogRef: MatDialogRef<HomepageComponent>,
+    private notificationService: NotificationService) { }
 
   ngOnInit(): void {
 
@@ -32,11 +37,21 @@ export class ForgotPasswordComponent implements OnInit {
   users: any[] = [];
 
   resend() {
-    const dialogRef = this.dialog.open(ConfirmResettingComponent, { disableClose: true });
+    var verificationModel: VerificationModel = {
+      email: this.resendForm.value.email,
+      verificationType: VerificationType.ResetPassword
+    }
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+    console.log(verificationModel);
+
+    this.authenticationService.forgotPassword(verificationModel).subscribe(data => {
+      if (data)
+        this.dialog.open(ConfirmResettingComponent, { disableClose: true, data: verificationModel.email });
+      else {
+        this.notificationService.showErrorNotification("User wasn't found", '');
+        this.dialog.closeAll();
+      }
+    })
   }
 
   closeWindow() {

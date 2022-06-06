@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Corzbank.Services
-{
+{ 
     public class UserService : IUserService
     {
         private readonly IMapper _mapper;
@@ -156,7 +156,7 @@ namespace Corzbank.Services
 
         public async Task<bool> DeleteUser(Guid id)
         {
-            var user = await GetUserById(id);
+            var user = await _userManager.FindByIdAsync(id.ToString());
 
             if (user != null)
             {

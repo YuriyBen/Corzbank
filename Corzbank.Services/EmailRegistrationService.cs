@@ -4,10 +4,13 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Corzbank.Services
 {
@@ -32,7 +35,7 @@ namespace Corzbank.Services
                 Text = message
             };
 
-             var client = new SmtpClient();
+            var client = new SmtpClient();
             {
                 client.Connect(_emailSettings.Server, _emailSettings.Port, true);
                 client.Authenticate(_emailSettings.FromAddress, _emailSettings.Password);

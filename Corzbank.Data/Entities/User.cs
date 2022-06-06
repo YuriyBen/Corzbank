@@ -15,5 +15,9 @@ namespace Corzbank.Data.Entities
         public UserRole Role { get; set; } = UserRole.User;
 
         public List<Card> Cards { get; set; }
+
+        public List<Token> Tokens { get; set; }
+
+        public List<Verification> Verifications { get; set; }
     }
 }

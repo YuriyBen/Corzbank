@@ -64,6 +64,9 @@ namespace Corzbank.Api
                 IdentityModelEventSource.ShowPII = true;
             }
 
+            app.UseCors(options =>
+                options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
             app.UseHttpsRedirection();
 
             app.ConfigureExceptionHandlingMiddleware();

@@ -6,11 +6,11 @@
         </div>
         <i class="fas fa-laptop-code"></i>
         <div class="description">
-            <p>Enter 4-digit code we've just sent to your email</p>
+            <p>Enter 6-digit code we've just sent to your email</p>
         </div>
-        <code-input [codeLength]="4" (codeCompleted)="onCodeCompleted($event)">
+        <code-input [codeLength]="6" (codeCompleted)="onCodeCompleted($event)">
         </code-input>
-        <button class="resend-btn" [disabled]="timeLeft>0">Send code again({{timeLeft}})</button>
+        <button class="resend-btn" [disabled]="timeLeft>0" (click)="resendCode()">Send code again({{timeLeft}})</button>
     </div>
-    <button class="submit" (click)="submit()">Submit</button>
+    <button class="submit" (click)="submit()" [disabled]="code.length<1">Submit</button>
 </div>

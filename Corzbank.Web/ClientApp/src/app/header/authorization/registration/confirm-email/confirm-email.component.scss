@@ -21,7 +21,7 @@
     height: 421px;
     background: white;
     margin-top: 65px;
-    width: 306px;
+    width: 350px;
     position: relative;
     border-radius: 5px;
     padding: 5px;
@@ -61,6 +61,7 @@
     padding: 30px 24px;
     font-size: 22px;
     font-weight: 500;
+    color: #6a6a6a;
 }
 
 .fas {
@@ -68,6 +69,7 @@
     position: absolute;
     top: 85px;
     left: 40px;
+    color: #3230388c;
 }
 
 .description {
@@ -84,9 +86,8 @@
 }
 
 code-input {
-    --item-height: 50px;
-    --item-width: 50px;
-    --item-spacing: 20px;
-    width: 300px;
+    --item-height: 40px;
+    --item-spacing: 18px;
+    width: 342px;
     font-size: 25px;
 }

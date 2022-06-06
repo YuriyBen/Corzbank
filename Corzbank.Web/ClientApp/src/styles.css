@@ -14,27 +14,84 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
-body{
+body {
   text-align: -webkit-center;
-  background-color: #24203A;
+  background-color: #24203a;
 }
-.container{
+.container {
   max-width: 100%;
   padding: 0;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-
-.mat-h3, .mat-subheading-2, .mat-typography .mat-h3, .mat-typography .mat-subheading-2, .mat-typography h3,
-.mat-p, .mat-subheading-2, .mat-typography .mat-h3, .mat-typography .mat-subheading-2, .mat-typography p {
-  font-size: 25px;
-    letter-spacing: 0;
-    margin: 0;
+html,
+body {
+  height: 100%;
 }
-.mat-dialog-container{
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-h3,
+.mat-subheading-2,
+.mat-typography .mat-h3,
+.mat-typography .mat-subheading-2,
+.mat-typography h3,
+.mat-p,
+.mat-subheading-2,
+.mat-typography .mat-h3,
+.mat-typography .mat-subheading-2,
+.mat-typography p {
+  font-size: 25px;
+  letter-spacing: 0;
+  margin: 0;
+}
+.mat-dialog-container {
   padding: 0 !important;
   border-radius: 0 !important;
   box-shadow: 3px 4px #2e2e2e, -0.3em 0 0.8em #48483f;
+}
+
+.mat-snack-bar-container {
+  color: white !important;
+  position: absolute !important;
+  top: 65px;
+  font-size: 18px;
+  display: flex !important;
+  justify-content: center;
+}
+
+.mat-simple-snack-bar-content {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 18px;
+}
+
+.cdk-overlay-pane {
+  display: flex;
+  justify-content: center;
+}
+
+.mat-dialog-container {
+  right: 0;
+  color: white;
+  position: unset !important;
+  top: 65px;
+  font-size: 18px;
+  display: flex !important;
+  justify-content: center;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+.cdk-overlay-pane {
+  display: flex;
+  justify-content: center;
+}
+
+.error {
+  background-color: #ff0000 !important;
+}
+.success {
+  background-color: green !important;
 }
