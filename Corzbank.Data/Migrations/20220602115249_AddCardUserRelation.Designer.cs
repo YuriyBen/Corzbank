@@ -4,14 +4,16 @@ using Corzbank.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Corzbank.Data.Migrations
 {
     [DbContext(typeof(CorzbankDbContext))]
-    partial class CorzbankDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220602115249_AddCardUserRelation")]
+    partial class AddCardUserRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,6 +168,7 @@ namespace Corzbank.Data.Migrations
             modelBuilder.Entity("Corzbank.Data.Entities.Token", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AccessToken")
@@ -174,7 +177,12 @@ namespace Corzbank.Data.Migrations
                     b.Property<string>("RefreshToken")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Tokens");
                 });
@@ -316,6 +324,7 @@ namespace Corzbank.Data.Migrations
             modelBuilder.Entity("Corzbank.Data.Entities.Verification", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CardId")
@@ -327,6 +336,9 @@ namespace Corzbank.Data.Migrations
                     b.Property<bool>("IsVerified")
                         .HasColumnType("bit");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("ValidTo")
                         .HasColumnType("datetime2");
 
@@ -337,6 +349,8 @@ namespace Corzbank.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Verifications");
                 });
@@ -484,10 +498,8 @@ namespace Corzbank.Data.Migrations
             modelBuilder.Entity("Corzbank.Data.Entities.Token", b =>
                 {
                     b.HasOne("Corzbank.Data.Entities.User", "User")
-                        .WithMany("Tokens")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -520,10 +532,8 @@ namespace Corzbank.Data.Migrations
             modelBuilder.Entity("Corzbank.Data.Entities.Verification", b =>
                 {
                     b.HasOne("Corzbank.Data.Entities.User", "User")
-                        .WithMany("Verifications")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -601,10 +611,6 @@ namespace Corzbank.Data.Migrations
             modelBuilder.Entity("Corzbank.Data.Entities.User", b =>
                 {
                     b.Navigation("Cards");
-
-                    b.Navigation("Tokens");
-
-                    b.Navigation("Verifications");
                 });
 #pragma warning restore 612, 618
         }

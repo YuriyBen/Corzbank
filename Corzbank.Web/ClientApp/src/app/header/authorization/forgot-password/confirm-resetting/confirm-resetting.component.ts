@@ -1,8 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { AuthenticationService } from 'src/app/data/services/authentication.service';
 import { HomepageComponent } from 'src/app/homepage/homepage.component';
 import { SetNewPasswordComponent } from '../set-new-password/set-new-password.component';
+import { ConfirmationModel } from 'src/app/data/models/confirmation.model';
+import { ForgotPasswordComponent } from '../forgot-password.component';
+import { NotificationService } from 'src/app/data/services/notification.service';
+import { VerificationModel } from "src/app/data/models/verification.model";
+import { VerificationType } from 'src/app/data/enums/verificationType.enum';
+
+
 
 @Component({
   selector: 'app-confirm-resetting',
@@ -13,22 +21,41 @@ export class ConfirmResettingComponent implements OnInit {
   timeLeft: number = 59;
   code = "";
 
-  constructor(private dialogRef: MatDialogRef<HomepageComponent>, private dialog: MatDialog, private router: Router) { }
+  constructor(private authenticationService: AuthenticationService, private dialog: MatDialog, public dialogRef: MatDialogRef<ForgotPasswordComponent>, @Inject(MAT_DIALOG_DATA) public data,
+    private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     this.startTimer();
   }
 
   submit() {
-    const dialogRef = this.dialog.open(SetNewPasswordComponent, { disableClose: true });
+    var confirmationModel: ConfirmationModel = {
+      email: this.data,
+      verificationCode: this.code
+    }
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+    this.authenticationService.confirmVerification(confirmationModel).subscribe(data => {
+      if (data)
+        this.dialog.open(SetNewPasswordComponent, { disableClose: true, data: this.data });
+      else
+        this.notificationService.showErrorNotification("Code is not valid", '')
+    })
   }
-  
+
   onCodeCompleted(code: any) {
     this.code = code;
+  }
+
+  resendCode(){
+    var resendVerification: VerificationModel = {
+      email: this.data,
+      verificationType: VerificationType.ResetPassword
+    }
+
+    this.authenticationService.forgotPassword(resendVerification).subscribe(data=>{
+      this.notificationService.showSuccessfulNotification("Verification Code was successfully send", '')
+    });
+    this.timeLeft=59;
   }
 
   startTimer() {

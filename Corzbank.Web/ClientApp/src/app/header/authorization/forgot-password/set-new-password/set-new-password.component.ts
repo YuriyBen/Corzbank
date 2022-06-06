@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
-import { MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { SetNewPasswordModel } from 'src/app/data/models/setNewPassword.model';
+import { AuthenticationService } from 'src/app/data/services/authentication.service';
+import { NotificationService } from 'src/app/data/services/notification.service';
 import { HomepageComponent } from 'src/app/homepage/homepage.component';
 import { RegistrationComponent } from '../../registration/registration.component';
+import { ConfirmResettingComponent } from '../confirm-resetting/confirm-resetting.component';
 import { ForgotPasswordComponent } from '../forgot-password.component';
 
 @Component({
@@ -13,7 +17,8 @@ import { ForgotPasswordComponent } from '../forgot-password.component';
 export class SetNewPasswordComponent implements OnInit {
   setNewPasswordForm: FormGroup;
 
-  constructor(private dialogRef: MatDialogRef<HomepageComponent>, private dialog: MatDialog) { }
+  constructor(private authenticationService: AuthenticationService, private dialog: MatDialog, private dialogRef: MatDialogRef<ConfirmResettingComponent>, @Inject(MAT_DIALOG_DATA)
+  public data, private notificationService:NotificationService) { }
 
   ngOnInit(): void {
     this.setNewPasswordForm = new FormGroup({
@@ -32,30 +37,6 @@ export class SetNewPasswordComponent implements OnInit {
     return this.setNewPasswordForm.get('confirmPassword');
   }
 
-  closeWindow() {
-    this.dialogRef.close();
-  }
-
-  login(){
-    this.dialog.closeAll();
-  }
-
-  createAccount() {
-    const dialogRef = this.dialog.open(RegistrationComponent, { disableClose: true });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  }
-
-  forgotPassword(){
-    const dialogRef = this.dialog.open(ForgotPasswordComponent, { disableClose: true });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  }
-
   passwordMatch(controlName: string, checkControlName: string): ValidatorFn {
     return (controls: AbstractControl) => {
       const control = controls.get(controlName);
@@ -70,6 +51,22 @@ export class SetNewPasswordComponent implements OnInit {
         return null;
       }
     }
+  }
+
+  setPassword() {
+
+    var newPasswordModel: SetNewPasswordModel = {
+      email: this.data,
+      password: this.setNewPasswordForm.value.password,
+      confirmPassword: this.setNewPasswordForm.value.confirmPassword
+    }
+    
+    this.authenticationService.setNewPassword(newPasswordModel).subscribe(data => {
+      if (data){
+        this.notificationService.showSuccessfulNotification("Password was successfully changed", '')
+        this.dialog.closeAll();
+      }
+    })
   }
 
 }

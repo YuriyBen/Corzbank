@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {MatDialogModule} from '@angular/material/dialog';
 import { CodeInputModule } from 'angular-code-input';
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 import { AppComponent } from './app.component';
 import { HomepageComponent } from './homepage/homepage.component';
@@ -45,9 +46,11 @@ import { ConfirmResettingComponent } from './header/authorization/forgot-passwor
     AppRoutingModule,
     BrowserAnimationsModule,
     MatDialogModule,
-    CodeInputModule
+    CodeInputModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+   

@@ -8,9 +8,16 @@
         <div class="field">
             <div class="field-input">
                 <i class="fas fa-user-circle"></i>
-                <input formControlName="userName" placeholder="User Name" class="userName">
+                <input formControlName="firstName" placeholder="First Name" class="firstName">
             </div>
-            <span *ngIf="userName && userName.invalid && userName.touched">User Name is Required</span>
+            <span *ngIf="firstName && firstName.invalid && firstName.touched">User Name is Required</span>
+        </div>
+        <div class="field">
+            <div class="field-input">
+                <i class="fas fa-user-circle"></i>
+                <input formControlName="lastName" placeholder="Last Name" class="lastName">
+            </div>
+            <span *ngIf="lastName && lastName.invalid && lastName.touched">User Name is Required</span>
         </div>
         <div class="field">
             <div class="field-input">
@@ -46,7 +53,7 @@
         </div>
     </form>
     <div class="confirmation-buttons">
-        <button class="sign-in" [disabled]="registartionForm.valid" (click)="register()">Sign up</button>
+        <button class="sign-in" [disabled]="registartionForm.invalid" (click)="register()">Sign up</button>
         <a (click)="resentVerivication()">Resent verification email</a>
     </div>
 </div>
