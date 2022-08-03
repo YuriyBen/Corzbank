@@ -147,10 +147,25 @@
         <div class="exchange">
             <span>$ 32.487 / 36.579</span>
         </div>
-        <button class="account" (click)="openDialog()">
+        <div class="not-authenticated" (click)="openDialog()" *ngIf="!isAuthenticated; else isAuthenticatedTemplate">
             <i class="far fa-user"></i>
             <p>Sign in</p>
-        </button>
+        </div>
+        <ng-template #isAuthenticatedTemplate>
+            <div class="authentication-dropdown">
+                <a>
+                    <div class="not-authenticated authenticated">
+                        <i class="far fa-user"></i>
+                        <p>Profile</p>
+                    </div>
+                </a>
+                <div class="dropdown-content">
+                    <a (click)="logout()">Logout</a>
+                    <a (click)="logout()">Logout</a>
+                    <a (click)="logout()">Logout</a>
+                </div>
+            </div>
+        </ng-template>
     </div>
 </div>
 <hr>

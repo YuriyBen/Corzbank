@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { CodeInputModule } from 'angular-code-input';
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 
@@ -21,6 +21,13 @@ import { ResentVerificationComponent } from './header/authorization/resent-verif
 import { ForgotPasswordComponent } from './header/authorization/forgot-password/forgot-password.component';
 import { SetNewPasswordComponent } from './header/authorization/forgot-password/set-new-password/set-new-password.component';
 import { ConfirmResettingComponent } from './header/authorization/forgot-password/confirm-resetting/confirm-resetting.component';
+import { JwtModule } from '@auth0/angular-jwt';
+import { CookieService } from 'ngx-cookie-service';
+import { Constants } from './data/helpers/constants';
+
+function tokenGetter() {
+  return localStorage.getItem(Constants.AccessTokenKey);
+}
 
 @NgModule({
   declarations: [
@@ -36,7 +43,7 @@ import { ConfirmResettingComponent } from './header/authorization/forgot-passwor
     ResentVerificationComponent,
     ForgotPasswordComponent,
     SetNewPasswordComponent,
-    ConfirmResettingComponent
+    ConfirmResettingComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -47,10 +54,16 @@ import { ConfirmResettingComponent } from './header/authorization/forgot-passwor
     BrowserAnimationsModule,
     MatDialogModule,
     CodeInputModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter
+      }
+    }),
   ],
-  providers: [],
+  providers: [
+    [CookieService],
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-   

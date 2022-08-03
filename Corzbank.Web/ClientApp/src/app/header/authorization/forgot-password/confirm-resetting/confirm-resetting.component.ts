@@ -10,8 +10,6 @@ import { NotificationService } from 'src/app/data/services/notification.service'
 import { VerificationModel } from "src/app/data/models/verification.model";
 import { VerificationType } from 'src/app/data/enums/verificationType.enum';
 
-
-
 @Component({
   selector: 'app-confirm-resetting',
   templateUrl: './confirm-resetting.component.html',
@@ -46,16 +44,16 @@ export class ConfirmResettingComponent implements OnInit {
     this.code = code;
   }
 
-  resendCode(){
+  resendCode() {
     var resendVerification: VerificationModel = {
       email: this.data,
       verificationType: VerificationType.ResetPassword
     }
 
-    this.authenticationService.forgotPassword(resendVerification).subscribe(data=>{
+    this.authenticationService.forgotPassword(resendVerification).subscribe(data => {
       this.notificationService.showSuccessfulNotification("Verification Code was successfully send", '')
     });
-    this.timeLeft=59;
+    this.timeLeft = 59;
   }
 
   startTimer() {

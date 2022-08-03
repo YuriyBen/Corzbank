@@ -17,7 +17,7 @@ export class RegistrationComponent implements OnInit {
   registartionForm: FormGroup;
 
   constructor(private dialogRef: MatDialogRef<RegistrationComponent>, private dialog: MatDialog,
-     private authenticationService: AuthenticationService,private notificationService: NotificationService) { }
+    private authenticationService: AuthenticationService, private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     this.registartionForm = new FormGroup({
@@ -35,8 +35,8 @@ export class RegistrationComponent implements OnInit {
 
   get firstName() {
     return this.registartionForm.get('firstName');
-  } 
-   get lastName() {
+  }
+  get lastName() {
     return this.registartionForm.get('lastName');
   }
   get email() {
@@ -82,9 +82,9 @@ export class RegistrationComponent implements OnInit {
 
   register() {
     this.authenticationService.registerUser(this.registartionForm.value).subscribe((response: any) => {
-      if(response==null){
-        this.dialog.open(ConfirmEmailComponent, { disableClose: true, data:this.registartionForm.value.email });
-        this.dialogRef.afterClosed().subscribe(result=>{
+      if (response == null) {
+        this.dialog.open(ConfirmEmailComponent, { disableClose: true, data: this.registartionForm.value.email });
+        this.dialogRef.afterClosed().subscribe(result => {
           this.dialogRef.close();
         })
       }

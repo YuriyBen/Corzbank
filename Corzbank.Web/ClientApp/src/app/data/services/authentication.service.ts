@@ -11,7 +11,7 @@ import { VerificationModel } from "../models/verification.model";
     providedIn: 'root',
 })
 
-export class AuthenticationService{
+export class AuthenticationService {
 
     constructor(private http: HttpClient) { }
 
@@ -29,7 +29,7 @@ export class AuthenticationService{
         return this.http.post(this.url + "/refresh-tokens", JSON.stringify(refreshToken))
     }
 
-    forgotPassword(verificationModel:VerificationModel) {
+    forgotPassword(verificationModel: VerificationModel) {
         return this.http.post(this.url + "/forgot-password", verificationModel)
     }
 
@@ -37,7 +37,7 @@ export class AuthenticationService{
         return this.http.post(this.url + "/confirm-verification", confirmationModel)
     }
 
-    setNewPassword(newPassword:SetNewPasswordModel) {
+    setNewPassword(newPassword: SetNewPasswordModel) {
         return this.http.post(this.url + "/set-new-password", newPassword)
     }
 

@@ -16,8 +16,6 @@ export class ResentVerificationComponent implements OnInit {
   constructor(private router: Router, private dialog: MatDialog, private dialogRef: MatDialogRef<HomepageComponent>) { }
 
   ngOnInit(): void {
-
-
     this.resendForm = new FormGroup({
       'email': new FormControl('', [Validators.required, Validators.pattern('([a-zA-Z0-9_.-]+)@([a-zA-Z]+)([\.])([a-zA-Z]+)')]),
     })
@@ -39,5 +37,4 @@ export class ResentVerificationComponent implements OnInit {
   goBack() {
     this.dialogRef.close();
   }
-
 }
