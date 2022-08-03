@@ -28,8 +28,8 @@ export class HeaderComponent implements OnInit {
   }
 
   get isAuthenticated() {
-    let isLoggedIn = this.storageService.getItem(StorageTypeEnum.LocalStorage, Constants.IsLoggedInKey);
-    if (isLoggedIn === 'true')
+    const isLoggedIn = this.storageService.getItem(StorageTypeEnum.LocalStorage, Constants.IsLoggedInKey) === 'true';
+    if (isLoggedIn)
       return true;
 
     return false;
@@ -41,9 +41,9 @@ export class HeaderComponent implements OnInit {
     if (accessToken && !this.jwtHelper.isTokenExpired(accessToken)) {
       return true;
     } else {
-      let isLoggedIn = this.storageService.getItem(StorageTypeEnum.LocalStorage, Constants.IsLoggedInKey);
+      let isLoggedIn = this.storageService.getItem(StorageTypeEnum.LocalStorage, Constants.IsLoggedInKey) === 'false';
 
-      if (isLoggedIn === 'false')
+      if (!isLoggedIn)
         return false;
 
       const refreshToken = JSON.parse(this.storageService.getItem(StorageTypeEnum.LocalStorage, Constants.RefreshTokenKey) as string);
