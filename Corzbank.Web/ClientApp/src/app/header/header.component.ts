@@ -28,11 +28,7 @@ export class HeaderComponent implements OnInit {
   }
 
   get isAuthenticated() {
-    const isLoggedIn = this.storageService.getItem(StorageTypeEnum.LocalStorage, Constants.IsLoggedInKey) === 'true';
-    if (isLoggedIn)
-      return true;
-
-    return false;
+    return this.storageService.getItem(StorageTypeEnum.LocalStorage, Constants.IsLoggedInKey) === 'true';
   }
 
   isUserAuthenticated() {
