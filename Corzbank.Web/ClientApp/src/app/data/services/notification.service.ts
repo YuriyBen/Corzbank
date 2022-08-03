@@ -12,7 +12,7 @@ export class NotificationService {
 
     showSuccessfulNotification(message: string, button: string) {
         this.snackBar.open(message, button, {
-            duration: 30000,
+            duration: 3000,
             panelClass: 'success',
             horizontalPosition: 'center'
         })

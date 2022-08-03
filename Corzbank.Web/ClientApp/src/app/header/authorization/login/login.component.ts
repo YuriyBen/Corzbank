@@ -2,8 +2,10 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Guid } from 'guid-typescript';
+import { StorageTypeEnum } from 'src/app/data/enums/storage-type.enum';
 import { AuthenticationService } from 'src/app/data/services/authentication.service';
 import { NotificationService } from 'src/app/data/services/notification.service';
+import { StorageService } from 'src/app/data/services/storage.service';
 import { HomepageComponent } from 'src/app/homepage/homepage.component';
 import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
 import { RegistrationComponent } from '../registration/registration.component';
@@ -18,7 +20,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private dialogRef: MatDialogRef<HomepageComponent>,
     private dialog: MatDialog, private authenticationService: AuthenticationService,
-    private notificationService: NotificationService) { }
+    private notificationService: NotificationService, private storageService: StorageService) { }
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
@@ -39,15 +41,17 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.authenticationService.deleteUser(Guid.parse('d75b0c7d-7e5d-4698-3b85-08da3745942e')).subscribe(x=>{
-      console.log(x);
-      
-    })
-    this.authenticationService.loginUser(this.loginForm.value).subscribe((data: any) => {
-      if (data != null)
+    this.authenticationService.loginUser(this.loginForm.value).subscribe((response: any) => {
+
+      if (response != null){
         this.notificationService.showSuccessfulNotification("User was successfully loged in", '')
+      }
       else
         this.notificationService.showErrorNotification("Invalid data", '')
+
+        this.storageService.setItem(StorageTypeEnum.localStorage, "accessToken", JSON.stringify(response.accessToken));
+        this.storageService.setItem(StorageTypeEnum.localStorage, "userId", JSON.stringify(response.user.Id));
+        this.storageService.setItem(StorageTypeEnum.localStorage, "isLogedin", "1")
     })
     this.dialog.closeAll();
   }

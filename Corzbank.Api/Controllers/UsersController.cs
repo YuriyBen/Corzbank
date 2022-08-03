@@ -44,6 +44,9 @@ namespace Corzbank.Api.Controllers
         {
             var result = await _userService.Login(user);
 
+            if (result == null)
+                return BadRequest();
+
             return Ok(result);
         }
 
@@ -90,7 +93,7 @@ namespace Corzbank.Api.Controllers
         }
 
         [HttpPost("forgot-password")]
-        public async Task<IActionResult> ForgotPassword([FromBody] VerificationModel verificationModel)
+        public async Task<IActionResult> ForgotPassword(VerificationModel verificationModel)
         {
             var result = await _verificationService.Verify(verificationModel);
 
@@ -109,6 +112,14 @@ namespace Corzbank.Api.Controllers
         public async Task<IActionResult> SetNewPassword(SetNewPasswordModel setNewPassword)
         {
             var result = await _forgotPasswordService.SetNewPassword(setNewPassword);
+
+            return Ok(result);
+        }
+
+        [HttpPost("resend-verification")]
+        public async Task<IActionResult> ResendVerification(VerificationModel verificationModel)
+        {
+            var result = await _verificationService.Verify(verificationModel);
 
             return Ok(result);
         }

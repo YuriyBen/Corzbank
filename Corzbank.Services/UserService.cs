@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Corzbank.Services
-{ 
+{
     public class UserService : IUserService
     {
         private readonly IMapper _mapper;
@@ -57,6 +57,9 @@ namespace Corzbank.Services
 
                 if(user.EmailConfirmed)
                 {
+                    var tokenForDeleting = await _genericService.FindByCondition(x => x.User.Id == user.Id);
+                    await _genericService.Remove(tokenForDeleting);
+
                     var tokens = new Token
                     {
                         AccessToken = await _authenticationService.GenerateAccessToken(user),
@@ -156,7 +159,7 @@ namespace Corzbank.Services
 
         public async Task<bool> DeleteUser(Guid id)
         {
-            var user = await _userManager.FindByIdAsync(id.ToString());
+            var user = await GetUserById(id);
 
             if (user != null)
             {
