@@ -1,4 +1,4 @@
 export enum StorageTypeEnum{
-    Cookies,
+    Cookies = 1,
     LocalStorage
 }

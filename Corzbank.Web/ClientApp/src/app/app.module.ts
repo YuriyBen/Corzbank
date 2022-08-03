@@ -23,9 +23,10 @@ import { SetNewPasswordComponent } from './header/authorization/forgot-password/
 import { ConfirmResettingComponent } from './header/authorization/forgot-password/confirm-resetting/confirm-resetting.component';
 import { JwtModule } from '@auth0/angular-jwt';
 import { CookieService } from 'ngx-cookie-service';
+import { Constants } from './data/helpers/constants';
 
 function tokenGetter() {
-  return localStorage.getItem("accessToken");
+  return localStorage.getItem(Constants.AccessTokenKey);
 }
 
 @NgModule({
