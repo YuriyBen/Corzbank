@@ -4,10 +4,7 @@ import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material/dial
 import { SetNewPasswordModel } from 'src/app/data/models/setNewPassword.model';
 import { AuthenticationService } from 'src/app/data/services/authentication.service';
 import { NotificationService } from 'src/app/data/services/notification.service';
-import { HomepageComponent } from 'src/app/homepage/homepage.component';
-import { RegistrationComponent } from '../../registration/registration.component';
 import { ConfirmResettingComponent } from '../confirm-resetting/confirm-resetting.component';
-import { ForgotPasswordComponent } from '../forgot-password.component';
 
 @Component({
   selector: 'app-set-new-password',
@@ -18,7 +15,7 @@ export class SetNewPasswordComponent implements OnInit {
   setNewPasswordForm: FormGroup;
 
   constructor(private authenticationService: AuthenticationService, private dialog: MatDialog, private dialogRef: MatDialogRef<ConfirmResettingComponent>, @Inject(MAT_DIALOG_DATA)
-  public data, private notificationService:NotificationService) { }
+  public data, private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     this.setNewPasswordForm = new FormGroup({
@@ -54,15 +51,14 @@ export class SetNewPasswordComponent implements OnInit {
   }
 
   setPassword() {
-
     var newPasswordModel: SetNewPasswordModel = {
       email: this.data,
       password: this.setNewPasswordForm.value.password,
       confirmPassword: this.setNewPasswordForm.value.confirmPassword
     }
-    
+
     this.authenticationService.setNewPassword(newPasswordModel).subscribe(data => {
-      if (data){
+      if (data) {
         this.notificationService.showSuccessfulNotification("Password was successfully changed", '')
         this.dialog.closeAll();
       }

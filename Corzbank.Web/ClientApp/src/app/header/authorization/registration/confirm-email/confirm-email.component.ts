@@ -21,8 +21,8 @@ export class ConfirmEmailComponent implements OnInit {
   timeLeft: number = 59;
   code = "";
 
-  constructor(private authenticationService:AuthenticationService, private dialog: MatDialog, public dialogRef: MatDialogRef<RegistrationComponent>, @Inject(MAT_DIALOG_DATA)
-  public data, private notificationService:NotificationService) { }
+  constructor(private authenticationService: AuthenticationService, private dialog: MatDialog, public dialogRef: MatDialogRef<RegistrationComponent>, @Inject(MAT_DIALOG_DATA)
+  public data, private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     this.startTimer();
@@ -35,30 +35,30 @@ export class ConfirmEmailComponent implements OnInit {
     }
 
     this.authenticationService.confirmVerification(confirmationModel).subscribe(data => {
-      if (data){
+      if (data) {
         this.dialog.closeAll();
         this.notificationService.showSuccessfulNotification("Email was successfully confirmed", '');
         this.dialog.open(LoginComponent, { disableClose: true });
       }
       else
-      this.notificationService.showErrorNotification("Confirmation code was wrong", '');
+        this.notificationService.showErrorNotification("Confirmation code was wrong", '');
     })
   }
-  
+
   onCodeCompleted(code: any) {
     this.code = code;
   }
 
-  resendCode(){
+  resendCode() {
     var resendVerification: VerificationModel = {
       email: this.data,
       verificationType: VerificationType.ResetPassword
     }
 
-    this.authenticationService.forgotPassword(resendVerification).subscribe(data=>{
+    this.authenticationService.forgotPassword(resendVerification).subscribe(data => {
       this.notificationService.showSuccessfulNotification("Verification Code was successfully send", '')
     });
-    this.timeLeft=59;
+    this.timeLeft = 59;
   }
 
   startTimer() {

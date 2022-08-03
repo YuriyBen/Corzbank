@@ -42,8 +42,6 @@ export class ForgotPasswordComponent implements OnInit {
       verificationType: VerificationType.ResetPassword
     }
 
-    console.log(verificationModel);
-
     this.authenticationService.forgotPassword(verificationModel).subscribe(data => {
       if (data)
         this.dialog.open(ConfirmResettingComponent, { disableClose: true, data: verificationModel.email });
@@ -61,5 +59,4 @@ export class ForgotPasswordComponent implements OnInit {
   goBack() {
     this.dialogRef.close();
   }
-
 }

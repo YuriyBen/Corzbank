@@ -24,7 +24,7 @@ import { ConfirmResettingComponent } from './header/authorization/forgot-passwor
 import { JwtModule } from '@auth0/angular-jwt';
 import { CookieService } from 'ngx-cookie-service';
 
-export function tokenGetter(){
+function tokenGetter() {
   return localStorage.getItem("accessToken");
 }
 
@@ -55,10 +55,8 @@ export function tokenGetter(){
     CodeInputModule,
     MatSnackBarModule,
     JwtModule.forRoot({
-      config:{
-        tokenGetter:tokenGetter,
-        allowedDomains:["localhost:44361"],
-        disallowedRoutes:[]
+      config: {
+        tokenGetter: tokenGetter
       }
     }),
   ],

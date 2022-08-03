@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Guid } from 'guid-typescript';
 import { StorageTypeEnum } from 'src/app/data/enums/storage-type.enum';
+import { Constants } from 'src/app/data/helpers/constants';
 import { AuthenticationService } from 'src/app/data/services/authentication.service';
 import { NotificationService } from 'src/app/data/services/notification.service';
 import { StorageService } from 'src/app/data/services/storage.service';
@@ -43,15 +43,15 @@ export class LoginComponent implements OnInit {
   login() {
     this.authenticationService.loginUser(this.loginForm.value).subscribe((response: any) => {
 
-      if (response != null){
-        this.notificationService.showSuccessfulNotification("User was successfully loged in", '')
-      }
-      else
+      if (response != null) {
+        this.notificationService.showSuccessfulNotification("User was successfully logged in", '')
+      } else
         this.notificationService.showErrorNotification("Invalid data", '')
 
-        this.storageService.setItem(StorageTypeEnum.localStorage, "accessToken", JSON.stringify(response.accessToken));
-        this.storageService.setItem(StorageTypeEnum.localStorage, "userId", JSON.stringify(response.user.Id));
-        this.storageService.setItem(StorageTypeEnum.localStorage, "isLogedin", "1")
+      this.storageService.setItem(StorageTypeEnum.LocalStorage, Constants.AccessTokenKey, JSON.stringify(response.accessToken));
+      this.storageService.setItem(StorageTypeEnum.LocalStorage, Constants.RefreshTokenKey, JSON.stringify(response.refreshToken));
+      this.storageService.setItem(StorageTypeEnum.LocalStorage, Constants.UserIdKey, JSON.stringify(response.user.id));
+      this.storageService.setItem(StorageTypeEnum.LocalStorage, Constants.IsLoggedInKey, 'true')
     })
     this.dialog.closeAll();
   }
