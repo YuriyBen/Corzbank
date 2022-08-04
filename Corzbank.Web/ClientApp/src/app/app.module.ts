@@ -24,6 +24,7 @@ import { ConfirmResettingComponent } from './header/authorization/forgot-passwor
 import { JwtModule } from '@auth0/angular-jwt';
 import { CookieService } from 'ngx-cookie-service';
 import { Constants } from './data/helpers/constants';
+import { WalletComponent } from './header/wallet/wallet.component';
 
 function tokenGetter() {
   return localStorage.getItem(Constants.AccessTokenKey);
@@ -44,6 +45,7 @@ function tokenGetter() {
     ForgotPasswordComponent,
     SetNewPasswordComponent,
     ConfirmResettingComponent,
+    WalletComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

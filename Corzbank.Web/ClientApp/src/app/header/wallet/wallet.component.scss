@@ -1,0 +1,105 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.wallet {
+    display: grid;
+    grid-auto-rows: 100px;
+    margin: 50px 0;
+    grid-gap: 60px;
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cards-deposits {
+    background-color: #2b273f;
+    height: fit-content;
+    width: 370px;
+
+    .option {
+        width: 100%;
+        text-align: start;
+        margin: 10px 0;
+        display: flex;
+
+        h2 {
+            padding: 0 35px;
+            font-size: 24px;
+            color: #9f9f9f;
+            margin: 18px 0;
+        }
+
+        hr {
+            height: 2px;
+            background-color: #919191;
+        }
+
+        .selected-option {
+            border-left: 5px solid green;
+            height: 55px;
+        }
+
+        .option-title{
+            width: 100%;
+        }
+    }
+}
+
+.card {
+    width: 320px;
+    height: 175px;
+    border-radius: 10px;
+    padding: 10px 15px 20px;
+    background-color: grey;
+    font-weight: 700;
+    font-size: 15px;
+    display: flex;
+    justify-content: space-between;
+
+    .card-field {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .title {
+        display: flex;
+    }
+
+    small {
+        padding: 0 3px;
+    }
+
+    .card-type {
+        font-weight: 500;
+        font-size: 16px;
+    }
+
+    .card-number {
+        font-size: 18px;
+        letter-spacing: 1px;
+    }
+
+    .payment-system {
+        color: #424242;
+        letter-spacing: 1px;
+        font-family: cursive;
+    }
+
+    .expiration-date {
+        font-weight: 500;
+    }
+
+    .balance {
+        font-family: cursive;
+        font-size: 20px;
+    }
+}
+
+.details {
+    h1 {
+        color: red;
+    }
+}

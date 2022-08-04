@@ -27,7 +27,7 @@
     border-radius: 50px;
 }
 
-.navbar span {
+.navbar span, a {
     color: white;
     opacity: 65%;
     padding: 0 5px;
@@ -91,7 +91,7 @@
     position: absolute;
     background-color: #3e3b4c;
     min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 
     a {
         color: #a9a9a9;
@@ -101,14 +101,14 @@
         display: block;
         cursor: pointer;
     }
-    
+
     a:hover {
         background-color: #53525b;
     }
 }
-  
-.authentication-dropdown:hover .dropdown-content{
-      display: block;
+
+.authentication-dropdown:hover .dropdown-content {
+    display: block;
 }
 
 .services i {
@@ -133,6 +133,11 @@ hr {
     opacity: 0.54;
     height: 100%;
     border-bottom: 3px solid transparent;
+
+    a {
+        text-decoration: unset;
+        color: #b1b0b9;
+    }
 }
 
 .exchange:hover,
@@ -228,7 +233,7 @@ hr {
 
 .dropdown li:hover {
     background: #080030;
-    cursor: auto;
+    cursor: pointer;
 }
 
 .services-dropdown ul ul {
@@ -239,6 +244,7 @@ hr {
     display: block;
     background-color: #151533;
     width: max-content;
+    z-index: 1;
 }
 
 .services-dropdown ul ul ul {

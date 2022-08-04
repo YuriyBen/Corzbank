@@ -221,6 +221,7 @@
     display: block;
     background-color: #2b273f;
     width: max-content;
+    z-index: 1;
 }
 
 .services ul {
@@ -228,5 +229,5 @@
 }
 .services li:hover {
     background-color: #201b37;
-    cursor: auto;
+    cursor: pointer;
 }

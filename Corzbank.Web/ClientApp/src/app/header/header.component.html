@@ -1,12 +1,14 @@
 <div class="navbar">
     <div class="block">
         <div class="home">
-            <div class="logo">
-                <img src="assets/images/logo.png" alt="logo">
-            </div>
+            <a [routerLink]="['']">
+                <div class="logo">
+                    <img src="assets/images/logo.png" alt="logo">
+                </div>
+            </a>
         </div>
         <div class="wallet">
-            <span>Wallet</span>
+            <a [routerLink]="['wallet']">Wallet</a>
         </div>
         <div class="services-dropdown">
             <ul>
