@@ -1,10 +1,11 @@
-*{
+* {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
     color: white;
 }
-.homepage{
+
+.homepage {
     display: grid;
     grid-auto-rows: 100px;
     margin: 100px 0 80px 0;
@@ -12,44 +13,49 @@
     width: 80%;
     font-family: sans-serif;
 }
+
 .services {
     grid-column-end: 2;
     grid-row-start: 1;
     grid-row-end: 6;
     width: 400px;
 }
+
 .information-banner {
     grid-column-start: 10;
     grid-column-end: 2;
     grid-row-start: 1;
     grid-row-end: 4;
 }
-.transfer-card{
+
+.transfer-card {
     grid-column-start: 2;
     grid-column-end: 6;
     height: 172px;
 }
-.transfer-phone{
+
+.transfer-phone {
     grid-column-start: 6;
     grid-column-end: 10;
     height: 172px;
 }
-.box{
+
+.box {
     background-color: #2B273F;
+    height: fit-content;
 }
-.function{
-    display:flex;
+
+.function {
+    display: flex;
     align-items: center;
     padding: 40px;
 }
-.function:hover{
-    background: red;
-    cursor: pointer;
-}
-.function h3{
+
+.function h3 {
     color: #999DA1;
 }
-.icon{
+
+.icon {
     border-radius: 10px;
     height: 35px;
     width: 40px;
@@ -58,116 +64,169 @@
     align-items: center;
     margin-right: 15px;
 }
-.money-transfers .icon{
+
+.money-transfers .icon {
     background-color: #7BE38D;
 }
-.payments .icon{
+
+.payments .icon {
     background-color: #FF8638;
     font-size: 20px;
 }
-.deposits .icon{
+
+.deposits .icon {
     font-size: 20px;
     background-color: #B5DC6D;
 }
-.telecomunications .icon{
+
+.telecomunications .icon {
     background-color: #2D91FF;
 }
-.charity .icon{
+
+.charity .icon {
     background-color: #FF8FD6;
 }
-.terminals .icon{
+
+.transports .icon {
     background-color: #3c4f7e;
 }
-.service{
+
+.service {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
 }
-.fa-chevron-right{
+
+.fa-chevron-right {
     color: #D2D2D2;
 }
-.information-banner img{
+
+.information-banner img {
     width: 100%;
     height: 100%;
 }
-.money-transfer .icon{
+
+.money-transfer .icon {
     background-color: #7BE38D;
 }
-.money-transfer{
+
+.money-transfer {
     display: flex;
     padding: 20px;
 }
-.money-transfer h3{
+
+.money-transfer h3 {
     opacity: 80%;
 }
-.card-number{
+
+.card-number {
     opacity: 25%;
     text-align: start;
     margin: 25px;
     display: flex;
     justify-content: space-between;
 }
-.card-number p{
+
+.card-number p {
     font-size: 26px;
     letter-spacing: 2px;
 }
-.card-number hr{
+
+.card-number hr {
     border: 1px solid white;
     width: 295px;
 }
-.card-number .icon{
+
+.card-number .icon {
     border: 2px solid #8492A6;
 }
-.mobile-top-up .icon{
+
+.mobile-top-up .icon {
     background-color: #5663d5;
 }
-.mobile-top-up{
+
+.mobile-top-up {
     display: flex;
     padding: 20px;
 }
-.mobile-top-up h3{
+
+.mobile-top-up h3 {
     opacity: 80%;
 }
-.phone-number{
+
+.phone-number {
     opacity: 25%;
     text-align: start;
     margin: 25px;
     display: flex;
     justify-content: space-between;
 }
-.phone-number p{
+
+.phone-number p {
     font-size: 26px;
     letter-spacing: 2px;
 }
-.phone-number hr{
+
+.phone-number hr {
     border: 1px solid white;
     position: absolute;
     top: 820px;
     width: 320px;
 }
-.phone-number .icon{
+
+.phone-number .icon {
     border: 2px solid #8492A6;
 }
-.phone{
+
+.phone {
     display: flex;
     position: relative;
 }
-.country-code{
+
+.country-code {
     display: flex;
     width: 100px;
     justify-content: space-between;
     align-items: center;
 }
-.fa-caret-down{
+
+.fa-caret-down {
     font-size: 25px;
 }
-.vertical-line{
+
+.vertical-line {
     margin: auto 16px auto 8px;
     height: 24px;
 }
-.line{
+
+.line {
     width: 2px;
     height: 100%;
     background: rgb(255 255 255);
+}
+
+.services li {
+    list-style: none;
+}
+
+.services ul {
+    margin: -115px 400px 0;
+    position: absolute;
+    max-width: 376px;
+    min-width: 335px;
+}
+
+.services li:hover>ul {
+    display: block;
+    background-color: #2b273f;
+    width: max-content;
+}
+
+.services ul {
+    display: none;
+}
+.services li:hover {
+    background-color: #201b37;
+    cursor: auto;
 }

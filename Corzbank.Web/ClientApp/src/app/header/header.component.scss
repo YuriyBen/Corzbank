@@ -197,7 +197,7 @@ hr {
     background-color: #FF8FD6;
 }
 
-.terminals .icon {
+.transports .icon {
     background-color: #3c4f7e;
 }
 
@@ -223,12 +223,12 @@ hr {
 
 .services-dropdown ul {
     list-style: none;
-    margin-top: 2%;
+    margin-top: 1.8%;
 }
 
 .dropdown li:hover {
     background: #080030;
-    cursor: pointer;
+    cursor: auto;
 }
 
 .services-dropdown ul ul {
@@ -237,14 +237,16 @@ hr {
 
 .services-dropdown ul li:hover>ul {
     display: block;
+    background-color: #151533;
+    width: max-content;
 }
 
 .services-dropdown ul ul ul {
-    margin: -115px 375px 0;
+    margin: -115px 357px 0;
     position: absolute;
     background: #25213a;
     max-width: 376px;
-    min-width: 285px;
+    min-width: 335px;
 }
 
 .dropdown {
