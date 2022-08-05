@@ -42,59 +42,79 @@
             height: 55px;
         }
 
-        .option-title{
+        .option-title {
             width: 100%;
         }
     }
 }
 
-.card {
-    width: 320px;
-    height: 175px;
-    border-radius: 10px;
-    padding: 10px 15px 20px;
-    background-color: grey;
-    font-weight: 700;
-    font-size: 15px;
-    display: flex;
-    justify-content: space-between;
+.cards {
+    .credit {
+        background-color: #494949;
+    }
 
-    .card-field {
+    .debit {
+        background-color: #86ae86;
+    }
+
+    .universal {
+        background-color: #7c85a2;
+    }
+
+    .card {
+        width: 320px;
+        height: 175px;
+        border-radius: 10px;
+        padding: 10px 15px 20px;
+        font-weight: 700;
+        font-size: 15px;
         display: flex;
         justify-content: space-between;
-    }
+        margin: 35px 0;
+        transition: 0.5s;
 
-    .title {
-        display: flex;
-    }
+        &:hover{
+            background: radial-gradient(#7c859194, #663d3d00);
+            cursor: pointer;
+        }
 
-    small {
-        padding: 0 3px;
-    }
+        .card-field {
+            display: flex;
+            justify-content: space-between;
+        }
 
-    .card-type {
-        font-weight: 500;
-        font-size: 16px;
-    }
+        .title {
+            display: flex;
+        }
 
-    .card-number {
-        font-size: 18px;
-        letter-spacing: 1px;
-    }
+        small {
+            padding: 0 3px;
+        }
 
-    .payment-system {
-        color: #424242;
-        letter-spacing: 1px;
-        font-family: cursive;
-    }
+        .card-type {
+            font-weight: 500;
+            font-size: 16px;
+        }
 
-    .expiration-date {
-        font-weight: 500;
-    }
+        .card-number {
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
 
-    .balance {
-        font-family: cursive;
-        font-size: 20px;
+        .payment-system {
+            color: #424242;
+            letter-spacing: 1px;
+            font-family: cursive;
+        }
+
+        .expiration-date {
+            font-weight: 500;
+        }
+
+        .balance {
+            font-family: cursive;
+            font-size: 20px;
+        }
     }
 }
 

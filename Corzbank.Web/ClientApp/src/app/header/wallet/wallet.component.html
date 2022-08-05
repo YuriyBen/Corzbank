@@ -8,19 +8,21 @@
             </div>
         </div>
         <div class="cards">
-            <div class="card">
+            <div class="card"
+                [ngClass]="{'credit':card.cardType == 1, 'debit': card.cardType == 2, 'universal': card.cardType == 3}"
+                *ngFor="let card of cards">
                 <div class="title">
                     <span class="bank-name">corzbank </span>
                     <small> | </small>
-                    <span class="card-type"> Universal bank</span>
+                    <span class="card-type"> {{card.cardType}} bank</span>
                 </div>
                 <div class="card-field">
-                    <span class="card-number">5168 **** **** 9987</span>
-                    <span class="expiration-date">08/24</span>
+                    <span class="card-number">{{cardNumberConvertor(card.cardNumber)}}</span>
+                    <span class="expiration-date">{{card.expirationDate}}</span>
                 </div>
                 <div class="card-field">
-                    <span class="balance">4124$</span>
-                    <span class="payment-system">VISA</span>
+                    <span class="balance">{{card.balance}}$</span>
+                    <span class="payment-system">{{card.paymentSystem}}</span>
                 </div>
             </div>
         </div>
