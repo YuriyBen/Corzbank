@@ -19,7 +19,8 @@ namespace Corzbank.Helpers
                 PaymentSystem = card.PaymentSystem,
                 CardType = card.CardType,
                 SecretWord = card.SecretWord,
-                IsActive = true
+                IsActive = true,
+                
             };
 
             return cardForResponse;
@@ -54,7 +55,7 @@ namespace Corzbank.Helpers
                 cvv += rnd.Next(0, 10).ToString();
             }
 
-           return ushort.Parse(cvv);
+            return ushort.Parse(cvv);
         }
     }
 }

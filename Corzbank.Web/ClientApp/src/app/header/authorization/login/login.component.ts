@@ -52,6 +52,10 @@ export class LoginComponent implements OnInit {
       this.storageService.setItem(StorageTypeEnum.LocalStorage, Constants.RefreshTokenKey, JSON.stringify(response.refreshToken));
       this.storageService.setItem(StorageTypeEnum.LocalStorage, Constants.UserIdKey, JSON.stringify(response.user.id));
       this.storageService.setItem(StorageTypeEnum.LocalStorage, Constants.IsLoggedInKey, 'true')
+    },
+    (error:any)=>{
+      console.log(error)
+      this.notificationService.showErrorNotification("Email is unverified", "")
     })
     this.dialog.closeAll();
   }

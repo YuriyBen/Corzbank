@@ -80,6 +80,8 @@ export class RegistrationComponent implements OnInit {
     this.dialog.open(ResentVerificationComponent, { disableClose: true });
   }
 
+  errors:any;
+
   register() {
     this.authenticationService.registerUser(this.registartionForm.value).subscribe((response: any) => {
       if (response == null) {
@@ -88,6 +90,9 @@ export class RegistrationComponent implements OnInit {
           this.dialogRef.close();
         })
       }
+    },
+    (error:any)=>{
+      this.errors = error.error;
     })
   }
 }

@@ -10,11 +10,11 @@
         <div class="cards">
             <div class="card"
                 [ngClass]="{'credit':card.cardType == 1, 'debit': card.cardType == 2, 'universal': card.cardType == 3}"
-                *ngFor="let card of cards">
+                *ngFor="let card of cards" (click)="selectCard(card.id)">
                 <div class="title">
                     <span class="bank-name">corzbank </span>
                     <small> | </small>
-                    <span class="card-type"> {{card.cardType}} bank</span>
+                    <span class="card-type"> {{CardType[card.cardType]}} card</span>
                 </div>
                 <div class="card-field">
                     <span class="card-number">{{cardNumberConvertor(card.cardNumber)}}</span>
@@ -22,7 +22,7 @@
                 </div>
                 <div class="card-field">
                     <span class="balance">{{card.balance}}$</span>
-                    <span class="payment-system">{{card.paymentSystem}}</span>
+                    <span class="payment-system">{{PaymentSystem[card.paymentSystem]}}</span>
                 </div>
             </div>
         </div>
@@ -38,7 +38,36 @@
         </div>
     </div>
     <div class="details">
-
-        <h1>Deposittttttt</h1>
+        <div class="option">
+            <div class="option-title">
+                    <div>
+                        <h2>{{CardType[selectedCard?.cardType]}} Card</h2>
+                    </div>
+                    <div class="functions">
+                        <div class="icon">
+                            <i class='fas fa-archive'></i>
+                        </div>
+                        <div class="icon">
+                            <i class='fas fa-angle-double-right'></i>
+                        </div>
+                        <div class="icon">
+                            <i class='fas fa-cog'></i>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div class="card-data">
+            <div class="main-data">
+                <span class="card-number">{{cardNumberConvertor(selectedCard?.cardNumber)}}</span>
+                <div class="date-cvv">
+                    <span class="expiration-date">{{selectedCard?.expirationDate}}</span>
+                    <span class="cvv">{{selectedCard?.cvvCode}}</span>
+                </div>
+            </div>
+            <div class="balance">
+                <h2>Balance</h2>
+                <h1>{{selectedCard?.balance}}$</h1>
+            </div>
+        </div>
     </div>
 </div>

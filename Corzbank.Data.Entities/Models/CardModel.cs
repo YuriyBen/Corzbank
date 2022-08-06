@@ -12,5 +12,7 @@ namespace Corzbank.Data.Entities.Models
         public PaymentSystem PaymentSystem { get; set; }
 
         public string SecretWord { get; set; }
+
+        public Guid UserId { get; set; }
     }
 }

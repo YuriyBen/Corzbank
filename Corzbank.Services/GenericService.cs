@@ -115,5 +115,11 @@ namespace Corzbank.Services
 
 			return result;
         }
+
+		public IEnumerable<T> GetByCondition(Expression<Func<T, bool>> expression)
+		{
+			var result = _dbContext.Set<T>().Where(expression).AsQueryable().ToList();
+			return result;
+		}
 	}
 }

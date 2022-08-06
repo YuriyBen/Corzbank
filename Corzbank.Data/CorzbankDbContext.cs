@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Corzbank.Data
 {
-    public class CorzbankDbContext: IdentityDbContext<User, Role, Guid>
+    public class CorzbankDbContext : IdentityDbContext<User, Role, Guid>
     {
         public CorzbankDbContext(DbContextOptions<CorzbankDbContext> options)
             : base(options)
@@ -51,17 +51,20 @@ namespace Corzbank.Data
                 .HasIndex(c => c.CardNumber)
                 .IsUnique();
 
-            modelBuilder.Entity<Card>().HasOne(c => c.User).WithMany(c => c.Cards)
-                .HasForeignKey(u => u.Id)
+            modelBuilder.Entity<Card>()
+                .HasOne(c => c.User)
+                .WithMany(c => c.Cards)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Token>().HasOne(c => c.User).WithMany(c => c.Tokens)
-               .HasForeignKey(u => u.Id)
-               .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Token>()
+                .HasOne(c => c.User)
+                .WithMany(c => c.Tokens)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Verification>().HasOne(c => c.User).WithMany(c => c.Verifications)
-            .HasForeignKey(u => u.Id)
-            .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Verification>()
+                .HasOne(c => c.User)
+                .WithMany(c => c.Verifications)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         public DbSet<Card> Cards { get; set; }

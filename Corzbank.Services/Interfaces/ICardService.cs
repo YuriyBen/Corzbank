@@ -11,6 +11,8 @@ namespace Corzbank.Services.Interfaces
     {
         Task<IEnumerable<Card>> GetCards();
 
+        IEnumerable<Card> GetCardsForUser(Guid userId);
+
         Task<Card> GetCardById(Guid id);
 
         Task<Card> CreateCard(CardModel card);

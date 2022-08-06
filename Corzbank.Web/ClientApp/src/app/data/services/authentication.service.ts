@@ -33,6 +33,10 @@ export class AuthenticationService {
         return this.http.post(this.url + "/forgot-password", verificationModel)
     }
 
+    resendVerification(verificationModel: VerificationModel){
+        return this.http.post(this.url + "/resend-verification", verificationModel)
+    }
+
     confirmVerification(confirmationModel: ConfirmationModel) {
         return this.http.post(this.url + "/confirm-verification", confirmationModel)
     }

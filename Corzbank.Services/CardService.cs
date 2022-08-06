@@ -40,6 +40,13 @@ namespace Corzbank.Services
             return result;
         }
 
+        public IEnumerable<Card> GetCardsForUser(Guid userId)
+        {
+            var result = _genericService.GetByCondition(x => x.User.Id == userId);
+
+            return result;
+        }
+
         public async Task<Card> GetCardById(Guid id)
         {
             var result = await _genericService.Get(id);
@@ -49,8 +56,7 @@ namespace Corzbank.Services
 
         public async Task<Card> CreateCard(CardModel card)
         {
-            var currentUserEmail = _httpContextAccessor.HttpContext.User.Identity.Name;
-            var currentUser = await _userManager.FindByEmailAsync(currentUserEmail);
+            var currentUser = await _userManager.FindByIdAsync(card.UserId.ToString());
 
             var userHasCard = await _genericService.FindByCondition(c => c.CardType.Equals(card.CardType) && c.User.Id == currentUser.Id && c.IsActive);
 

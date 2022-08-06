@@ -52,6 +52,11 @@
                 match</span>
         </div>
     </form>
+    <div class="errors" *ngFor="let arrayOfErrors of errors">
+        <div *ngFor="let error of arrayOfErrors.errors">
+            <small>{{error.description}}</small>
+        </div>
+    </div>
     <div class="confirmation-buttons">
         <button class="sign-in" [disabled]="registartionForm.invalid" (click)="register()">Sign up</button>
         <a (click)="resentVerivication()">Resent verification email</a>

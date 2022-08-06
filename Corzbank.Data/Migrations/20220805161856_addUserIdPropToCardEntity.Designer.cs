@@ -4,14 +4,16 @@ using Corzbank.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Corzbank.Data.Migrations
 {
     [DbContext(typeof(CorzbankDbContext))]
-    partial class CorzbankDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220805161856_addUserIdPropToCardEntity")]
+    partial class addUserIdPropToCardEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +24,6 @@ namespace Corzbank.Data.Migrations
             modelBuilder.Entity("Corzbank.Data.Entities.Card", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Balance")
@@ -49,7 +50,7 @@ namespace Corzbank.Data.Migrations
                     b.Property<string>("SecretWord")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -57,8 +58,6 @@ namespace Corzbank.Data.Migrations
                     b.HasIndex("CardNumber")
                         .IsUnique()
                         .HasFilter("[CardNumber] IS NOT NULL");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Cards");
                 });
@@ -172,7 +171,6 @@ namespace Corzbank.Data.Migrations
             modelBuilder.Entity("Corzbank.Data.Entities.Token", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AccessToken")
@@ -181,12 +179,7 @@ namespace Corzbank.Data.Migrations
                     b.Property<string>("RefreshToken")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Tokens");
                 });
@@ -328,7 +321,6 @@ namespace Corzbank.Data.Migrations
             modelBuilder.Entity("Corzbank.Data.Entities.Verification", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CardId")
@@ -340,9 +332,6 @@ namespace Corzbank.Data.Migrations
                     b.Property<bool>("IsVerified")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("ValidTo")
                         .HasColumnType("datetime2");
 
@@ -353,8 +342,6 @@ namespace Corzbank.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Verifications");
                 });
@@ -464,8 +451,9 @@ namespace Corzbank.Data.Migrations
                 {
                     b.HasOne("Corzbank.Data.Entities.User", "User")
                         .WithMany("Cards")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -502,8 +490,9 @@ namespace Corzbank.Data.Migrations
                 {
                     b.HasOne("Corzbank.Data.Entities.User", "User")
                         .WithMany("Tokens")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -537,8 +526,9 @@ namespace Corzbank.Data.Migrations
                 {
                     b.HasOne("Corzbank.Data.Entities.User", "User")
                         .WithMany("Verifications")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
