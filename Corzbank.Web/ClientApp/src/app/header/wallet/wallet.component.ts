@@ -18,14 +18,16 @@ export class WalletComponent implements OnInit {
   CardType = CardType;
   PaymentSystem = PaymentSystem;
   selectedCard: Card;
-  cardNumberIsShown:boolean;
-  cvvIsShown:boolean;
+  cardNumberIsShown: boolean;
+  cvvIsShown: boolean;
+  cardsIsShown: boolean;
+  depositsIsShown: boolean;
 
-  cards: Card[]=[];
+  cards: Card[] = [];
 
   constructor(private cardService: CardService, private storageService: StorageService) { }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     let currentUserId = JSON.parse(this.storageService.getItem(StorageTypeEnum.LocalStorage, Constants.UserIdKey));
 
     this.cardService.getCardsForUser(Guid.parse(currentUserId)).subscribe((response: any) => {
@@ -35,7 +37,7 @@ export class WalletComponent implements OnInit {
     })
   }
 
-  cardNumberConvertor(cardNumber: string, showCard:boolean) {
+  cardNumberConvertor(cardNumber: string, showCard: boolean) {
     let result = "";
 
     for (let i = 0; i < cardNumber?.length; i++) {
@@ -52,7 +54,7 @@ export class WalletComponent implements OnInit {
   }
 
   selectCard(id: Guid) {
-    this.cardService.getCard(id).subscribe((response:Card)=>{
+    this.cardService.getCard(id).subscribe((response: Card) => {
       this.selectedCard = response;
     })
     this.cvvIsShown = false;
