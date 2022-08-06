@@ -18,45 +18,10 @@ export class WalletComponent implements OnInit {
   CardType = CardType;
   PaymentSystem = PaymentSystem;
   selectedCard: Card;
+  cardNumberIsShown:boolean;
+  cvvIsShown:boolean;
 
-  cards: Card[]=[
-    {
-      id: Guid.create(),
-      cardNumber: "1234567891023456",
-      expirationDate: "08/24",
-      cvvCode: "333",
-      cardType: CardType.Credit,
-      paymentSystem: PaymentSystem.Mastercard,
-      balance: 125,
-      isActive: true,
-      secretWord: "IVAN",
-      userId: Guid.create()
-    },
-    {
-      id: Guid.create(),
-      cardNumber: "7896547896541236",
-      expirationDate: "08/24",
-      cvvCode: "666",
-      cardType: CardType.Debit,
-      paymentSystem: PaymentSystem.Visa,
-      balance: 48651,
-      isActive: true,
-      secretWord: "IVAN",
-      userId: Guid.create()
-    },
-    {
-      id: Guid.create(),
-      cardNumber: "7896547896541236",
-      expirationDate: "08/24",
-      cvvCode: "666",
-      cardType: CardType.Universal,
-      paymentSystem: PaymentSystem.Visa,
-      balance: 48651,
-      isActive: true,
-      secretWord: "IVAN",
-      userId: Guid.create()
-    }
-  ];
+  cards: Card[]=[];
 
   constructor(private cardService: CardService, private storageService: StorageService) { }
 
@@ -70,11 +35,11 @@ export class WalletComponent implements OnInit {
     })
   }
 
-  cardNumberConvertor(cardNumber: string) {
+  cardNumberConvertor(cardNumber: string, showCard:boolean) {
     let result = "";
 
     for (let i = 0; i < cardNumber?.length; i++) {
-      if (result.length > 4 && result.length < 20)
+      if (result.length > 4 && result.length < 20 && showCard)
         result += '*';
       else
         result += cardNumber[i];
@@ -90,5 +55,7 @@ export class WalletComponent implements OnInit {
     this.cardService.getCard(id).subscribe((response:Card)=>{
       this.selectedCard = response;
     })
+    this.cvvIsShown = false;
+    this.cardNumberIsShown = false;
   }
 }

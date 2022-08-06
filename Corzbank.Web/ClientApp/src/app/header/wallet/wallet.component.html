@@ -58,10 +58,10 @@
         </div>
         <div class="card-data">
             <div class="main-data">
-                <span class="card-number">{{cardNumberConvertor(selectedCard?.cardNumber)}}</span>
+                <span class="card-number" (click)="cardNumberIsShown = !cardNumberIsShown">{{cardNumberConvertor(selectedCard?.cardNumber, !cardNumberIsShown)}}</span>
                 <div class="date-cvv">
                     <span class="expiration-date">{{selectedCard?.expirationDate}}</span>
-                    <span class="cvv">{{selectedCard?.cvvCode}}</span>
+                    <span class="cvv" (click)="cvvIsShown = !cvvIsShown">{{cvvIsShown ? selectedCard?.cvvCode : '* * *' }}</span>
                 </div>
             </div>
             <div class="balance">
