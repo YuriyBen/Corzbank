@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Guid } from "guid-typescript";
+import { Constants } from "../helpers/constants";
 import { CardModel } from "../models/card.model";
 import { UserModel } from "../models/user.model";
 
@@ -12,18 +13,18 @@ export class CardService {
 
     constructor(private http: HttpClient) { }
 
-    url = 'https://localhost:44361/cards';
+    url = Constants.ServerUrl + 'cards/';
 
     getCards() {
         return this.http.get(this.url)
     }
 
     getCard(id: Guid) {
-        return this.http.get(this.url + '/' + id)
+        return this.http.get(this.url + id)
     }
 
     getCardsForUser(id:Guid){
-        return this.http.get(this.url + '/user/' + id)
+        return this.http.get(this.url + 'users/' + id)
     }
 
     createCard(card: CardModel) {
@@ -31,6 +32,6 @@ export class CardService {
     }
 
     deleteCard(id: Guid) {
-        return this.http.delete(this.url + '/' + id)
+        return this.http.delete(this.url + id)
     }
 }

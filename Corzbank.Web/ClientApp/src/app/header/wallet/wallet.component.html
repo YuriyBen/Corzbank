@@ -37,39 +37,58 @@
         <div class="deposits" *ngIf="depositsIsShown">
         </div>
     </div>
-    <div class="details" *ngIf="cardsIsShown">
-        <div class="option">
-            <div class="option-title">
-                <div>
-                    <h2>{{CardType[selectedCard?.cardType]}} Card</h2>
+    <div *ngIf="cardsIsShown">
+        <div class="details">
+            <div class="option">
+                <div class="option-title">
+                    <div>
+                        <h2>{{CardType[selectedCard?.cardType]}} Card</h2>
+                    </div>
+                    <div class="functions">
+                        <div class="icon" (click)="getTransfers(selectedCard.id)">
+                            <i class='fas fa-archive'></i>
+                        </div>
+                        <div class="icon">
+                            <i class='fas fa-angle-double-right'></i>
+                        </div>
+                        <div class="icon">
+                            <i class='fas fa-cog'></i>
+                        </div>
+                    </div>
                 </div>
-                <div class="functions">
-                    <div class="icon">
-                        <i class='fas fa-archive'></i>
+            </div>
+            <div class="card-data">
+                <div class="main-data">
+                    <span class="card-number"
+                        (click)="cardNumberIsShown = !cardNumberIsShown">{{cardNumberConvertor(selectedCard?.cardNumber,
+                        !cardNumberIsShown)}}</span>
+                    <div class="date-cvv">
+                        <span class="expiration-date">{{selectedCard?.expirationDate}}</span>
+                        <span class="cvv" (click)="cvvIsShown = !cvvIsShown">{{cvvIsShown ? selectedCard?.cvvCode : '* *
+                            *' }}</span>
                     </div>
-                    <div class="icon">
-                        <i class='fas fa-angle-double-right'></i>
-                    </div>
-                    <div class="icon">
-                        <i class='fas fa-cog'></i>
-                    </div>
+                </div>
+                <div class="balance">
+                    <h2>Balance</h2>
+                    <h1>{{selectedCard?.balance}}$</h1>
                 </div>
             </div>
         </div>
-        <div class="card-data">
-            <div class="main-data">
-                <span class="card-number"
-                    (click)="cardNumberIsShown = !cardNumberIsShown">{{cardNumberConvertor(selectedCard?.cardNumber,
-                    !cardNumberIsShown)}}</span>
-                <div class="date-cvv">
-                    <span class="expiration-date">{{selectedCard?.expirationDate}}</span>
-                    <span class="cvv" (click)="cvvIsShown = !cvvIsShown">{{cvvIsShown ? selectedCard?.cvvCode : '* * *'
-                        }}</span>
-                </div>
+        <div *ngIf="transfersIsShown">
+            <div class="title-transfers">
+                <h2>Transactions</h2>
             </div>
-            <div class="balance">
-                <h2>Balance</h2>
-                <h1>{{selectedCard?.balance}}$</h1>
+            <div class="transfers">
+                <div class="transfer" *ngFor="let transfer of transfers">
+                    <h1 *ngIf="transfers.length===0">You do not have any transfers</h1>
+                    <i class='fas fa-archive icon transfer-field'></i>
+                    <span class="description transfer-field">{{TransferType[transfer.transferType]}} transfer</span>
+                    <div class="price">
+                        <span *ngIf="transfer.senderCardId === selectedCard.id; else transferToMe">-</span>
+                        <ng-template #transferToMe>+</ng-template>
+                        <span class="transfer-field">{{transfer.amount}}$</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

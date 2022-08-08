@@ -60,8 +60,8 @@ namespace Corzbank.Services
                 return null;
 
             var tokenForDeleting = await _genericService.FindByCondition(x => x.User.Id == user.Id);
-            if(tokenForDeleting != null)
-            await _genericService.Remove(tokenForDeleting);
+            if (tokenForDeleting != null)
+                await _genericService.Remove(tokenForDeleting);
 
             var tokens = new Token
             {

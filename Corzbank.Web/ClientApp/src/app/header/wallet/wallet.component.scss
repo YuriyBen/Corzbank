@@ -213,3 +213,56 @@
         }
     }
 }
+
+.title-transfers {
+    display: flex;
+    margin-top: 30px;
+    background-color: #1a1728;
+    
+    h2 {
+        padding: 13px 35px 13px;
+        font-size: 24px;
+        color: #9f9f9f;
+        margin: 0;
+    }
+}
+
+.transfers {
+    overflow: auto;
+    max-height: 305px;
+    background-color: #2b273f;
+    
+    
+    .transfer {
+        display: flex;
+        padding: 15px 30px;
+        background: #2b2838;
+        color: #c4c4c4;
+        align-items: center;
+        margin: 10px 0;
+
+        .transfer-field {
+            display: flex;
+        }
+
+        .icon {
+            width: 10%;
+
+            &:before {
+                background: red;
+                padding: 5px;
+                border-radius: 50px;
+            }
+        }
+
+        .description {
+            width: 70%;
+        }
+
+        .price {
+            width: 20%;
+            display: flex;
+            justify-content: end;
+        }
+    }
+}
