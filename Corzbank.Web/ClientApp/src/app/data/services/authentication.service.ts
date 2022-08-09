@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Guid } from "guid-typescript";
+import { Constants } from "../helpers/constants";
 import { ConfirmationModel } from "../models/confirmation.model";
 import { SetNewPasswordModel } from "../models/setNewPassword.model";
 import { UserModel } from "../models/user.model";
@@ -15,30 +16,34 @@ export class AuthenticationService {
 
     constructor(private http: HttpClient) { }
 
-    url = 'https://localhost:44361/users'
+    url = Constants.ServerUrl + 'users/'
 
     registerUser(user: UserModel) {
-        return this.http.post(this.url + "/register", user)
+        return this.http.post(this.url + "register", user)
     }
 
     loginUser(user: UserForLoginModel) {
-        return this.http.post(this.url + "/login", user)
+        return this.http.post(this.url + "login", user)
     }
 
     refreshTokensForUser(refreshToken: string) {
-        return this.http.post(this.url + "/refresh-tokens", JSON.stringify(refreshToken))
+        return this.http.post(this.url + "refresh-tokens", JSON.stringify(refreshToken))
     }
 
     forgotPassword(verificationModel: VerificationModel) {
-        return this.http.post(this.url + "/forgot-password", verificationModel)
+        return this.http.post(this.url + "forgot-password", verificationModel)
+    }
+
+    resendVerification(verificationModel: VerificationModel){
+        return this.http.post(this.url + "resend-verification", verificationModel)
     }
 
     confirmVerification(confirmationModel: ConfirmationModel) {
-        return this.http.post(this.url + "/confirm-verification", confirmationModel)
+        return this.http.post(this.url + "confirm-verification", confirmationModel)
     }
 
     setNewPassword(newPassword: SetNewPasswordModel) {
-        return this.http.post(this.url + "/set-new-password", newPassword)
+        return this.http.post(this.url + "set-new-password", newPassword)
     }
 
     getUsers() {
@@ -46,14 +51,14 @@ export class AuthenticationService {
     }
 
     getUser(id: Guid) {
-        return this.http.get(this.url + '/' + id)
+        return this.http.get(this.url + id)
     }
 
     updateUser(id: Guid, user: UserModel) {
-        return this.http.put(this.url + '/' + id, user)
+        return this.http.put(this.url + id, user)
     }
 
     deleteUser(id: Guid) {
-        return this.http.delete(this.url + '/' + id)
+        return this.http.delete(this.url + id)
     }
 }

@@ -44,6 +44,13 @@ namespace Corzbank.Services
             return result;
         }
 
+        public IEnumerable<Transfer> GetTransfersForCard(Guid cardId)
+        {
+           var transfers = _genericService.GetByCondition(x => x.SenderCardId == cardId || x.ReceiverCardId == cardId);
+
+            return transfers;
+        }
+
         public async Task<Transfer> CreateTransfer(TransferModel transferRequest)
         {
             if (transferRequest.TransferType == TransferType.Card)
@@ -61,12 +68,9 @@ namespace Corzbank.Services
                     return null;
             }
 
-            var currentUserEmail = _httpContextAccessor.HttpContext.User.Identity.Name;
-            var currentUser = await _userManager.FindByEmailAsync(currentUserEmail);
-
             var senderCard = await _cardService.GetCardById(transferRequest.SenderCardId);
 
-            if (senderCard.User == currentUser && senderCard.Balance > transferRequest.Amount)
+            if ( senderCard.Balance >= transferRequest.Amount)
             {
                 senderCard.Balance -= transferRequest.Amount;
                 await _cardService.UpdateCard(senderCard);
@@ -80,8 +84,6 @@ namespace Corzbank.Services
                         receiverCard.Balance += transferRequest.Amount;
                         await _cardService.UpdateCard(receiverCard);
                     }
-
-                    return null;
                 }
 
                 var transfer = _mapper.Map<Transfer>(transferRequest);

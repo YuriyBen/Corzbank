@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,6 +41,13 @@ namespace Corzbank.Services
             return result;
         }
 
+        public IEnumerable<Card> GetCardsForUser(Guid userId)
+        {
+            var result = _genericService.GetByCondition(x => x.User.Id == userId, x=>x.User);
+
+            return result;
+        }
+
         public async Task<Card> GetCardById(Guid id)
         {
             var result = await _genericService.Get(id);
@@ -49,8 +57,7 @@ namespace Corzbank.Services
 
         public async Task<Card> CreateCard(CardModel card)
         {
-            var currentUserEmail = _httpContextAccessor.HttpContext.User.Identity.Name;
-            var currentUser = await _userManager.FindByEmailAsync(currentUserEmail);
+            var currentUser = await _userManager.FindByIdAsync(card.UserId.ToString());
 
             var userHasCard = await _genericService.FindByCondition(c => c.CardType.Equals(card.CardType) && c.User.Id == currentUser.Id && c.IsActive);
 
@@ -87,7 +94,7 @@ namespace Corzbank.Services
 
         public async Task<bool> CloseCard(Guid id)
         {
-            var card = await GetCardById(id);
+            var card = GetCardById(id);
 
             var currentUserEmail = _httpContextAccessor.HttpContext.User.Identity.Name;
 

@@ -1,0 +1,268 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.wallet {
+    display: grid;
+    grid-auto-rows: 100px;
+    margin: 50px 0;
+    grid-gap: 60px;
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cards-deposits,
+.details {
+    background-color: #2b273f;
+    height: fit-content;
+    width: 340px;
+
+    .option {
+        width: 100%;
+        text-align: start;
+        display: flex;
+        background-color: #2c2744;
+
+        &:hover {
+            background-color: #1e1b2e;
+            cursor: pointer;
+            transition: 1s;
+        }
+
+        h2 {
+            padding: 13px 35px 13px;
+            font-size: 24px;
+            color: #9f9f9f;
+            margin: 0;
+        }
+
+        hr {
+            height: 2px;
+            background-color: #919191;
+        }
+
+        .selected-option {
+            border-left: 5px solid green;
+            height: 61px;
+        }
+
+        .option-title {
+            width: 100%;
+        }
+    }
+
+    .show-cards-title {
+        margin-bottom: 30px;
+    }
+}
+
+.cards {
+    .credit {
+        background-color: #494949;
+    }
+
+    .debit {
+        background-color: #86ae86;
+    }
+
+    .universal {
+        background-color: #7c85a2;
+    }
+
+    .card {
+        width: 320px;
+        height: 175px;
+        border-radius: 10px;
+        padding: 10px 15px 20px;
+        font-weight: 700;
+        font-size: 15px;
+        display: flex;
+        justify-content: space-between;
+        margin: 35px 10px;
+        transition: 0.5s;
+
+        &:hover {
+            background: radial-gradient(#7c859194, #663d3d00);
+            cursor: pointer;
+        }
+
+        .card-field {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .title {
+            display: flex;
+        }
+
+        small {
+            padding: 0 3px;
+        }
+
+        .card-type {
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .card-number {
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
+
+        .payment-system {
+            color: #424242;
+            letter-spacing: 1px;
+            font-family: cursive;
+        }
+
+        .expiration-date {
+            font-weight: 500;
+        }
+
+        .balance {
+            font-family: cursive;
+            font-size: 20px;
+        }
+    }
+}
+
+.details {
+    width: 100%;
+    background-color: #2b273f;
+    color: #cecece;
+
+    .option-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #021d01;
+
+        .icon {
+            border-radius: 7px;
+            height: 35px;
+            width: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 17px;
+            background: white;
+            cursor: pointer;
+            color: #837777;
+
+            &:hover {
+                background-color: #bdbdbd;
+            }
+        }
+
+        .functions {
+            display: flex;
+        }
+    }
+
+    .card-data {
+        display: flex;
+
+        .main-data,
+        .balance {
+            margin-right: 90px;
+            padding: 20px 0 0 20px;
+        }
+
+        .main-data {
+            width: 282px;
+
+            .card-number,
+            .cvv {
+                display: flex;
+                border-radius: 20px;
+                transition: 0.5s;
+
+                &:hover {
+                    background-color: #2e2a43;
+                }
+            }
+        }
+
+        span {
+            padding: 10px;
+            font-size: 19px;
+        }
+
+        .date-cvv {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .expiration-date {
+            font-size: 16px;
+        }
+
+        .balance h2,
+        .expiration-date {
+            color: #9c9c9c;
+        }
+
+        .cvv,
+        .card-number {
+            cursor: pointer;
+            letter-spacing: 3px;
+        }
+    }
+}
+
+.title-transfers {
+    display: flex;
+    margin-top: 30px;
+    background-color: #1a1728;
+    
+    h2 {
+        padding: 13px 35px 13px;
+        font-size: 24px;
+        color: #9f9f9f;
+        margin: 0;
+    }
+}
+
+.transfers {
+    overflow: auto;
+    max-height: 305px;
+    background-color: #2b273f;
+    
+    
+    .transfer {
+        display: flex;
+        padding: 15px 30px;
+        background: #2b2838;
+        color: #c4c4c4;
+        align-items: center;
+        margin: 10px 0;
+
+        .transfer-field {
+            display: flex;
+        }
+
+        .icon {
+            width: 10%;
+
+            &:before {
+                background: red;
+                padding: 5px;
+                border-radius: 50px;
+            }
+        }
+
+        .description {
+            width: 70%;
+        }
+
+        .price {
+            width: 20%;
+            display: flex;
+            justify-content: end;
+        }
+    }
+}

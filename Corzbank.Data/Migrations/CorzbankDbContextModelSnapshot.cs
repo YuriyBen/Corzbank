@@ -22,6 +22,7 @@ namespace Corzbank.Data.Migrations
             modelBuilder.Entity("Corzbank.Data.Entities.Card", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Balance")
@@ -48,11 +49,16 @@ namespace Corzbank.Data.Migrations
                     b.Property<string>("SecretWord")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CardNumber")
                         .IsUnique()
                         .HasFilter("[CardNumber] IS NOT NULL");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Cards");
                 });
@@ -166,6 +172,7 @@ namespace Corzbank.Data.Migrations
             modelBuilder.Entity("Corzbank.Data.Entities.Token", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AccessToken")
@@ -174,7 +181,12 @@ namespace Corzbank.Data.Migrations
                     b.Property<string>("RefreshToken")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Tokens");
                 });
@@ -316,6 +328,7 @@ namespace Corzbank.Data.Migrations
             modelBuilder.Entity("Corzbank.Data.Entities.Verification", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CardId")
@@ -327,6 +340,9 @@ namespace Corzbank.Data.Migrations
                     b.Property<bool>("IsVerified")
                         .HasColumnType("bit");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("ValidTo")
                         .HasColumnType("datetime2");
 
@@ -337,6 +353,8 @@ namespace Corzbank.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Verifications");
                 });
@@ -446,9 +464,8 @@ namespace Corzbank.Data.Migrations
                 {
                     b.HasOne("Corzbank.Data.Entities.User", "User")
                         .WithMany("Cards")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("User");
                 });
@@ -485,9 +502,8 @@ namespace Corzbank.Data.Migrations
                 {
                     b.HasOne("Corzbank.Data.Entities.User", "User")
                         .WithMany("Tokens")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("User");
                 });
@@ -521,9 +537,8 @@ namespace Corzbank.Data.Migrations
                 {
                     b.HasOne("Corzbank.Data.Entities.User", "User")
                         .WithMany("Verifications")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("User");
                 });

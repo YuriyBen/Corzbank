@@ -27,7 +27,7 @@
     border-radius: 50px;
 }
 
-.navbar span {
+.navbar span, a {
     color: white;
     opacity: 65%;
     padding: 0 5px;
@@ -91,7 +91,7 @@
     position: absolute;
     background-color: #3e3b4c;
     min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 
     a {
         color: #a9a9a9;
@@ -101,14 +101,14 @@
         display: block;
         cursor: pointer;
     }
-    
+
     a:hover {
         background-color: #53525b;
     }
 }
-  
-.authentication-dropdown:hover .dropdown-content{
-      display: block;
+
+.authentication-dropdown:hover .dropdown-content {
+    display: block;
 }
 
 .services i {
@@ -133,6 +133,11 @@ hr {
     opacity: 0.54;
     height: 100%;
     border-bottom: 3px solid transparent;
+
+    a {
+        text-decoration: unset;
+        color: #b1b0b9;
+    }
 }
 
 .exchange:hover,
@@ -197,7 +202,7 @@ hr {
     background-color: #FF8FD6;
 }
 
-.terminals .icon {
+.transports .icon {
     background-color: #3c4f7e;
 }
 
@@ -223,7 +228,7 @@ hr {
 
 .services-dropdown ul {
     list-style: none;
-    margin-top: 2%;
+    margin-top: 1.8%;
 }
 
 .dropdown li:hover {
@@ -237,14 +242,17 @@ hr {
 
 .services-dropdown ul li:hover>ul {
     display: block;
+    background-color: #151533;
+    width: max-content;
+    z-index: 1;
 }
 
 .services-dropdown ul ul ul {
-    margin: -115px 375px 0;
+    margin: -115px 357px 0;
     position: absolute;
     background: #25213a;
     max-width: 376px;
-    min-width: 285px;
+    min-width: 335px;
 }
 
 .dropdown {

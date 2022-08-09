@@ -1,0 +1,95 @@
+<div class="wallet">
+    <div class="cards-deposits">
+        <div class="option show-cards-title" (click)="cardsIsShown = !cardsIsShown">
+            <div class="selected-option" *ngIf="cardsIsShown"></div>
+            <div class="option-title">
+                <h2>Cards</h2>
+                <hr>
+            </div>
+        </div>
+        <div class="cards" *ngIf="cardsIsShown">
+            <div class="card"
+                [ngClass]="{'credit':card.cardType == 1, 'debit': card.cardType == 2, 'universal': card.cardType == 3}"
+                *ngFor="let card of cards" (click)="selectCard(card.id)">
+                <div class="title">
+                    <span class="bank-name">corzbank </span>
+                    <small> | </small>
+                    <span class="card-type"> {{CardType[card.cardType]}} card</span>
+                </div>
+                <div class="card-field">
+                    <span class="card-number">{{cardNumberConvertor(card.cardNumber)}}</span>
+                    <span class="expiration-date">{{card.expirationDate}}</span>
+                </div>
+                <div class="card-field">
+                    <span class="balance">{{card.balance}}$</span>
+                    <span class="payment-system">{{PaymentSystem[card.paymentSystem]}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="option" (click)="depositsIsShown = !depositsIsShown">
+            <div class="selected-option" *ngIf="depositsIsShown"></div>
+            <div class="option-title">
+                <hr>
+                <h2>Deposits</h2>
+                <hr>
+            </div>
+        </div>
+        <div class="deposits" *ngIf="depositsIsShown">
+        </div>
+    </div>
+    <div *ngIf="cardsIsShown">
+        <div class="details">
+            <div class="option">
+                <div class="option-title">
+                    <div>
+                        <h2>{{CardType[selectedCard?.cardType]}} Card</h2>
+                    </div>
+                    <div class="functions">
+                        <div class="icon" (click)="getTransfers(selectedCard.id)">
+                            <i class='fas fa-archive'></i>
+                        </div>
+                        <div class="icon">
+                            <i class='fas fa-angle-double-right'></i>
+                        </div>
+                        <div class="icon">
+                            <i class='fas fa-cog'></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-data">
+                <div class="main-data">
+                    <span class="card-number"
+                        (click)="cardNumberIsShown = !cardNumberIsShown">{{cardNumberConvertor(selectedCard?.cardNumber,
+                        !cardNumberIsShown)}}</span>
+                    <div class="date-cvv">
+                        <span class="expiration-date">{{selectedCard?.expirationDate}}</span>
+                        <span class="cvv" (click)="cvvIsShown = !cvvIsShown">{{cvvIsShown ? selectedCard?.cvvCode : '* *
+                            *' }}</span>
+                    </div>
+                </div>
+                <div class="balance">
+                    <h2>Balance</h2>
+                    <h1>{{selectedCard?.balance}}$</h1>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="transfersIsShown">
+            <div class="title-transfers">
+                <h2>Transactions</h2>
+            </div>
+            <div class="transfers">
+                <div class="transfer" *ngFor="let transfer of transfers">
+                    <h1 *ngIf="transfers.length===0">You do not have any transfers</h1>
+                    <i class='fas fa-archive icon transfer-field'></i>
+                    <span class="description transfer-field">{{TransferType[transfer.transferType]}} transfer</span>
+                    <div class="price">
+                        <span *ngIf="transfer.senderCardId === selectedCard.id; else transferToMe">-</span>
+                        <ng-template #transferToMe>+</ng-template>
+                        <span class="transfer-field">{{transfer.amount}}$</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

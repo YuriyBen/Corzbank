@@ -13,6 +13,8 @@ namespace Corzbank.Services.Interfaces
 
         Task<Transfer> GetTransferById(Guid id);
 
+        IEnumerable<Transfer> GetTransfersForCard(Guid cardId);
+
         Task<Transfer> CreateTransfer(TransferModel card);
 
         Task<bool> DeleteTransfer (Guid id);

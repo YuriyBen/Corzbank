@@ -1,12 +1,14 @@
 <div class="navbar">
     <div class="block">
         <div class="home">
-            <div class="logo">
-                <img src="assets/images/logo.png" alt="logo">
-            </div>
+            <a [routerLink]="['']">
+                <div class="logo">
+                    <img src="assets/images/logo.png" alt="logo">
+                </div>
+            </a>
         </div>
         <div class="wallet">
-            <span>Wallet</span>
+            <a [routerLink]="['wallet']">Wallet</a>
         </div>
         <div class="services-dropdown">
             <ul>
@@ -27,6 +29,18 @@
                                     <i class='fas fa-chevron-right fa-lg'></i>
                                 </div>
                             </div>
+                            <ul>
+                                <li>
+                                    <div class="money-transfers function">
+                                        <div class="icon">
+                                            <i class='fas fa-credit-card'></i>
+                                        </div>
+                                        <div class="service">
+                                            <h3>Transfer to a card</h3>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
                         </li>
                         <li>
                             <div class="payments function">
@@ -75,10 +89,10 @@
                                 <li>
                                     <div class="deposits function">
                                         <div class="icon">
-                                            <i>%</i>
+                                            <i>+</i>
                                         </div>
                                         <div class="service">
-                                            <h3>Deposits1</h3>
+                                            <h3>Open Deposit</h3>
                                         </div>
                                     </div>
                                 </li>
@@ -88,7 +102,7 @@
                                             <i>%</i>
                                         </div>
                                         <div class="service">
-                                            <h3>Deposits2</h3>
+                                            <h3>My Deposits</h3>
                                         </div>
                                     </div>
                                 </li>
@@ -106,33 +120,33 @@
                             </div>
                         </li>
                         <li>
-                            <div class="terminals function">
+                            <div class="transports function">
                                 <div class="icon">
-                                    <i class='fas fa-building'></i>
+                                    <i class='fas fa-bus'></i>
                                 </div>
                                 <div class="service">
-                                    <h3>Terminals</h3>
+                                    <h3>Transports</h3>
                                     <i class='fas fa-chevron-right fa-lg'></i>
                                 </div>
                             </div>
                             <ul>
                                 <li>
-                                    <div class="terminals function">
+                                    <div class="transports function">
                                         <div class="icon">
-                                            <i class='fas fa-building'></i>
+                                            <i class='fas fa-bus'></i>
                                         </div>
                                         <div class="service">
-                                            <h3>Terminals1</h3>
+                                            <h3>Bus Tickets</h3>
                                         </div>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="terminals function">
+                                    <div class="transports function">
                                         <div class="icon">
-                                            <i class='fas fa-building'></i>
+                                            <i class='fas plane fa-plane'></i>
                                         </div>
                                         <div class="service">
-                                            <h3>Terminals2</h3>
+                                            <h3>Flight Tickets</h3>
                                         </div>
                                     </div>
                                 </li>

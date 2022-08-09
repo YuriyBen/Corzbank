@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 namespace Corzbank.Api.Controllers
 {
     [Route("[controller]")]
-    [Authorize]
     [ApiController]
     public class DepositsController : ControllerBase
     {

@@ -11,7 +11,6 @@ namespace Corzbank.Api.Controllers
 {
 
     [Route("[controller]")]
-    [Authorize]
     [ApiController]
     public class TransfersController : ControllerBase
     {
@@ -34,6 +33,15 @@ namespace Corzbank.Api.Controllers
         public async Task<IActionResult> GetTransfer(Guid id)
         {
             var result = await _transferService.GetTransferById(id);
+
+            return Ok(result);
+        }
+
+        [Route("cards/{id}")]
+        [HttpGet]
+        public IActionResult GetTransfersForCard(Guid id)
+        {
+            var result = _transferService.GetTransfersForCard(id);
 
             return Ok(result);
         }

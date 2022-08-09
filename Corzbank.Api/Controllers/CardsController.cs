@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 namespace Corzbank.Api.Controllers
 {
     [Route("[controller]")]
-    [Authorize]
     [ApiController]
     public class CardsController : ControllerBase
     {
@@ -29,6 +28,15 @@ namespace Corzbank.Api.Controllers
         public async Task<IActionResult> GetCards()
         {
             var result = await _cardService.GetCards();
+
+            return Ok(result);
+        }
+
+        [Route("users/{id}")]
+        [HttpGet]
+        public IActionResult GetCardsForUser(Guid id)
+        {
+            var result = _cardService.GetCardsForUser(id);
 
             return Ok(result);
         }
