@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Corzbank.Services
 {
-    public class ForgotPasswordService: IForgotPasswordService
+    public class ForgotPasswordService : IForgotPasswordService
     {
         private readonly UserManager<User> _userManager;
         private readonly GenericService<Verification> _genericService;

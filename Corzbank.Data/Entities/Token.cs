@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Corzbank.Data.Entities
 {
-    public class Token: KeyEntity
+    public class Token : KeyEntity
     {
         public string AccessToken { get; set; }
 

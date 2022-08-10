@@ -1,13 +1,14 @@
 ﻿using Corzbank.Data.Enums;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Corzbank.Data.Entities
+namespace Corzbank.Data.Entities.DTOs
 {
-    public class Deposit : KeyEntity
+    public class DepositDTO
     {
+        public Guid Id { get; set; }
+
         public decimal Amount { get; set; }
 
         public int Duration { get; set; }
@@ -22,8 +23,6 @@ namespace Corzbank.Data.Entities
 
         public DepositStatus IsActive { get; set; }
 
-        public Card Card { get; set; }
-
-        public List<DepositCard> DepositCards { get; set; }
+        public Guid CardId { get; set; }
     }
 }

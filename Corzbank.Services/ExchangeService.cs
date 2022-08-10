@@ -25,7 +25,7 @@ namespace Corzbank.Services
             _mapper = mapper;
             _genericService = genericService;
         }
-        
+
         public async Task<IEnumerable<Exchange>> GetValues()
         {
             var result = await _genericService.GetRange();
@@ -64,7 +64,7 @@ namespace Corzbank.Services
                     if (value.ExchangeCurrency == valueFromDb.ExchangeCurrency)
                     {
                         var mappedValue = _mapper.Map(value, valueFromDb);
-                        
+
                         await _genericService.Update(mappedValue);
                         break;
                     }

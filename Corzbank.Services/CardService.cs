@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Corzbank.Data;
 using Corzbank.Data.Entities;
+using Corzbank.Data.Entities.DTOs;
 using Corzbank.Data.Entities.Models;
 using Corzbank.Data.Enums;
 using Corzbank.Helpers;
@@ -34,57 +35,69 @@ namespace Corzbank.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Card>> GetCards()
+        public async Task<IEnumerable<CardDTO>> GetCards()
         {
-            var result = await _genericService.GetRange();
+            var cards = await _genericService.GetRange();
+
+            var result = _mapper.Map<IEnumerable<CardDTO>>(cards);
 
             return result;
         }
 
-        public IEnumerable<Card> GetCardsForUser(Guid userId)
+        public IEnumerable<CardDTO> GetCardsForUser(Guid userId)
         {
-            var result = _genericService.GetByCondition(x => x.User.Id == userId, x=>x.User);
+            var cards = _genericService.GetByCondition(x => x.User.Id == userId, x => x.User);
+
+            var result = _mapper.Map<IEnumerable<CardDTO>>(cards);
 
             return result;
         }
 
-        public async Task<Card> GetCardById(Guid id)
+        public async Task<CardDTO> GetCardById(Guid id)
         {
-            var result = await _genericService.Get(id);
+            var card = await _genericService.Get(id);
+
+            var result = _mapper.Map<CardDTO>(card);
 
             return result;
         }
 
-        public async Task<Card> CreateCard(CardModel card)
+        public async Task<CardDTO> CreateCard(CardModel cardFromRequest)
         {
-            var currentUser = await _userManager.FindByIdAsync(card.UserId.ToString());
+            var currentUser = await _userManager.FindByIdAsync(cardFromRequest.UserId.ToString());
 
-            var userHasCard = await _genericService.FindByCondition(c => c.CardType.Equals(card.CardType) && c.User.Id == currentUser.Id && c.IsActive);
+            var userHasCard = await _genericService.FindByCondition(c => c.CardType.Equals(cardFromRequest.CardType) && c.User.Id == currentUser.Id && c.IsActive);
 
             if (userHasCard != null)
                 return null;
 
-            var result = card.GenerateCard();
-            var duplicateCard = await _genericService.FindByCondition(c => c.CardNumber.Equals(result.CardNumber));
+            var card = cardFromRequest.GenerateCard();
+            var duplicateCard = await _genericService.FindByCondition(c => c.CardNumber.Equals(card.CardNumber));
 
             while (duplicateCard != null)
             {
-                result = card.GenerateCard();
-                duplicateCard = await _genericService.FindByCondition(c => c.CardNumber.Equals(result.CardNumber));
+                card = cardFromRequest.GenerateCard();
+                duplicateCard = await _genericService.FindByCondition(c => c.CardNumber.Equals(card.CardNumber));
             }
 
-            result.User = currentUser;
+            card.User = currentUser;
 
-            await _genericService.Insert(result);
+            await _genericService.Insert(card);
+
+            var result = _mapper.Map<CardDTO>(card);
 
             return result;
         }
 
-        public async Task<Card> UpdateCard(Card cardForUpdate)
+        public async Task<CardDTO> UpdateCard(CardDTO cardForUpdate)
         {
             if (cardForUpdate != null)
             {
-                await _genericService.Update(cardForUpdate);
+                var mappedCard = _mapper.Map<Card>(cardForUpdate);
+
+                _genericService.DetachLocal(x => x.Id == mappedCard.Id);
+
+                await _genericService.Update(mappedCard);
 
                 return cardForUpdate;
             }

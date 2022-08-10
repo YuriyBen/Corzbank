@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Corzbank.Data.Entities;
+using Corzbank.Data.Entities.DTOs;
 using Corzbank.Data.Entities.Models;
 using Corzbank.Data.Enums;
 using Corzbank.Services.Interfaces;
@@ -30,28 +31,35 @@ namespace Corzbank.Services
             _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
         }
-        public async Task<IEnumerable<Transfer>> GetTransfers()
+
+        public async Task<IEnumerable<TransferDTO>> GetTransfers()
         {
-            var result = await _genericService.GetRange();
+            var transfers = await _genericService.GetRange();
+
+            var result = _mapper.Map<IEnumerable<TransferDTO>>(transfers);
 
             return result;
         }
 
-        public async Task<Transfer> GetTransferById(Guid id)
+        public async Task<TransferDTO> GetTransferById(Guid id)
         {
-            var result = await _genericService.Get(id);
+            var transfer = await _genericService.Get(id);
+
+            var result = _mapper.Map<TransferDTO>(transfer);
 
             return result;
         }
 
-        public IEnumerable<Transfer> GetTransfersForCard(Guid cardId)
+        public IEnumerable<TransferDTO> GetTransfersForCard(Guid cardId)
         {
-           var transfers = _genericService.GetByCondition(x => x.SenderCardId == cardId || x.ReceiverCardId == cardId);
+            var transfers = _genericService.GetByCondition(x => x.SenderCardId == cardId || x.ReceiverCardId == cardId);
 
-            return transfers;
+            var result = _mapper.Map<IEnumerable<TransferDTO>>(transfers);
+
+            return result;
         }
 
-        public async Task<Transfer> CreateTransfer(TransferModel transferRequest)
+        public async Task<TransferDTO> CreateTransfer(TransferModel transferRequest)
         {
             if (transferRequest.TransferType == TransferType.Card)
             {
@@ -70,7 +78,7 @@ namespace Corzbank.Services
 
             var senderCard = await _cardService.GetCardById(transferRequest.SenderCardId);
 
-            if ( senderCard.Balance >= transferRequest.Amount)
+            if (senderCard.Balance >= transferRequest.Amount)
             {
                 senderCard.Balance -= transferRequest.Amount;
                 await _cardService.UpdateCard(senderCard);
@@ -79,9 +87,10 @@ namespace Corzbank.Services
                 {
                     var receiverCard = await _cardService.GetCardById(transferRequest.ReceiverCardId ?? Guid.Empty);
 
-                    if (receiverCard != null && senderCard != receiverCard) 
+                    if (receiverCard != null && senderCard != receiverCard)
                     {
                         receiverCard.Balance += transferRequest.Amount;
+
                         await _cardService.UpdateCard(receiverCard);
                     }
                 }
@@ -92,7 +101,9 @@ namespace Corzbank.Services
 
                 await _genericService.Insert(transfer);
 
-                return transfer;
+                var result = _mapper.Map<TransferDTO>(transfer);
+
+                return result;
             }
 
             return null;
@@ -104,7 +115,9 @@ namespace Corzbank.Services
 
             if (transfer != null)
             {
-                await _genericService.Remove(transfer);
+                var mappedCard = _mapper.Map<Transfer>(transfer);
+
+                await _genericService.Remove(mappedCard);
 
                 return true;
             }

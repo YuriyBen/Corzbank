@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Corzbank.Data.Entities
 {
-    public class Role: IdentityRole<Guid>
+    public class Role : IdentityRole<Guid>
     {
     }
 }

@@ -1,16 +1,24 @@
 <div class="confirmation">
-    <h3 class="title">Confirmation Email</h3>
-    <div class="text">
-        <div class="text-title">
-            <span>Confirm your email address</span>
-        </div>
-        <i class="fas fa-laptop-code"></i>
-        <div class="description">
-            <p>Enter 6-digit code we've just sent to your email</p>
-        </div>
-        <code-input [codeLength]="6" (codeCompleted)="onCodeCompleted($event)">
-        </code-input>
-        <button class="resend-btn" [disabled]="timeLeft>0" (click)="resendCode()">Send code again({{timeLeft}})</button>
-    </div>
-    <button class="submit" (click)="submit()" [disabled]="code.length<1">Submit</button>
+	<h3 class="title">Confirmation Email</h3>
+	<div class="text">
+		<div class="text-title">
+			<span>Confirm your email address</span>
+		</div>
+		<i class="fas fa-laptop-code"></i>
+		<div class="description">
+			<p>Enter 6-digit code we've just sent to your email</p>
+		</div>
+		<code-input [codeLength]="6" (codeCompleted)="onCodeCompleted($event)">
+		</code-input>
+		<button
+			class="resend-btn"
+			[disabled]="timeLeft > 0"
+			(click)="resendCode()"
+		>
+			Send code again({{ timeLeft }})
+		</button>
+	</div>
+	<button class="submit" (click)="submit()" [disabled]="code.length < 1">
+		Submit
+	</button>
 </div>

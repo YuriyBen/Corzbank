@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Corzbank.Services
 {
-    public class WrappedVerificationService: IWrappedVerificationService
+    public class WrappedVerificationService : IWrappedVerificationService
     {
         private readonly UserManager<User> _userManager;
         private readonly GenericService<Verification> _genericService;
@@ -57,7 +57,7 @@ namespace Corzbank.Services
 
                 _emailService.SendEmail($"{user.Email}", $"{verificationModel.VerificationType} Verification",
                     @"
-                    <div style='background: #f5ecec; padding: 5px; text-align: center;'>"+
+                    <div style='background: #f5ecec; padding: 5px; text-align: center;'>" +
                     $"{ verificationModel.VerificationType} Verification" +
                     @"<p> Before you confirm the operation, please verify the target address carefully
                     .If you confirm operation to an erroneous address, Corzbank will be unable to

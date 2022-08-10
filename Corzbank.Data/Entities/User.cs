@@ -6,10 +6,10 @@ using System.Text;
 
 namespace Corzbank.Data.Entities
 {
-    public class User: IdentityUser<Guid>
+    public class User : IdentityUser<Guid>
     {
         public string Firstname { get; set; }
-      
+
         public string Lastname { get; set; }
 
         public UserRole Role { get; set; } = UserRole.User;

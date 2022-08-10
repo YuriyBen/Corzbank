@@ -1,4 +1,5 @@
 ﻿using Corzbank.Data.Entities;
+using Corzbank.Data.Entities.DTOs;
 using Corzbank.Data.Entities.Models;
 using System;
 using System.Collections.Generic;
@@ -9,15 +10,15 @@ namespace Corzbank.Services.Interfaces
 {
     public interface ICardService
     {
-        Task<IEnumerable<Card>> GetCards();
+        Task<IEnumerable<CardDTO>> GetCards();
 
-        IEnumerable<Card> GetCardsForUser(Guid userId);
+        IEnumerable<CardDTO> GetCardsForUser(Guid userId);
 
-        Task<Card> GetCardById(Guid id);
+        Task<CardDTO> GetCardById(Guid id);
 
-        Task<Card> CreateCard(CardModel card);
+        Task<CardDTO> CreateCard(CardModel card);
 
-        Task<Card> UpdateCard(Card cardForUpdate);
+        Task<CardDTO> UpdateCard(CardDTO cardForUpdate);
 
         Task<bool> CloseCard(Guid id);
     }

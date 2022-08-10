@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Corzbank.Services
 {
-    public class AuthenticationService: IAuthenticationService
+    public class AuthenticationService : IAuthenticationService
     {
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
@@ -28,7 +28,7 @@ namespace Corzbank.Services
 
         public async Task<bool> ValidateUser(UserForLoginModel userForAuth)
         {
-             user = await _userManager.FindByEmailAsync(userForAuth.Email);
+            user = await _userManager.FindByEmailAsync(userForAuth.Email);
 
             var result = await _userManager.CheckPasswordAsync(user, userForAuth.Password);
 

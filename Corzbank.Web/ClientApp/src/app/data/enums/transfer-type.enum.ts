@@ -1,4 +1,4 @@
 export enum TransferType {
-    Card = 1,
-    PhoneNumber
+  Card = 1,
+  PhoneNumber,
 }

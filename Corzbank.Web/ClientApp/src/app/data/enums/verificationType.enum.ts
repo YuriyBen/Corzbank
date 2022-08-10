@@ -1,6 +1,6 @@
-export enum VerificationType{
-    Email = 1,
-    ResetPassword,
-    CloseCard,
-    CloseDeposit
+export enum VerificationType {
+  Email = 1,
+  ResetPassword,
+  CloseCard,
+  CloseDeposit,
 }

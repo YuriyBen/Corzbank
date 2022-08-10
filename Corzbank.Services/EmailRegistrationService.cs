@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Corzbank.Services
 {
-    public class EmailRegistrationService: IEmailRegistrationService
+    public class EmailRegistrationService : IEmailRegistrationService
     {
         private readonly EmailSettingsModel _emailSettings;
 
