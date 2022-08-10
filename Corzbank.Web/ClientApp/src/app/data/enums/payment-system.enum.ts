@@ -1,5 +1,4 @@
-export enum PaymentSystem
-{
-    Visa = 1,
-    Mastercard 
+export enum PaymentSystem {
+  Visa = 1,
+  Mastercard,
 }

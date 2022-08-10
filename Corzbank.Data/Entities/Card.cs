@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Corzbank.Data.Entities
 {
-    public class Card: KeyEntity
+    public class Card : KeyEntity
     {
         [Range(16, 16, ErrorMessage = "Card length should be 16")]
         public string CardNumber { get; set; }
@@ -23,14 +23,14 @@ namespace Corzbank.Data.Entities
         public PaymentSystem PaymentSystem { get; set; }
 
         public decimal Balance { get; set; }
-        
+
         public bool IsActive { get; set; }
 
         [Range(5, 20, ErrorMessage = "SecretWord length should be from 5 to 20 characters")]
         public string SecretWord { get; set; }
 
         public User User { get; set; }
-        
+
         public List<DepositCard> DepositCards { get; set; }
 
         [InverseProperty("SenderCard")]

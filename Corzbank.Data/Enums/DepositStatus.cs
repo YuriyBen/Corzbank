@@ -6,7 +6,7 @@ namespace Corzbank.Data.Enums
 {
     public enum DepositStatus
     {
-        Opened=1,
+        Opened = 1,
         Finished,
         Closed
     }

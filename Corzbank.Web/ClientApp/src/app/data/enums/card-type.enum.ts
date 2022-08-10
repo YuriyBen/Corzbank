@@ -1,5 +1,5 @@
 export enum CardType {
-    Credit = 1,
-    Debit,
-    Universal
+  Credit = 1,
+  Debit,
+  Universal,
 }

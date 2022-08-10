@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Corzbank.Data.Entities;
+using Corzbank.Data.Entities.DTOs;
 using Corzbank.Data.Entities.Models;
 using Corzbank.Data.Enums;
 using Corzbank.Helpers;
@@ -31,35 +32,41 @@ namespace Corzbank.Services
             _verificationService = verificationService;
         }
 
-        public async Task<IEnumerable<Deposit>> GetDeposits()
+        public async Task<IEnumerable<DepositDTO>> GetDeposits()
         {
-            var result = await _genericService.GetRange();
+            var deposits = await _genericService.GetRange();
+
+            var result = _mapper.Map<IEnumerable<DepositDTO>>(deposits);
 
             return result;
         }
 
-        public async Task<Deposit> GetDepositById(Guid id)
+        public async Task<DepositDTO> GetDepositById(Guid id)
         {
-            var result = await _genericService.Get(id);
+            var deposit = await _genericService.Get(id);
+
+            var result = _mapper.Map<DepositDTO>(deposit);
 
             return result;
         }
 
-        public async Task<Deposit> OpenDeposit(DepositModel deposit)
+        public async Task<DepositDTO> OpenDeposit(DepositModel deposit)
         {
             var mappedDeposit = _mapper.Map<Deposit>(deposit);
 
-            var result = mappedDeposit.GenerateDeposit();
+            var generatedDeposit = mappedDeposit.GenerateDeposit();
 
-            await _genericService.Insert(result);
-           
+            await _genericService.Insert(generatedDeposit);
+
+            var result = _mapper.Map<DepositDTO>(generatedDeposit);
+
             return result;
         }
 
         public async Task<bool> CloseDeposit(Guid id)
         {
             var deposit = await GetDepositById(id);
-            
+
             var currentUserEmail = _httpContextAccessor.HttpContext.User.Identity.Name;
 
             if (deposit != null)

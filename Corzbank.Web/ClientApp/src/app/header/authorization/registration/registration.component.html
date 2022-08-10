@@ -1,64 +1,115 @@
 <div class="registration">
-    <div class="buttons">
-        <button class="go-back" (click)="goBack()"><i class="fas fa-arrow-left"></i></button>
-        <button (click)="closeWindow()">x</button>
-    </div>
-    <h3 class="title">Sign up</h3>
-    <form [formGroup]="registartionForm">
-        <div class="field">
-            <div class="field-input">
-                <i class="fas fa-user-circle"></i>
-                <input formControlName="firstName" placeholder="First Name" class="firstName">
-            </div>
-            <span *ngIf="firstName && firstName.invalid && firstName.touched">User Name is Required</span>
-        </div>
-        <div class="field">
-            <div class="field-input">
-                <i class="fas fa-user-circle"></i>
-                <input formControlName="lastName" placeholder="Last Name" class="lastName">
-            </div>
-            <span *ngIf="lastName && lastName.invalid && lastName.touched">User Name is Required</span>
-        </div>
-        <div class="field">
-            <div class="field-input">
-                <i class="fas fa-user"></i>
-                <input formControlName="email" placeholder="Email" class="email">
-            </div>
-            <span *ngIf="email && email.invalid && email.touched">Email is Required</span>
-        </div>
-        <div class="field">
-            <div class="field-input">
-                <i class="fas fa-phone"></i>
-                <input formControlName="phoneNumber" placeholder="Phone Number" class="phoneNumber">
-            </div>
-            <span *ngIf="phoneNumber && phoneNumber.invalid && phoneNumber.touched">Phone Number is Required</span>
-        </div>
-        <div [ngClass]="password.invalid && password.touched ? 'field-password field' : 'field'">
-            <div class="field-input">
-                <i class="fas fa-lock"></i>
-                <input formControlName="password" placeholder="Password" type="password" class="password">
-            </div>
-            <span *ngIf="password && password.invalid && password.touched">Password is Required and must contain at
-                least 6 characters, at least one number and both lower and uppercase letters and special
-                characters</span>
-        </div>
-        <div class="field">
-            <div class="field-input">
-                <i class="fas fa-lock"></i>
-                <input formControlName="confirmPassword" type="password" placeholder="Confirm Password"
-                    class="confirmPassword">
-            </div>
-            <span *ngIf="confirmPassword && confirmPassword.invalid && confirmPassword.touched">Password isn't
-                match</span>
-        </div>
-    </form>
-    <div class="errors" *ngFor="let arrayOfErrors of errors">
-        <div *ngFor="let error of arrayOfErrors.errors">
-            <small>{{error.description}}</small>
-        </div>
-    </div>
-    <div class="confirmation-buttons">
-        <button class="sign-in" [disabled]="registartionForm.invalid" (click)="register()">Sign up</button>
-        <a (click)="resentVerivication()">Resent verification email</a>
-    </div>
+	<div class="buttons">
+		<button class="go-back" (click)="goBack()">
+			<i class="fas fa-arrow-left"></i>
+		</button>
+		<button (click)="closeWindow()">x</button>
+	</div>
+	<h3 class="title">Sign up</h3>
+	<form [formGroup]="registartionForm">
+		<div class="field">
+			<div class="field-input">
+				<i class="fas fa-user-circle"></i>
+				<input
+					formControlName="firstName"
+					placeholder="First Name"
+					class="firstName"
+				/>
+			</div>
+			<span *ngIf="firstName && firstName.invalid && firstName.touched"
+				>User Name is Required</span
+			>
+		</div>
+		<div class="field">
+			<div class="field-input">
+				<i class="fas fa-user-circle"></i>
+				<input
+					formControlName="lastName"
+					placeholder="Last Name"
+					class="lastName"
+				/>
+			</div>
+			<span *ngIf="lastName && lastName.invalid && lastName.touched"
+				>User Name is Required</span
+			>
+		</div>
+		<div class="field">
+			<div class="field-input">
+				<i class="fas fa-user"></i>
+				<input formControlName="email" placeholder="Email" class="email" />
+			</div>
+			<span *ngIf="email && email.invalid && email.touched"
+				>Email is Required</span
+			>
+		</div>
+		<div class="field">
+			<div class="field-input">
+				<i class="fas fa-phone"></i>
+				<input
+					formControlName="phoneNumber"
+					placeholder="Phone Number"
+					class="phoneNumber"
+				/>
+			</div>
+			<span *ngIf="phoneNumber && phoneNumber.invalid && phoneNumber.touched"
+				>Phone Number is Required</span
+			>
+		</div>
+		<div
+			[ngClass]="
+				password.invalid && password.touched
+					? 'field-password field'
+					: 'field'
+			"
+		>
+			<div class="field-input">
+				<i class="fas fa-lock"></i>
+				<input
+					formControlName="password"
+					placeholder="Password"
+					type="password"
+					class="password"
+				/>
+			</div>
+			<span *ngIf="password && password.invalid && password.touched"
+				>Password is Required and must contain at least 6 characters, at
+				least one number and both lower and uppercase letters and special
+				characters</span
+			>
+		</div>
+		<div class="field">
+			<div class="field-input">
+				<i class="fas fa-lock"></i>
+				<input
+					formControlName="confirmPassword"
+					type="password"
+					placeholder="Confirm Password"
+					class="confirmPassword"
+				/>
+			</div>
+			<span
+				*ngIf="
+					confirmPassword &&
+					confirmPassword.invalid &&
+					confirmPassword.touched
+				"
+				>Password isn't match</span
+			>
+		</div>
+	</form>
+	<div class="errors" *ngFor="let arrayOfErrors of errors">
+		<div *ngFor="let error of arrayOfErrors.errors">
+			<small>{{ error.description }}</small>
+		</div>
+	</div>
+	<div class="confirmation-buttons">
+		<button
+			class="sign-in"
+			[disabled]="registartionForm.invalid"
+			(click)="register()"
+		>
+			Sign up
+		</button>
+		<a (click)="resentVerivication()">Resent verification email</a>
+	</div>
 </div>
