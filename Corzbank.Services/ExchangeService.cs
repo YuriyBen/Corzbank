@@ -3,7 +3,9 @@ using Corzbank.Data.Entities;
 using Corzbank.Data.Entities.Models;
 using Corzbank.Data.Enums;
 using Corzbank.Helpers;
+using Corzbank.Repository.Interfaces;
 using Corzbank.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -17,38 +19,35 @@ namespace Corzbank.Services
 {
     public class ExchangeService : IExchangeService
     {
-        private readonly GenericService<Exchange> _genericService;
+        private readonly IGenericRepository<Exchange> _exchangeRepo;
         private readonly IMapper _mapper;
 
-        public ExchangeService(GenericService<Exchange> genericService, IMapper mapper)
+        public ExchangeService(IGenericRepository<Exchange> exchangeRepo, IMapper mapper)
         {
             _mapper = mapper;
-            _genericService = genericService;
+            _exchangeRepo = exchangeRepo;
         }
 
         public async Task<IEnumerable<Exchange>> GetValues()
         {
-            var result = await _genericService.GetRange();
-
+            var result = await _exchangeRepo.GetQueryable().ToListAsync();
             return result;
         }
 
         public async Task<bool> CreateExchage()
         {
-            var existingValues = _genericService.FindByCondition(e => e.ExchangeCurrency == Currency.EUR || e.ExchangeCurrency == Currency.USD);
+            var existingValues = _exchangeRepo.GetQueryable().FirstOrDefaultAsync(e => e.ExchangeCurrency == Currency.EUR || e.ExchangeCurrency == Currency.USD);
 
-            if (existingValues == null)
-            {
-                var listOfValues = GetValuesForExchange.GetValues();
+            if (existingValues != null)
+                return false;
 
-                var mappedValues = _mapper.Map<IEnumerable<Exchange>>(listOfValues);
+            var listOfValues = GetValuesForExchange.GetValues();
 
-                await _genericService.InsertRange(mappedValues);
+            var mappedValues = _mapper.Map<IEnumerable<Exchange>>(listOfValues);
 
-                return true;
-            }
+            await _exchangeRepo.InsertRange(mappedValues);
 
-            return false;
+            return true;
         }
 
         public async Task<bool> UpdateExchage()
@@ -65,7 +64,7 @@ namespace Corzbank.Services
                     {
                         var mappedValue = _mapper.Map(value, valueFromDb);
 
-                        await _genericService.Update(mappedValue);
+                        await _exchangeRepo.Update(mappedValue);
                         break;
                     }
                 }

@@ -3,11 +3,14 @@ using Corzbank.Data.Entities;
 using Corzbank.Data.Entities.DTOs;
 using Corzbank.Data.Entities.Models;
 using Corzbank.Data.Enums;
+using Corzbank.Repository.Interfaces;
 using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,25 +19,20 @@ namespace Corzbank.Services
 {
     public class TransferService : ITransferService
     {
-        private readonly GenericService<Transfer> _genericService;
+        private readonly IGenericRepository<Transfer> _transferRepo;
+        private readonly IGenericRepository<Card> _cardRepo;
         private readonly IMapper _mapper;
-        private readonly ICardService _cardService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly UserManager<User> _userManager;
 
-        public TransferService(GenericService<Transfer> genericService, IMapper mapper, ICardService cardService,
-            IHttpContextAccessor httpContextAccessor, UserManager<User> userManager)
+        public TransferService(IGenericRepository<Transfer> transferRepo, IMapper mapper, IGenericRepository<Card> cardRepo)
         {
-            _cardService = cardService;
-            _genericService = genericService;
+            _transferRepo = transferRepo;
             _mapper = mapper;
-            _userManager = userManager;
-            _httpContextAccessor = httpContextAccessor;
+            _cardRepo = cardRepo;
         }
 
         public async Task<IEnumerable<TransferDTO>> GetTransfers()
         {
-            var transfers = await _genericService.GetRange();
+            var transfers = await _transferRepo.GetQueryable().ToListAsync();
 
             var result = _mapper.Map<IEnumerable<TransferDTO>>(transfers);
 
@@ -43,16 +41,16 @@ namespace Corzbank.Services
 
         public async Task<TransferDTO> GetTransferById(Guid id)
         {
-            var transfer = await _genericService.Get(id);
+            var transfer = await _transferRepo.GetQueryable().FirstOrDefaultAsync(c => c.Id == id);
 
             var result = _mapper.Map<TransferDTO>(transfer);
 
             return result;
         }
 
-        public IEnumerable<TransferDTO> GetTransfersForCard(Guid cardId)
+        public async Task<IEnumerable<TransferDTO>> GetTransfersForCard(Guid cardId)
         {
-            var transfers = _genericService.GetByCondition(x => x.SenderCardId == cardId || x.ReceiverCardId == cardId);
+            var transfers = await _transferRepo.GetQueryable().Where(c => c.SenderCardId == cardId || c.ReceiverCardId == cardId).ToListAsync();
 
             var result = _mapper.Map<IEnumerable<TransferDTO>>(transfers);
 
@@ -76,7 +74,7 @@ namespace Corzbank.Services
                     return null;
             }
 
-            var senderCard = await _cardService.GetCardByExpression(x => x.Id == transferRequest.SenderCardId);
+            var senderCard = await _cardRepo.GetQueryable().FirstOrDefaultAsync(c => c.Id == transferRequest.SenderCardId);
 
             if (senderCard.Balance <= transferRequest.Amount)
                 return null;
@@ -85,23 +83,23 @@ namespace Corzbank.Services
 
             if (transferRequest.ReceiverCardNumber != null)
             {
-                var receiverCard = await _cardService.GetCardByExpression(x => x.CardNumber == transferRequest.ReceiverCardNumber) ?? null;
+                var receiverCard = await _cardRepo.GetQueryable().FirstOrDefaultAsync(c => c.CardNumber == transferRequest.ReceiverCardNumber) ?? null;
 
                 if (receiverCard == null || senderCard.Id == receiverCard.Id)
                     return null;
 
                 receiverCard.Balance += transferRequest.Amount;
 
-                await _cardService.UpdateCard(receiverCard);
+                await _cardRepo.Update(receiverCard);
             }
 
-            await _cardService.UpdateCard(senderCard);
+            await _cardRepo.Update(senderCard);
 
             var transfer = _mapper.Map<Transfer>(transferRequest);
 
             transfer.IsSuccessful = true;
 
-            await _genericService.Insert(transfer);
+            await _transferRepo.Insert(transfer);
 
             var result = _mapper.Map<TransferDTO>(transfer);
 
@@ -117,7 +115,7 @@ namespace Corzbank.Services
 
             var mappedCard = _mapper.Map<Transfer>(transfer);
 
-            await _genericService.Remove(mappedCard);
+            await _transferRepo.Remove(mappedCard);
 
             return true;
         }

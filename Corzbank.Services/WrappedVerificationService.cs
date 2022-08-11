@@ -2,8 +2,10 @@
 using Corzbank.Data.Entities.Models;
 using Corzbank.Data.Enums;
 using Corzbank.Helpers;
+using Corzbank.Repository.Interfaces;
 using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,19 +16,19 @@ namespace Corzbank.Services
     public class WrappedVerificationService : IWrappedVerificationService
     {
         private readonly UserManager<User> _userManager;
-        private readonly GenericService<Verification> _genericService;
-        private readonly GenericService<Card> _genericCardService;
-        private readonly GenericService<Deposit> _genericDepositService;
+        private readonly IGenericRepository<Verification> _verificationRepo;
+        private readonly IGenericRepository<Card> _cardRepo;
+        private readonly IGenericRepository<Deposit> _depositRepo;
         private readonly IEmailRegistrationService _emailService;
 
-        public WrappedVerificationService(UserManager<User> userManager, GenericService<Verification> genericService,
-            IEmailRegistrationService emailService, GenericService<Card> genericCardService, GenericService<Deposit> genericDepositService)
+        public WrappedVerificationService(UserManager<User> userManager, IGenericRepository<Verification> verificationRepo,
+            IGenericRepository<Card> cardRepo, IGenericRepository<Deposit> depositRepo, IEmailRegistrationService emailService)
         {
             _emailService = emailService;
             _userManager = userManager;
-            _genericService = genericService;
-            _genericCardService = genericCardService;
-            _genericDepositService = genericDepositService;
+            _verificationRepo = verificationRepo;
+            _cardRepo = cardRepo;
+            _depositRepo = depositRepo;
         }
 
         public async Task<bool> Verify(VerificationModel verificationModel)
@@ -37,11 +39,11 @@ namespace Corzbank.Services
             {
                 var generatedCode = GenerateVerificationCode.GenerateCode();
 
-                var existingEmail = await _genericService.FindByCondition(fp => fp.User == user);
+                var existingEmail = await _verificationRepo.GetQueryable().FirstOrDefaultAsync(fp => fp.User == user);
 
                 if (existingEmail != null)
                 {
-                    await _genericService.Remove(existingEmail);
+                    await _verificationRepo.Remove(existingEmail);
                 }
 
                 var verification = new Verification
@@ -53,7 +55,7 @@ namespace Corzbank.Services
                     CardId = verificationModel.CardId
                 };
 
-                await _genericService.Insert(verification);
+                await _verificationRepo.Insert(verification);
 
                 _emailService.SendEmail($"{user.Email}", $"{verificationModel.VerificationType} Verification",
                     @"
@@ -81,7 +83,7 @@ namespace Corzbank.Services
         {
             var user = await _userManager.FindByEmailAsync(confirmationModel.Email);
 
-            Verification verification = await _genericService.FindByCondition(u => u.User == user);
+            Verification verification = await _verificationRepo.GetQueryable().FirstOrDefaultAsync(u => u.User == user);
 
             if (verification != null)
             {
@@ -89,32 +91,32 @@ namespace Corzbank.Services
                 {
                     verification.IsVerified = true;
 
-                    await _genericService.Update(verification);
+                    await _verificationRepo.Update(verification);
 
                     if (verification.VerificationType == VerificationType.Email)
                     {
                         user.EmailConfirmed = true;
                         await _userManager.UpdateAsync(user);
 
-                        await _genericService.Remove(verification);
+                        await _verificationRepo.Remove(verification);
                     }
                     else if (verification.VerificationType == VerificationType.CloseCard)
                     {
-                        var card = await _genericCardService.Get(verification.CardId);
+                        var card = await _cardRepo.GetQueryable().FirstOrDefaultAsync(v=>v.Id == verification.CardId);
                         card.IsActive = false;
 
-                        await _genericCardService.Update(card);
+                        await _cardRepo.Update(card);
 
-                        await _genericService.Remove(verification);
+                        await _verificationRepo.Remove(verification);
                     }
                     else if (verification.VerificationType == VerificationType.CloseDeposit)
                     {
-                        var deposit = await _genericDepositService.Get(verification.DepositId);
+                        var deposit = await _depositRepo.GetQueryable().FirstOrDefaultAsync(v=>v.Id == verification.DepositId);
                         deposit.IsActive = DepositStatus.Closed;
 
-                        await _genericDepositService.Update(deposit);
+                        await _depositRepo.Update(deposit);
 
-                        await _genericService.Remove(verification);
+                        await _verificationRepo.Remove(verification);
                     }
 
                     return true;

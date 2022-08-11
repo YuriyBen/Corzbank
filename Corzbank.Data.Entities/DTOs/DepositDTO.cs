@@ -24,5 +24,7 @@ namespace Corzbank.Data.Entities.DTOs
         public DepositStatus IsActive { get; set; }
 
         public Guid CardId { get; set; }
+
+        public User User { get; set; }
     }
 }

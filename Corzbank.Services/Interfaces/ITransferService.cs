@@ -14,10 +14,10 @@ namespace Corzbank.Services.Interfaces
 
         Task<TransferDTO> GetTransferById(Guid id);
 
-        IEnumerable<TransferDTO> GetTransfersForCard(Guid cardId);
+        Task<IEnumerable<TransferDTO>> GetTransfersForCard(Guid cardId);
 
-        Task<TransferDTO> CreateTransfer(TransferModel card);
+        Task<TransferDTO> CreateTransfer(TransferModel transferRequest);
 
-        Task<bool> DeleteTransfer (Guid id);
+        Task<bool> DeleteTransfer(Guid id);
     }
 }

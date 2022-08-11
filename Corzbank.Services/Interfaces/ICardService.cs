@@ -13,13 +13,11 @@ namespace Corzbank.Services.Interfaces
     {
         Task<IEnumerable<CardDTO>> GetCards();
 
-        IEnumerable<CardDTO> GetCardsForUser(Guid userId);
+        Task<IEnumerable<CardDTO>> GetCardsForUser(Guid userId);
 
-        Task<CardDTO> GetCardByExpression(Expression<Func<Card, bool>> expression);
+        Task<CardDTO> GetById(Guid id);
 
-        Task<CardDTO> CreateCard(CardModel card);
-
-        Task<CardDTO> UpdateCard(CardDTO cardForUpdate);
+        Task<CardDTO> CreateCard(CardModel cardFromRequest);
 
         Task<bool> CloseCard(Guid id);
     }
