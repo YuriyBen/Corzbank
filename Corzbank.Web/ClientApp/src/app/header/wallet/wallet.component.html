@@ -30,7 +30,7 @@
 				</div>
 				<div class="card-field">
 					<span class="card-number">{{
-						cardNumberConvertor(card.cardNumber)
+						cardNumberConvertor(card.cardNumber, true)
 					}}</span>
 					<span class="expiration-date">{{ card.expirationDate }}</span>
 				</div>
@@ -52,7 +52,7 @@
 		</div>
 		<div class="deposits" *ngIf="depositsIsShown"></div>
 	</div>
-	<div *ngIf="cardsIsShown">
+	<div *ngIf="cardsIsShown && cardDataIsShow">
 		<div class="details">
 			<div class="option">
 				<div class="option-title">
@@ -107,7 +107,10 @@
 				<h1 *ngIf="transfers.length === 0">
 					You do not have any transfers
 				</h1>
-				<div class="transaction" *ngFor="let transfer of transfers">
+				<div
+					class="transaction"
+					*ngFor="let transfer of transfers.slice().reverse()"
+				>
 					<i class="fas fa-archive icon transfer-field"></i>
 					<span class="description transfer-field"
 						>{{ TransferType[transfer.transferType] }} transfer</span

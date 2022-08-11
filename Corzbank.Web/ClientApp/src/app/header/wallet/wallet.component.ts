@@ -25,6 +25,7 @@ export class WalletComponent implements OnInit {
 	TransferType = TransferType;
 
 	selectedCard: Card;
+	cardDataIsShow: boolean;
 	cardNumberIsShown: boolean;
 	cvvIsShown: boolean;
 	cardsIsShown: boolean = true;
@@ -57,19 +58,11 @@ export class WalletComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		let currentUserId = JSON.parse(
-			this.storageService.getItem(
-				StorageTypeEnum.LocalStorage,
-				Constants.UserIdKey
-			)
-		);
+		this.cardService.cardSubject.subscribe((data: any) => {
+			this.cards = data;
+		});
 
-		this.cardService
-			.getCardsForUser(Guid.parse(currentUserId))
-			.subscribe((response: any) => {
-				this.cards = response;
-				this.selectedCard = this.cards[0];
-			});
+		this.getCards();
 
 		this.transferForm = new FormGroup({
 			receiverCardNumber: new FormControl("", [
@@ -84,6 +77,21 @@ export class WalletComponent implements OnInit {
 				Validators.pattern("^[0-9]+([,.][0-9]+)?$"),
 			]),
 		});
+	}
+
+	getCards() {
+		let currentUserId = JSON.parse(
+			this.storageService.getItem(
+				StorageTypeEnum.LocalStorage,
+				Constants.UserIdKey
+			)
+		);
+
+		this.cardService
+			.getCardsForUser(Guid.parse(currentUserId))
+			.subscribe((response: any) => {
+				this.cardService.cardSubject.next(response);
+			});
 	}
 
 	cardNumberConvertor(cardNumber: string, showCard: boolean) {
@@ -104,6 +112,7 @@ export class WalletComponent implements OnInit {
 		this.cardService.getCard(id).subscribe((response: Card) => {
 			this.selectedCard = response;
 		});
+		this.cardDataIsShow = true;
 		this.hideAllMenus();
 	}
 
@@ -147,6 +156,8 @@ export class WalletComponent implements OnInit {
 					);
 
 					this.transferForm.reset();
+					this.getCards();
+					this.selectCard(this.selectedCard.id);
 				}
 			});
 	}
