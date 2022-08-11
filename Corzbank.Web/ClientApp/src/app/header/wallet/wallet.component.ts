@@ -165,7 +165,6 @@ export class WalletComponent implements OnInit {
 	hideAllMenus() {
 		this.transactionsIsDisplayed = false;
 		this.transferMenuIsDisplayed = false;
-		this.transferMenuIsDisplayed = false;
 		this.transactionsIsDisplayed = false;
 		this.cvvIsDisplayed = false;
 		this.cardNumberIsDisplayed = false;
