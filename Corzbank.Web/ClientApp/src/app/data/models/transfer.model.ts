@@ -7,5 +7,5 @@ export class TransferModel {
   amount: number;
   note: string;
   senderCardId: Guid;
-  receiverCardId?: Guid;
+  receiverCardNumber: string;
 }

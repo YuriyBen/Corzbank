@@ -3,6 +3,7 @@ using Corzbank.Data.Entities;
 using Corzbank.Data.Entities.Models;
 using Corzbank.Data.Enums;
 using Corzbank.Helpers.Validations;
+using Corzbank.Repository.Interfaces;
 using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -19,17 +20,17 @@ namespace Corzbank.Services
         private readonly UserManager<User> _userManager;
         private readonly ValidateUser _validateUser;
         private readonly IAuthenticationService _authenticationService;
-        private readonly GenericService<Token> _genericService;
+        private readonly IGenericRepository<Token> _tokenRepo;
         private readonly IWrappedVerificationService _verificationService;
 
         public UserService(IMapper mapper, UserManager<User> userManager, ValidateUser validateUser, IAuthenticationService authenticationService,
-            GenericService<Token> genericService, IWrappedVerificationService verificationService)
+            IGenericRepository<Token> tokenRepo, IWrappedVerificationService verificationService)
         {
             _authenticationService = authenticationService;
             _mapper = mapper;
             _userManager = userManager;
             _validateUser = validateUser;
-            _genericService = genericService;
+            _tokenRepo = tokenRepo;
             _verificationService = verificationService;
         }
 
@@ -59,9 +60,9 @@ namespace Corzbank.Services
             if (!user.EmailConfirmed)
                 return null;
 
-            var tokenForDeleting = await _genericService.FindByCondition(x => x.User.Id == user.Id);
+            var tokenForDeleting = await _tokenRepo.GetQueryable().FirstOrDefaultAsync(x => x.User.Id == user.Id);
             if (tokenForDeleting != null)
-                await _genericService.Remove(tokenForDeleting);
+                await _tokenRepo.Remove(tokenForDeleting);
 
             var tokens = new Token
             {
@@ -70,7 +71,7 @@ namespace Corzbank.Services
                 User = user
             };
 
-            await _genericService.Insert(tokens);
+            await _tokenRepo.Insert(tokens);
 
             return tokens;
         }
@@ -171,7 +172,7 @@ namespace Corzbank.Services
 
         public async Task<Token> RefreshTokens(string refreshToken)
         {
-            var token = await _genericService.FindByCondition(t => t.RefreshToken == refreshToken);
+            var token = await _tokenRepo.GetQueryable().FirstOrDefaultAsync(t => t.RefreshToken == refreshToken);
             var user = await _userManager.FindByIdAsync(token.User.Id.ToString());
 
             if (token == null)
@@ -189,7 +190,7 @@ namespace Corzbank.Services
 
             var mappedTokens = _mapper.Map(newlyToken, token);
 
-            await _genericService.Update(mappedTokens);
+            await _tokenRepo.Update(mappedTokens);
 
             return mappedTokens;
         }

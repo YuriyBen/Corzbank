@@ -2,15 +2,15 @@
 	<div class="cards-deposits">
 		<div
 			class="option show-cards-title"
-			(click)="cardsIsShown = !cardsIsShown"
+			(click)="cardsIsDisplayed = !cardsIsDisplayed"
 		>
-			<div class="selected-option" *ngIf="cardsIsShown"></div>
+			<div class="selected-option" *ngIf="cardsIsDisplayed"></div>
 			<div class="option-title">
 				<h2>Cards</h2>
 				<hr />
 			</div>
 		</div>
-		<div class="cards" *ngIf="cardsIsShown">
+		<div class="cards" *ngIf="cardsIsDisplayed">
 			<div
 				class="card"
 				[ngClass]="{
@@ -30,7 +30,7 @@
 				</div>
 				<div class="card-field">
 					<span class="card-number">{{
-						cardNumberConvertor(card.cardNumber)
+						cardNumberConvertor(card.cardNumber, true)
 					}}</span>
 					<span class="expiration-date">{{ card.expirationDate }}</span>
 				</div>
@@ -42,17 +42,17 @@
 				</div>
 			</div>
 		</div>
-		<div class="option" (click)="depositsIsShown = !depositsIsShown">
-			<div class="selected-option" *ngIf="depositsIsShown"></div>
+		<div class="option" (click)="depositsIsDisplayed = !depositsIsDisplayed">
+			<div class="selected-option" *ngIf="depositsIsDisplayed"></div>
 			<div class="option-title">
 				<hr />
 				<h2>Deposits</h2>
 				<hr />
 			</div>
 		</div>
-		<div class="deposits" *ngIf="depositsIsShown"></div>
+		<div class="deposits" *ngIf="depositsIsDisplayed"></div>
 	</div>
-	<div *ngIf="cardsIsShown">
+	<div *ngIf="cardsIsDisplayed && cardDataIsDisplayed">
 		<div class="details">
 			<div class="option">
 				<div class="option-title">
@@ -60,10 +60,10 @@
 						<h2>{{ CardType[selectedCard?.cardType] }} Card</h2>
 					</div>
 					<div class="functions">
-						<div class="icon" (click)="getTransfers(selectedCard.id)">
+						<div class="icon" (click)="getTransfers()">
 							<i class="fas fa-archive"></i>
 						</div>
-						<div class="icon">
+						<div class="icon" (click)="openTransferMenu()">
 							<i class="fas fa-angle-double-right"></i>
 						</div>
 						<div class="icon">
@@ -99,15 +99,18 @@
 				</div>
 			</div>
 		</div>
-		<div *ngIf="transfersIsShown">
-			<div class="title-transfers">
+		<div *ngIf="transactionsIsDisplayed">
+			<div class="title-transactions">
 				<h2>Transactions</h2>
 			</div>
-			<div class="transfers">
-				<div class="transfer" *ngFor="let transfer of transfers">
-					<h1 *ngIf="transfers.length === 0">
-						You do not have any transfers
-					</h1>
+			<div class="transactions">
+				<h1 *ngIf="transfers.length === 0">
+					You do not have any transfers
+				</h1>
+				<div
+					class="transaction"
+					*ngFor="let transfer of transfers.slice().reverse()"
+				>
 					<i class="fas fa-archive icon transfer-field"></i>
 					<span class="description transfer-field"
 						>{{ TransferType[transfer.transferType] }} transfer</span
@@ -125,6 +128,60 @@
 					</div>
 				</div>
 			</div>
+		</div>
+		<div *ngIf="transferMenuIsDisplayed">
+			<div class="title-transfers title-transactions">
+				<h2>Transfer to Card</h2>
+			</div>
+			<form [formGroup]="transferForm">
+				<div class="transfer">
+					<div class="field">
+						<input
+							formControlName="receiverCardNumber"
+							type="text"
+							maxlength="28"
+							placeholder="**** **** **** ****"
+							maxlength="16"
+							class="form-control"
+						/>
+						<small
+							*ngIf="
+								receiverPhoneNumber &&
+								receiverPhoneNumber.invalid &&
+								receiverPhoneNumber.touched
+							"
+							>Card Number is Required</small
+						>
+					</div>
+					<div class="field">
+						<input
+							formControlName="note"
+							type="text"
+							placeholder="Note"
+							class="form-control"
+						/>
+					</div>
+					<div class="field">
+						<input
+							formControlName="amount"
+							type="text"
+							placeholder="Amount"
+							class="form-control"
+						/>
+						<small *ngIf="amount && amount.invalid && amount.touched"
+							>Amount is Required</small
+						>
+					</div>
+					<div class="submit-button">
+						<button
+							(click)="sendTransfer()"
+							[disabled]="transferForm.invalid"
+						>
+							Send
+						</button>
+					</div>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>

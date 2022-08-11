@@ -17,6 +17,6 @@ namespace Corzbank.Data.Entities.Models
 
         public Guid SenderCardId { get; set; }
 
-        public Guid? ReceiverCardId { get; set; }
+        public string ReceiverCardNumber { get; set; }
     }
 }

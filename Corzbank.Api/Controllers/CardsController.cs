@@ -34,9 +34,9 @@ namespace Corzbank.Api.Controllers
 
         [Route("users/{id}")]
         [HttpGet]
-        public IActionResult GetCardsForUser(Guid id)
+        public async Task<IActionResult> GetCardsForUser(Guid id)
         {
-            var result = _cardService.GetCardsForUser(id);
+            var result = await _cardService.GetCardsForUser(id);
 
             return Ok(result);
         }
@@ -44,7 +44,7 @@ namespace Corzbank.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCardById(Guid id)
         {
-            var result = await _cardService.GetCardById(id);
+            var result = await _cardService.GetById(id);
 
             return Ok(result);
         }

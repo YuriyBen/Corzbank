@@ -39,9 +39,9 @@ namespace Corzbank.Api.Controllers
 
         [Route("cards/{id}")]
         [HttpGet]
-        public IActionResult GetTransfersForCard(Guid id)
+        public async Task<IActionResult> GetTransfersForCard(Guid id)
         {
-            var result = _transferService.GetTransfersForCard(id);
+            var result = await _transferService.GetTransfersForCard(id);
 
             return Ok(result);
         }

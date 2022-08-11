@@ -5,6 +5,8 @@ using Corzbank.Data.Entities.Models;
 using Corzbank.Helpers.Validations;
 using Corzbank.Services;
 using Corzbank.Services.Interfaces;
+using Corzbank.Repository;
+using Corzbank.Repository.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -34,7 +36,7 @@ namespace Corzbank.Extensions
             services.AddScoped<IEmailRegistrationService, EmailRegistrationService>();
             services.AddScoped<IWrappedVerificationService, WrappedVerificationService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped(typeof(GenericService<>));
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<ILoggerManager, LoggerManager>();
 
             services.AddScoped<ValidateUser>();

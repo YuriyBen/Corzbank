@@ -4,9 +4,11 @@ using Corzbank.Data.Entities.DTOs;
 using Corzbank.Data.Entities.Models;
 using Corzbank.Data.Enums;
 using Corzbank.Helpers;
+using Corzbank.Repository.Interfaces;
 using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,25 +18,21 @@ namespace Corzbank.Services
 {
     public class DepositService : IDepositService
     {
-        private readonly GenericService<Deposit> _genericService;
+        private readonly IGenericRepository<Deposit> _depositRepo;
         private readonly IMapper _mapper;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly UserManager<User> _userManager;
         private readonly IWrappedVerificationService _verificationService;
 
-        public DepositService(GenericService<Deposit> genericService, IMapper mapper, IHttpContextAccessor httpContextAccessor,
-            UserManager<User> userManager, IWrappedVerificationService verificationService)
+        public DepositService(IGenericRepository<Deposit> depositRepo, IMapper mapper,
+            IWrappedVerificationService verificationService)
         {
-            _genericService = genericService;
+            _depositRepo = depositRepo;
             _mapper = mapper;
-            _httpContextAccessor = httpContextAccessor;
-            _userManager = userManager;
             _verificationService = verificationService;
         }
 
         public async Task<IEnumerable<DepositDTO>> GetDeposits()
         {
-            var deposits = await _genericService.GetRange();
+            var deposits = await _depositRepo.GetQueryable().ToListAsync();
 
             var result = _mapper.Map<IEnumerable<DepositDTO>>(deposits);
 
@@ -43,7 +41,7 @@ namespace Corzbank.Services
 
         public async Task<DepositDTO> GetDepositById(Guid id)
         {
-            var deposit = await _genericService.Get(id);
+            var deposit = await _depositRepo.GetQueryable().FirstOrDefaultAsync(c => c.Id == id);
 
             var result = _mapper.Map<DepositDTO>(deposit);
 
@@ -56,7 +54,7 @@ namespace Corzbank.Services
 
             var generatedDeposit = mappedDeposit.GenerateDeposit();
 
-            await _genericService.Insert(generatedDeposit);
+            await _depositRepo.Insert(generatedDeposit);
 
             var result = _mapper.Map<DepositDTO>(generatedDeposit);
 
@@ -65,15 +63,17 @@ namespace Corzbank.Services
 
         public async Task<bool> CloseDeposit(Guid id)
         {
-            var deposit = await GetDepositById(id);
-
-            var currentUserEmail = _httpContextAccessor.HttpContext.User.Identity.Name;
+            var deposit = await _depositRepo
+                .GetQueryable()
+                .Include(c => c.Card)
+                .ThenInclude(u => u.User)
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             if (deposit != null)
             {
                 var verificationModel = new VerificationModel
                 {
-                    Email = currentUserEmail,
+                    Email = deposit.Card.User.Email,
                     VerificationType = VerificationType.CloseDeposit,
                     DepositId = id
                 };

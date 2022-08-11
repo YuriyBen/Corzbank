@@ -214,7 +214,7 @@
     }
 }
 
-.title-transfers {
+.title-transactions {
     display: flex;
     margin-top: 30px;
     background-color: #1a1728;
@@ -227,13 +227,13 @@
     }
 }
 
-.transfers {
+.transactions {
     overflow: auto;
     max-height: 305px;
     background-color: #2b273f;
 
 
-    .transfer {
+    .transaction {
         display: flex;
         padding: 15px 30px;
         background: #2b2838;
@@ -263,6 +263,64 @@
             width: 20%;
             display: flex;
             justify-content: end;
+        }
+    }
+}
+
+.transfer {
+    background-color: #2b273f;
+    height: fit-content;
+    padding: 10px;
+
+    small {
+        margin: 3px 40px;
+        color: red;
+        font-size: 18px;
+    }
+
+    .form-control.ng-touched.ng-valid {
+        border-color: green;
+    }
+
+    .form-control.ng-touched.ng-invalid {
+        border-color: red;
+    }
+
+    .field {
+        display: flex;
+        flex-direction: column;
+        margin: 5px 0;
+        height: 76px;
+
+        input {
+            padding: 0 20px;
+            letter-spacing: 2px;
+        }
+    }
+
+    .submit-button {
+        display: flex;
+        justify-content: flex-end;
+
+        button {
+            width: 152px;
+            height: 36px;
+            font-size: 22px;
+            font-weight: 500;
+            border: none;
+            outline: none;
+            border-radius: 8px;
+            background: #21cf0c;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #8eb976;
+            }
+
+            &:hover[disabled] {
+                background-color: #21cf0c;
+                cursor: auto;
+            }
         }
     }
 }

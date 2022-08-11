@@ -5,6 +5,7 @@ using Corzbank.Data.Entities.DTOs;
 using Corzbank.Data.Entities.Models;
 using Corzbank.Data.Enums;
 using Corzbank.Helpers;
+using Corzbank.Repository.Interfaces;
 using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -12,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,17 +21,15 @@ namespace Corzbank.Services
 {
     public class CardService : ICardService
     {
-        private readonly GenericService<Card> _genericService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly UserManager<User> _userManager;
+        private readonly IGenericRepository<Card> _cardRepo;
         private readonly IWrappedVerificationService _verificationService;
         private readonly IMapper _mapper;
+        private readonly UserManager<User> _userManager;
 
-        public CardService(GenericService<Card> genericService, IHttpContextAccessor httpContextAccessor,
-            UserManager<User> userManager, IWrappedVerificationService verificationService, IMapper mapper)
+        public CardService(IGenericRepository<Card> genericService, UserManager<User> userManager,
+            IWrappedVerificationService verificationService, IMapper mapper)
         {
-            _genericService = genericService;
-            _httpContextAccessor = httpContextAccessor;
+            _cardRepo = genericService;
             _userManager = userManager;
             _verificationService = verificationService;
             _mapper = mapper;
@@ -37,25 +37,27 @@ namespace Corzbank.Services
 
         public async Task<IEnumerable<CardDTO>> GetCards()
         {
-            var cards = await _genericService.GetRange();
+            var cards = await _cardRepo.GetQueryable().ToListAsync();
 
             var result = _mapper.Map<IEnumerable<CardDTO>>(cards);
 
             return result;
         }
 
-        public IEnumerable<CardDTO> GetCardsForUser(Guid userId)
+        public async Task<IEnumerable<CardDTO>> GetCardsForUser(Guid userId)
         {
-            var cards = _genericService.GetByCondition(x => x.User.Id == userId, x => x.User);
+            var cards = await _cardRepo.GetQueryable()
+                .Include(u => u.User)
+                .Where(c => c.User.Id == userId).ToListAsync();
 
             var result = _mapper.Map<IEnumerable<CardDTO>>(cards);
 
             return result;
         }
 
-        public async Task<CardDTO> GetCardById(Guid id)
+        public async Task<CardDTO> GetById(Guid id)
         {
-            var card = await _genericService.Get(id);
+            var card = await _cardRepo.GetQueryable().FirstOrDefaultAsync(c => c.Id == id);
 
             var result = _mapper.Map<CardDTO>(card);
 
@@ -66,65 +68,46 @@ namespace Corzbank.Services
         {
             var currentUser = await _userManager.FindByIdAsync(cardFromRequest.UserId.ToString());
 
-            var userHasCard = await _genericService.FindByCondition(c => c.CardType.Equals(cardFromRequest.CardType) && c.User.Id == currentUser.Id && c.IsActive);
+            var userHasCard = await _cardRepo.GetQueryable().FirstOrDefaultAsync(c => c.CardType.Equals(cardFromRequest.CardType) && c.User.Id == currentUser.Id && c.IsActive);
 
             if (userHasCard != null)
                 return null;
 
             var card = cardFromRequest.GenerateCard();
-            var duplicateCard = await _genericService.FindByCondition(c => c.CardNumber.Equals(card.CardNumber));
+            var duplicateCard = await _cardRepo.GetQueryable().FirstOrDefaultAsync(c => c.CardNumber.Equals(card.CardNumber));
 
             while (duplicateCard != null)
             {
                 card = cardFromRequest.GenerateCard();
-                duplicateCard = await _genericService.FindByCondition(c => c.CardNumber.Equals(card.CardNumber));
+                duplicateCard = await _cardRepo.GetQueryable().FirstOrDefaultAsync(c => c.CardNumber.Equals(card.CardNumber));
             }
 
             card.User = currentUser;
 
-            await _genericService.Insert(card);
+            await _cardRepo.Insert(card);
 
             var result = _mapper.Map<CardDTO>(card);
 
             return result;
         }
 
-        public async Task<CardDTO> UpdateCard(CardDTO cardForUpdate)
-        {
-            if (cardForUpdate != null)
-            {
-                var mappedCard = _mapper.Map<Card>(cardForUpdate);
-
-                _genericService.DetachLocal(x => x.Id == mappedCard.Id);
-
-                await _genericService.Update(mappedCard);
-
-                return cardForUpdate;
-            }
-
-            return null;
-        }
-
         public async Task<bool> CloseCard(Guid id)
         {
-            var card = GetCardById(id);
+            var card = await _cardRepo.GetQueryable().Include(u => u.User).FirstOrDefaultAsync(c => c.Id == id);
 
-            var currentUserEmail = _httpContextAccessor.HttpContext.User.Identity.Name;
+            if (card == null)
+                return false;
 
-            if (card != null)
+            var verificationModel = new VerificationModel
             {
-                var verificationModel = new VerificationModel
-                {
-                    Email = currentUserEmail,
-                    VerificationType = VerificationType.CloseCard,
-                    CardId = id
-                };
+                Email = card.User.Email,
+                VerificationType = VerificationType.CloseCard,
+                CardId = id
+            };
 
-                await _verificationService.Verify(verificationModel);
+            await _verificationService.Verify(verificationModel);
 
-                return true;
-            }
-            return false;
+            return true;
         }
     }
 }
