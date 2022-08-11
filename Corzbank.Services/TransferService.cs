@@ -65,48 +65,47 @@ namespace Corzbank.Services
             {
                 transferRequest.ReceiverPhoneNumber = null;
 
-                if (transferRequest.ReceiverCardId == null)
+                if (transferRequest.ReceiverCardNumber == null)
                     return null;
             }
             else
             {
-                transferRequest.ReceiverCardId = null;
+                transferRequest.ReceiverCardNumber = null;
 
                 if (transferRequest.ReceiverPhoneNumber == null)
                     return null;
             }
 
-            var senderCard = await _cardService.GetCardById(transferRequest.SenderCardId);
+            var senderCard = await _cardService.GetCardByExpression(x => x.Id == transferRequest.SenderCardId);
 
-            if (senderCard.Balance >= transferRequest.Amount)
+            if (senderCard.Balance <= transferRequest.Amount)
+                return null;
+
+            senderCard.Balance -= transferRequest.Amount;
+
+            if (transferRequest.ReceiverCardNumber != null)
             {
-                senderCard.Balance -= transferRequest.Amount;
-                await _cardService.UpdateCard(senderCard);
+                var receiverCard = await _cardService.GetCardByExpression(x => x.CardNumber == transferRequest.ReceiverCardNumber) ?? null;
 
-                if (transferRequest.ReceiverCardId != null)
-                {
-                    var receiverCard = await _cardService.GetCardById(transferRequest.ReceiverCardId ?? Guid.Empty);
+                if (receiverCard == null || senderCard.Id == receiverCard.Id)
+                    return null;
 
-                    if (receiverCard != null && senderCard != receiverCard)
-                    {
-                        receiverCard.Balance += transferRequest.Amount;
+                receiverCard.Balance += transferRequest.Amount;
 
-                        await _cardService.UpdateCard(receiverCard);
-                    }
-                }
-
-                var transfer = _mapper.Map<Transfer>(transferRequest);
-
-                transfer.IsSuccessful = true;
-
-                await _genericService.Insert(transfer);
-
-                var result = _mapper.Map<TransferDTO>(transfer);
-
-                return result;
+                await _cardService.UpdateCard(receiverCard);
             }
 
-            return null;
+            await _cardService.UpdateCard(senderCard);
+
+            var transfer = _mapper.Map<Transfer>(transferRequest);
+
+            transfer.IsSuccessful = true;
+
+            await _genericService.Insert(transfer);
+
+            var result = _mapper.Map<TransferDTO>(transfer);
+
+            return result;
         }
 
         public async Task<bool> DeleteTransfer(Guid id)
@@ -114,14 +113,13 @@ namespace Corzbank.Services
             var transfer = await GetTransferById(id);
 
             if (transfer != null)
-            {
-                var mappedCard = _mapper.Map<Transfer>(transfer);
+                return false;
 
-                await _genericService.Remove(mappedCard);
+            var mappedCard = _mapper.Map<Transfer>(transfer);
 
-                return true;
-            }
-            return false;
+            await _genericService.Remove(mappedCard);
+
+            return true;
         }
     }
 }

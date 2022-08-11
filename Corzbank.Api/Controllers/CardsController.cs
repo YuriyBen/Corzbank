@@ -44,7 +44,7 @@ namespace Corzbank.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCardById(Guid id)
         {
-            var result = await _cardService.GetCardById(id);
+            var result = await _cardService.GetCardByExpression(x => x.Id == id);
 
             return Ok(result);
         }

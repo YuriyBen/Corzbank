@@ -3,6 +3,7 @@ using Corzbank.Data.Entities.DTOs;
 using Corzbank.Data.Entities.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ namespace Corzbank.Services.Interfaces
 
         IEnumerable<CardDTO> GetCardsForUser(Guid userId);
 
-        Task<CardDTO> GetCardById(Guid id);
+        Task<CardDTO> GetCardByExpression(Expression<Func<Card, bool>> expression);
 
         Task<CardDTO> CreateCard(CardModel card);
 

@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -53,9 +54,9 @@ namespace Corzbank.Services
             return result;
         }
 
-        public async Task<CardDTO> GetCardById(Guid id)
+        public async Task<CardDTO> GetCardByExpression(Expression<Func<Card, bool>> expression)
         {
-            var card = await _genericService.Get(id);
+            var card = await _genericService.FindByCondition(expression);
 
             var result = _mapper.Map<CardDTO>(card);
 
@@ -107,24 +108,23 @@ namespace Corzbank.Services
 
         public async Task<bool> CloseCard(Guid id)
         {
-            var card = GetCardById(id);
+            var card = GetCardByExpression(x => x.Id == id);
 
             var currentUserEmail = _httpContextAccessor.HttpContext.User.Identity.Name;
 
-            if (card != null)
+            if (card == null)
+                return false;
+
+            var verificationModel = new VerificationModel
             {
-                var verificationModel = new VerificationModel
-                {
-                    Email = currentUserEmail,
-                    VerificationType = VerificationType.CloseCard,
-                    CardId = id
-                };
+                Email = currentUserEmail,
+                VerificationType = VerificationType.CloseCard,
+                CardId = id
+            };
 
-                await _verificationService.Verify(verificationModel);
+            await _verificationService.Verify(verificationModel);
 
-                return true;
-            }
-            return false;
+            return true;
         }
     }
 }

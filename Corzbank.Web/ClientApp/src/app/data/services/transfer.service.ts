@@ -22,7 +22,7 @@ export class TransferService {
     return this.http.get(this.url + id);
   }
 
-  getTransfersForCard(cardId: number) {
+  getTransfersForCard(cardId: Guid) {
     return this.http.get(this.url + "cards/" + cardId);
   }
 
