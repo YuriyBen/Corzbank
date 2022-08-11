@@ -93,7 +93,7 @@ namespace Corzbank.Services
 
         public async Task<bool> CloseCard(Guid id)
         {
-            var card = await GetById(id);
+            var card = await _cardRepo.GetQueryable().Include(u => u.User).FirstOrDefaultAsync(c => c.Id == id);
 
             if (card == null)
                 return false;

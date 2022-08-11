@@ -63,13 +63,17 @@ namespace Corzbank.Services
 
         public async Task<bool> CloseDeposit(Guid id)
         {
-            var deposit = await GetDepositById(id);
+            var deposit = await _depositRepo
+                .GetQueryable()
+                .Include(c => c.Card)
+                .ThenInclude(u => u.User)
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             if (deposit != null)
             {
                 var verificationModel = new VerificationModel
                 {
-                    Email = deposit.User.Email,
+                    Email = deposit.Card.User.Email,
                     VerificationType = VerificationType.CloseDeposit,
                     DepositId = id
                 };

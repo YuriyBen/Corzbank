@@ -25,13 +25,13 @@ export class WalletComponent implements OnInit {
 	TransferType = TransferType;
 
 	selectedCard: Card;
-	cardDataIsShow: boolean;
-	cardNumberIsShown: boolean;
-	cvvIsShown: boolean;
-	cardsIsShown: boolean = true;
-	depositsIsShown: boolean;
-	transactionsIsShown: boolean;
-	transferMenuIsShown: boolean;
+	cardDataIsDisplayed: boolean;
+	cardNumberIsDisplayed: boolean;
+	cvvIsDisplayed: boolean;
+	cardsIsDisplayed: boolean = true;
+	depositsIsDisplayed: boolean;
+	transactionsIsDisplayed: boolean;
+	transferMenuIsDisplayed: boolean;
 
 	cards: Card[] = [];
 	transfers: Transfer[] = [];
@@ -112,13 +112,13 @@ export class WalletComponent implements OnInit {
 		this.cardService.getCard(id).subscribe((response: Card) => {
 			this.selectedCard = response;
 		});
-		this.cardDataIsShow = true;
+		this.cardDataIsDisplayed = true;
 		this.hideAllMenus();
 	}
 
 	getTransfers() {
 		this.hideAllMenus();
-		this.transactionsIsShown = !this.transactionsIsShown;
+		this.transactionsIsDisplayed = !this.transactionsIsDisplayed;
 		this.transferService
 			.getTransfersForCard(this.selectedCard.id)
 			.subscribe((response: Transfer[]) => {
@@ -128,7 +128,7 @@ export class WalletComponent implements OnInit {
 
 	openTransferMenu() {
 		this.hideAllMenus();
-		this.transferMenuIsShown = !this.transferMenuIsShown;
+		this.transferMenuIsDisplayed = !this.transferMenuIsDisplayed;
 	}
 
 	sendTransfer() {
@@ -163,12 +163,12 @@ export class WalletComponent implements OnInit {
 	}
 
 	hideAllMenus() {
-		this.transactionsIsShown = false;
-		this.transferMenuIsShown = false;
-		this.transferMenuIsShown = false;
-		this.transactionsIsShown = false;
-		this.cvvIsShown = false;
-		this.cardNumberIsShown = false;
-		this.transactionsIsShown = false;
+		this.transactionsIsDisplayed = false;
+		this.transferMenuIsDisplayed = false;
+		this.transferMenuIsDisplayed = false;
+		this.transactionsIsDisplayed = false;
+		this.cvvIsDisplayed = false;
+		this.cardNumberIsDisplayed = false;
+		this.transactionsIsDisplayed = false;
 	}
 }

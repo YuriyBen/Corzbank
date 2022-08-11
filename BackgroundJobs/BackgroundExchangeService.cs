@@ -40,7 +40,7 @@ namespace BackgroundJobs
 
         private async Task GetValues()
         {
-            using(var scope = _serviceProvider.CreateScope())
+            using (var scope = _serviceProvider.CreateScope())
             {
                 var exchangeService = scope.ServiceProvider.GetRequiredService<IExchangeService>();
 

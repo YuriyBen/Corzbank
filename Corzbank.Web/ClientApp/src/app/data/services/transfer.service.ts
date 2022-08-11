@@ -1,32 +1,34 @@
 import { HttpClient } from "@angular/common/http";
 import { Inject, Injectable } from "@angular/core";
 import { Guid } from "guid-typescript";
+import { Observable } from "rxjs";
+import { Transfer } from "../dtos/transfer.dto";
 import { TransferModel } from "../models/transfer.model";
 
 @Injectable({
-  providedIn: "root",
+	providedIn: "root",
 })
 export class TransferService {
-  constructor(
-    private http: HttpClient,
-    @Inject("BASE_API_URL") private baseUrl: string
-  ) {}
+	constructor(
+		private http: HttpClient,
+		@Inject("BASE_API_URL") private baseUrl: string
+	) {}
 
-  url = this.baseUrl + "transfers/";
+	url = this.baseUrl + "transfers/";
 
-  getTransfers() {
-    return this.http.get(this.url);
-  }
+	getTransfers(): Observable<Transfer[]> {
+		return this.http.get<Transfer[]>(this.url);
+	}
 
-  getTransfer(id: Guid) {
-    return this.http.get(this.url + id);
-  }
+	getTransfer(id: Guid): Observable<Transfer> {
+		return this.http.get<Transfer>(this.url + id);
+	}
 
-  getTransfersForCard(cardId: Guid) {
-    return this.http.get(this.url + "cards/" + cardId);
-  }
+	getTransfersForCard(cardId: Guid): Observable<Transfer[]> {
+		return this.http.get<Transfer[]>(this.url + "cards/" + cardId);
+	}
 
-  createTransfer(transfer: TransferModel) {
-    return this.http.post(this.url, transfer);
-  }
+	createTransfer(transfer: TransferModel): Observable<Transfer> {
+		return this.http.post<Transfer>(this.url, transfer);
+	}
 }

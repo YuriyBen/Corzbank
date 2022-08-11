@@ -2,15 +2,15 @@
 	<div class="cards-deposits">
 		<div
 			class="option show-cards-title"
-			(click)="cardsIsShown = !cardsIsShown"
+			(click)="cardsIsDisplayed = !cardsIsDisplayed"
 		>
-			<div class="selected-option" *ngIf="cardsIsShown"></div>
+			<div class="selected-option" *ngIf="cardsIsDisplayed"></div>
 			<div class="option-title">
 				<h2>Cards</h2>
 				<hr />
 			</div>
 		</div>
-		<div class="cards" *ngIf="cardsIsShown">
+		<div class="cards" *ngIf="cardsIsDisplayed">
 			<div
 				class="card"
 				[ngClass]="{
@@ -42,17 +42,17 @@
 				</div>
 			</div>
 		</div>
-		<div class="option" (click)="depositsIsShown = !depositsIsShown">
-			<div class="selected-option" *ngIf="depositsIsShown"></div>
+		<div class="option" (click)="depositsIsDisplayed = !depositsIsDisplayed">
+			<div class="selected-option" *ngIf="depositsIsDisplayed"></div>
 			<div class="option-title">
 				<hr />
 				<h2>Deposits</h2>
 				<hr />
 			</div>
 		</div>
-		<div class="deposits" *ngIf="depositsIsShown"></div>
+		<div class="deposits" *ngIf="depositsIsDisplayed"></div>
 	</div>
-	<div *ngIf="cardsIsShown && cardDataIsShow">
+	<div *ngIf="cardsIsDisplayed && cardDataIsDisplayed">
 		<div class="details">
 			<div class="option">
 				<div class="option-title">

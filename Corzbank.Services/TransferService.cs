@@ -108,7 +108,7 @@ namespace Corzbank.Services
 
         public async Task<bool> DeleteTransfer(Guid id)
         {
-            var transfer = await GetTransferById(id);
+            var transfer = await _transferRepo.GetQueryable().FirstOrDefaultAsync(t => t.Id == id);
 
             if (transfer != null)
                 return false;

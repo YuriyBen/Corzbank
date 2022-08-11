@@ -1,7 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Inject, Injectable } from "@angular/core";
 import { Guid } from "guid-typescript";
-import { Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
+import { Card } from "../dtos/card.dto";
 import { CardModel } from "../models/card.model";
 
 @Injectable({
@@ -17,23 +18,23 @@ export class CardService {
 		@Inject("BASE_API_URL") private baseUrl: string
 	) {}
 
-	getCards() {
-		return this.http.get(this.url);
+	getCards(): Observable<Card[]> {
+		return this.http.get<Card[]>(this.url);
 	}
 
-	getCard(id: Guid) {
-		return this.http.get(this.url + id);
+	getCard(id: Guid): Observable<Card> {
+		return this.http.get<Card>(this.url + id);
 	}
 
-	getCardsForUser(id: Guid) {
-		return this.http.get(this.url + "users/" + id);
+	getCardsForUser(id: Guid): Observable<Card[]> {
+		return this.http.get<Card[]>(this.url + "users/" + id);
 	}
 
-	createCard(card: CardModel) {
-		return this.http.post(this.url, card);
+	createCard(card: CardModel): Observable<Card> {
+		return this.http.post<Card>(this.url, card);
 	}
 
-	deleteCard(id: Guid) {
-		return this.http.delete(this.url + id);
+	deleteCard(id: Guid): Observable<boolean> {
+		return this.http.delete<boolean>(this.url + id);
 	}
 }
