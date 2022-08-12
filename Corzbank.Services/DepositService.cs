@@ -65,8 +65,7 @@ namespace Corzbank.Services
         {
             var deposit = await _depositRepo
                 .GetQueryable()
-                .Include(c => c.Card)
-                .ThenInclude(u => u.User)
+                .Include(c => c.Card).ThenInclude(u => u.User)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (deposit != null)

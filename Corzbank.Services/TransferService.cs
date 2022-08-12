@@ -81,6 +81,10 @@ namespace Corzbank.Services
 
             senderCard.Balance -= transferRequest.Amount;
 
+            await _cardRepo.Update(senderCard);
+
+            var transfer = _mapper.Map<Transfer>(transferRequest);
+
             if (transferRequest.ReceiverCardNumber != null)
             {
                 var receiverCard = await _cardRepo.GetQueryable().FirstOrDefaultAsync(c => c.CardNumber == transferRequest.ReceiverCardNumber) ?? null;
@@ -91,11 +95,9 @@ namespace Corzbank.Services
                 receiverCard.Balance += transferRequest.Amount;
 
                 await _cardRepo.Update(receiverCard);
+
+                transfer.ReceiverCardId = receiverCard.Id;
             }
-
-            await _cardRepo.Update(senderCard);
-
-            var transfer = _mapper.Map<Transfer>(transferRequest);
 
             transfer.IsSuccessful = true;
 

@@ -32,6 +32,7 @@ export class WalletComponent implements OnInit {
 	depositsIsDisplayed: boolean;
 	transactionsIsDisplayed: boolean;
 	transferMenuIsDisplayed: boolean;
+	settingsIsDisplayed: boolean;
 
 	cards: Card[] = [];
 	transfers: Transfer[] = [];
@@ -131,6 +132,11 @@ export class WalletComponent implements OnInit {
 		this.transferMenuIsDisplayed = !this.transferMenuIsDisplayed;
 	}
 
+	openSettings(){
+		this.hideAllMenus();
+		this.settingsIsDisplayed = !this.settingsIsDisplayed;
+	}
+
 	sendTransfer() {
 		var transferModel: TransferModel = {
 			transferType: TransferType.Card,
@@ -169,5 +175,6 @@ export class WalletComponent implements OnInit {
 		this.cvvIsDisplayed = false;
 		this.cardNumberIsDisplayed = false;
 		this.transactionsIsDisplayed = false;
+		this.settingsIsDisplayed = false;
 	}
 }

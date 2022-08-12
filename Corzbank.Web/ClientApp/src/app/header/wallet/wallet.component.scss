@@ -129,87 +129,91 @@
     }
 }
 
-.details {
+.details-block {
     width: 100%;
-    background-color: #2b273f;
-    color: #cecece;
 
-    .option-title {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #021d01;
+    .details {
+        width: 100%;
+        background-color: #2b273f;
+        color: #cecece;
 
-        .icon {
-            border-radius: 7px;
-            height: 35px;
-            width: 35px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-right: 17px;
-            background: white;
-            cursor: pointer;
-            color: #837777;
-
-            &:hover {
-                background-color: #bdbdbd;
-            }
-        }
-
-        .functions {
-            display: flex;
-        }
-    }
-
-    .card-data {
-        display: flex;
-
-        .main-data,
-        .balance {
-            margin-right: 90px;
-            padding: 20px 0 0 20px;
-        }
-
-        .main-data {
-            width: 282px;
-
-            .card-number,
-            .cvv {
-                display: flex;
-                border-radius: 20px;
-                transition: 0.5s;
-
-                &:hover {
-                    background-color: #2e2a43;
-                }
-            }
-        }
-
-        span {
-            padding: 10px;
-            font-size: 19px;
-        }
-
-        .date-cvv {
+        .option-title {
             display: flex;
             justify-content: space-between;
-            margin-top: 10px;
+            align-items: center;
+            background-color: #021d01;
+
+            .icon {
+                border-radius: 7px;
+                height: 35px;
+                width: 35px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-right: 17px;
+                background: white;
+                cursor: pointer;
+                color: #837777;
+
+                &:hover {
+                    background-color: #bdbdbd;
+                }
+            }
+
+            .functions {
+                display: flex;
+            }
         }
 
-        .expiration-date {
-            font-size: 16px;
-        }
+        .card-data {
+            display: flex;
 
-        .balance h2,
-        .expiration-date {
-            color: #9c9c9c;
-        }
+            .main-data,
+            .balance {
+                margin-right: 90px;
+                padding: 20px 0 0 20px;
+            }
 
-        .cvv,
-        .card-number {
-            cursor: pointer;
-            letter-spacing: 3px;
+            .main-data {
+                width: 282px;
+
+                .card-number,
+                .cvv {
+                    display: flex;
+                    border-radius: 20px;
+                    transition: 0.5s;
+
+                    &:hover {
+                        background-color: #2e2a43;
+                    }
+                }
+            }
+
+            span {
+                padding: 10px;
+                font-size: 19px;
+            }
+
+            .date-cvv {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 10px;
+            }
+
+            .expiration-date {
+                font-size: 16px;
+            }
+
+            .balance h2,
+            .expiration-date {
+                color: #9c9c9c;
+            }
+
+            .cvv,
+            .card-number {
+                cursor: pointer;
+                letter-spacing: 3px;
+            }
         }
     }
 }
@@ -323,4 +327,8 @@
             }
         }
     }
+}
+
+.settings{
+    background-color: grey;
 }

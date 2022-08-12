@@ -52,7 +52,7 @@
 		</div>
 		<div class="deposits" *ngIf="depositsIsDisplayed"></div>
 	</div>
-	<div *ngIf="cardsIsDisplayed && cardDataIsDisplayed">
+	<div class="details-block" *ngIf="cardsIsDisplayed && cardDataIsDisplayed">
 		<div class="details">
 			<div class="option">
 				<div class="option-title">
@@ -66,7 +66,7 @@
 						<div class="icon" (click)="openTransferMenu()">
 							<i class="fas fa-angle-double-right"></i>
 						</div>
-						<div class="icon">
+						<div class="icon"(click)="openSettings()">
 							<i class="fas fa-cog"></i>
 						</div>
 					</div>
@@ -182,6 +182,16 @@
 					</div>
 				</div>
 			</form>
+		</div>
+		<div *ngIf="settingsIsDisplayed">
+			<div class="title-settings title-transactions">
+				<h2>Settings</h2>
+			</div>
+			<div class="settings">
+				<h1>First setting</h1>
+				<h1>Second setting</h1>
+				<h1>Third setting</h1>
+			</div>
 		</div>
 	</div>
 </div>
