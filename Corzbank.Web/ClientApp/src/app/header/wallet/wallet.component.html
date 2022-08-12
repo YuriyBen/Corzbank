@@ -11,6 +11,7 @@
 			</div>
 		</div>
 		<div class="cards" *ngIf="cardsIsDisplayed">
+			<h1 *ngIf="cards.length === 0">You do not have any cards</h1>
 			<div
 				class="card"
 				[ngClass]="{
@@ -41,6 +42,9 @@
 					}}</span>
 				</div>
 			</div>
+			<div class="open-card submit-button">
+				<button (click)="openCardMenu()">Open Card</button>
+			</div>
 		</div>
 		<div class="option" (click)="depositsIsDisplayed = !depositsIsDisplayed">
 			<div class="selected-option" *ngIf="depositsIsDisplayed"></div>
@@ -51,6 +55,65 @@
 			</div>
 		</div>
 		<div class="deposits" *ngIf="depositsIsDisplayed"></div>
+	</div>
+	<div class="open-card-menu-block" *ngIf="openCardMenuIsDisplayed">
+		<div class="title-open-card-menu title-transactions">
+			<h2>Open Card</h2>
+		</div>
+		<div class="open-card-menu" [formGroup]="createCardForm">
+			<div class="field">
+				<div class="card-type">
+					<span>Card Type:</span>
+					<select formControlName="cardType">
+						<option
+							*ngFor="let cardType of cardTypeKeys"
+							[value]="cardType"
+						>
+							{{ CardType[cardType] }}
+						</option>
+					</select>
+				</div>
+				<small *ngIf="cardType && cardType.invalid && cardType.touched"
+					>Card Type is Required</small
+				>
+			</div>
+			<div class="field">
+				<div class="payment-system">
+					<span>Payment System:</span>
+					<select formControlName="paymentSystem">
+						<option
+							*ngFor="let paymentSystem of paymentSystemKeys"
+							[value]="paymentSystem"
+						>
+							{{ PaymentSystem[paymentSystem] }}
+						</option>
+					</select>
+				</div>
+				<small
+					*ngIf="
+						paymentSystem &&
+						paymentSystem.invalid &&
+						paymentSystem.touched
+					"
+					>Payment System is Required</small
+				>
+			</div>
+			<div class="field">
+				<div class="secret-word">
+					<span>Secret Word:</span>
+					<input type="text" formControlName="secretWord" />
+				</div>
+				<small
+					*ngIf="secretWord && secretWord.invalid && secretWord.touched"
+					>Secret Word is Required</small
+				>
+			</div>
+			<div class="open-card submit-button">
+				<button (click)="createCard()" [disabled]="createCardForm.invalid">
+					Create Card
+				</button>
+			</div>
+		</div>
 	</div>
 	<div class="details-block" *ngIf="cardsIsDisplayed && cardDataIsDisplayed">
 		<div class="details">
@@ -66,7 +129,7 @@
 						<div class="icon" (click)="openTransferMenu()">
 							<i class="fas fa-angle-double-right"></i>
 						</div>
-						<div class="icon"(click)="openSettings()">
+						<div class="icon" (click)="openSettings()">
 							<i class="fas fa-cog"></i>
 						</div>
 					</div>
@@ -76,11 +139,11 @@
 				<div class="main-data">
 					<span
 						class="card-number"
-						(click)="cardNumberIsShown = !cardNumberIsShown"
+						(click)="cardNumberIsDisplayed = !cardNumberIsDisplayed"
 						>{{
 							cardNumberConvertor(
 								selectedCard?.cardNumber,
-								!cardNumberIsShown
+								!cardNumberIsDisplayed
 							)
 						}}</span
 					>
@@ -88,9 +151,13 @@
 						<span class="expiration-date">{{
 							selectedCard?.expirationDate
 						}}</span>
-						<span class="cvv" (click)="cvvIsShown = !cvvIsShown">{{
-							cvvIsShown ? selectedCard?.cvvCode : "* * *"
-						}}</span>
+						<span
+							class="cvv"
+							(click)="cvvIsDisplayed = !cvvIsDisplayed"
+							>{{
+								cvvIsDisplayed ? selectedCard?.cvvCode : "* * *"
+							}}</span
+						>
 					</div>
 				</div>
 				<div class="balance">

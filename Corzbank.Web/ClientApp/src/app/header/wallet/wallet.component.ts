@@ -1,5 +1,10 @@
-import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { Component, Inject, OnInit } from "@angular/core";
+import {
+	FormGroup,
+	FormControl,
+	Validators,
+	FormBuilder,
+} from "@angular/forms";
 import { Guid } from "guid-typescript";
 import { Card } from "src/app/data/dtos/card.dto";
 import { Transfer } from "src/app/data/dtos/transfer.dto";
@@ -23,6 +28,10 @@ export class WalletComponent implements OnInit {
 	CardType = CardType;
 	PaymentSystem = PaymentSystem;
 	TransferType = TransferType;
+	cardTypeKeys = Object.keys(this.CardType).filter((k) => !isNaN(Number(k)));
+	paymentSystemKeys = Object.keys(this.PaymentSystem).filter(
+		(k) => !isNaN(Number(k))
+	);
 
 	selectedCard: Card;
 	cardDataIsDisplayed: boolean;
@@ -33,19 +42,22 @@ export class WalletComponent implements OnInit {
 	transactionsIsDisplayed: boolean;
 	transferMenuIsDisplayed: boolean;
 	settingsIsDisplayed: boolean;
+	openCardMenuIsDisplayed: boolean;
+	currentUserId: Guid;
 
 	cards: Card[] = [];
 	transfers: Transfer[] = [];
 
 	transferForm: FormGroup;
+	createCardForm: FormGroup;
 
 	constructor(
 		private cardService: CardService,
 		private storageService: StorageService,
 		private transferService: TransferService,
-		private notificationService: NotificationService
+		private notificationService: NotificationService,
+		@Inject(FormBuilder) fb: FormBuilder
 	) {}
-
 	get receiverCardNumber() {
 		return this.transferForm.get("receiverCardNumber");
 	}
@@ -58,10 +70,29 @@ export class WalletComponent implements OnInit {
 		return this.transferForm.get("amount");
 	}
 
+	get cardType() {
+		return this.createCardForm.get("cardType");
+	}
+
+	get paymentSystem() {
+		return this.createCardForm.get("paymentSystem");
+	}
+
+	get secretWord() {
+		return this.createCardForm.get("secretWord");
+	}
+
 	ngOnInit(): void {
 		this.cardService.cardSubject.subscribe((data: any) => {
 			this.cards = data;
 		});
+
+		this.currentUserId = JSON.parse(
+			this.storageService.getItem(
+				StorageTypeEnum.LocalStorage,
+				Constants.UserIdKey
+			)
+		);
 
 		this.getCards();
 
@@ -78,21 +109,27 @@ export class WalletComponent implements OnInit {
 				Validators.pattern("^[0-9]+([,.][0-9]+)?$"),
 			]),
 		});
+
+		this.createCardForm = new FormGroup({
+			cardType: new FormControl("", Validators.required),
+			paymentSystem: new FormControl("", Validators.required),
+			secretWord: new FormControl("", [
+				Validators.required,
+				Validators.minLength(3),
+				Validators.maxLength(20),
+				Validators.pattern("[a-zA-Z]+"),
+			]),
+		});
 	}
 
 	getCards() {
-		let currentUserId = JSON.parse(
-			this.storageService.getItem(
-				StorageTypeEnum.LocalStorage,
-				Constants.UserIdKey
-			)
-		);
-
-		this.cardService
-			.getCardsForUser(Guid.parse(currentUserId))
-			.subscribe((response: any) => {
-				this.cardService.cardSubject.next(response);
-			});
+		if (this.currentUserId != null) {
+			this.cardService
+				.getCardsForUser(Guid.parse(this.currentUserId.toString()))
+				.subscribe((response: any) => {
+					this.cardService.cardSubject.next(response);
+				});
+		}
 	}
 
 	cardNumberConvertor(cardNumber: string, showCard: boolean) {
@@ -113,8 +150,8 @@ export class WalletComponent implements OnInit {
 		this.cardService.getCard(id).subscribe((response: Card) => {
 			this.selectedCard = response;
 		});
-		this.cardDataIsDisplayed = true;
 		this.hideAllMenus();
+		this.cardDataIsDisplayed = true;
 	}
 
 	getTransfers() {
@@ -132,7 +169,7 @@ export class WalletComponent implements OnInit {
 		this.transferMenuIsDisplayed = !this.transferMenuIsDisplayed;
 	}
 
-	openSettings(){
+	openSettings() {
 		this.hideAllMenus();
 		this.settingsIsDisplayed = !this.settingsIsDisplayed;
 	}
@@ -168,6 +205,38 @@ export class WalletComponent implements OnInit {
 			});
 	}
 
+	openCardMenu() {
+		this.hideAllMenus();
+		this.cardDataIsDisplayed = false;
+		this.openCardMenuIsDisplayed = !this.openCardMenuIsDisplayed;
+	}
+
+	createCard() {
+		const cardForCreatingForm = this.createCardForm.value;
+		cardForCreatingForm.userId = this.currentUserId;
+		this.cardService.createCard(this.createCardForm.value).subscribe(
+			(card) => {
+				console.log(card);
+				if (card === null) {
+					this.notificationService.showErrorNotification(
+						"This type of card already exists",
+						""
+						);
+					} else {
+					this.cards.push(card);
+					this.notificationService.showSuccessfulNotification(
+						"Card was successfuly created",
+						""
+					);
+				}
+			},
+			(error) => {
+				this.notificationService.showErrorNotification("Error", "");
+			}
+		);
+		this.createCardForm.reset();
+	}
+
 	hideAllMenus() {
 		this.transactionsIsDisplayed = false;
 		this.transferMenuIsDisplayed = false;
@@ -176,5 +245,6 @@ export class WalletComponent implements OnInit {
 		this.cardNumberIsDisplayed = false;
 		this.transactionsIsDisplayed = false;
 		this.settingsIsDisplayed = false;
+		this.openCardMenuIsDisplayed = false;
 	}
 }

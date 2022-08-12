@@ -61,7 +61,7 @@
 
 .cards {
     .credit {
-        background-color: #494949;
+        background-color: #979191;
     }
 
     .debit {
@@ -125,6 +125,20 @@
         .balance {
             font-family: cursive;
             font-size: 20px;
+        }
+    }
+
+    .submit-button {
+        justify-content: center;
+        margin: 10px;
+
+        button {
+            background: #414664;
+            color: #b7b5b5;
+
+            &:hover {
+                background-color: #34354f;
+            }
         }
     }
 }
@@ -301,34 +315,99 @@
             letter-spacing: 2px;
         }
     }
+}
 
-    .submit-button {
-        display: flex;
-        justify-content: flex-end;
+.submit-button {
+    display: flex;
+    justify-content: flex-end;
 
-        button {
-            width: 152px;
-            height: 36px;
-            font-size: 22px;
-            font-weight: 500;
-            border: none;
-            outline: none;
-            border-radius: 8px;
-            background: #21cf0c;
-            cursor: pointer;
+    button {
+        width: 152px;
+        height: 36px;
+        font-size: 22px;
+        font-weight: 500;
+        border: none;
+        outline: none;
+        border-radius: 8px;
+        background: #21cf0c;
+        cursor: pointer;
 
-            &:hover {
-                background-color: #8eb976;
-            }
+        &:hover {
+            background-color: #8eb976;
+        }
 
-            &:hover[disabled] {
-                background-color: #21cf0c;
-                cursor: auto;
-            }
+        &:hover[disabled] {
+            background-color: #21cf0c;
+            cursor: auto;
         }
     }
 }
 
-.settings{
+.settings {
     background-color: grey;
+}
+
+.open-card-menu-block {
+    width: 100%;
+
+    .title-open-card-menu {
+        margin: 0;
+    }
+
+    .open-card-menu {
+        background-color: #2b273f;
+
+        .field {
+            display: flex;
+            height: 60px;
+            margin-bottom: 20px;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+
+            .payment-system,
+            .card-type,
+            .secret-word {
+                display: flex;
+                justify-content: space-between;
+                width: 80%;
+            }
+
+            select {
+                height: fit-content;
+            }
+
+            small {
+                margin: 3px 40px;
+                color: red;
+                font-size: 14px;
+                align-self: start;
+            }
+
+            span {
+                font-size: 20px;
+                font-weight: 500;
+                color: #9f9f9f;
+            }
+        }
+
+        .submit-button {
+            justify-content: center;
+            padding: 10px;
+
+            button {
+                background: #4b4d58;
+                color: #b7b5b5;
+
+                &:hover {
+                    background-color: #575757;
+                }
+
+                &:hover[disabled] {
+                    background-color: #4b4d58;
+                    cursor: auto;
+                }
+            }
+        }
+    }
 }
