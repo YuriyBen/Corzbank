@@ -10,5 +10,7 @@ namespace Corzbank.Data.Entities.Models
         public decimal Amount { get; set; }
 
         public int Duration { get; set; }
+
+        public Guid CardId { get; set; }
     }
 }

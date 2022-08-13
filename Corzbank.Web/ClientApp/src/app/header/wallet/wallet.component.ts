@@ -7,14 +7,17 @@ import {
 } from "@angular/forms";
 import { Guid } from "guid-typescript";
 import { Card } from "src/app/data/dtos/card.dto";
+import { Deposit } from "src/app/data/dtos/deposit.dto";
 import { Transfer } from "src/app/data/dtos/transfer.dto";
 import { CardType } from "src/app/data/enums/card-type.enum";
+import { DepositStatus } from "src/app/data/enums/deposit-status.enum";
 import { PaymentSystem } from "src/app/data/enums/payment-system.enum";
 import { StorageTypeEnum } from "src/app/data/enums/storage-type.enum";
 import { TransferType } from "src/app/data/enums/transfer-type.enum";
 import { Constants } from "src/app/data/helpers/constants";
 import { TransferModel } from "src/app/data/models/transfer.model";
 import { CardService } from "src/app/data/services/card.service";
+import { DepositService } from "src/app/data/services/deposit.service";
 import { NotificationService } from "src/app/data/services/notification.service";
 import { StorageService } from "src/app/data/services/storage.service";
 import { TransferService } from "src/app/data/services/transfer.service";
@@ -43,10 +46,12 @@ export class WalletComponent implements OnInit {
 	transferMenuIsDisplayed: boolean;
 	settingsIsDisplayed: boolean;
 	openCardMenuIsDisplayed: boolean;
+	openDepositMenuIsDisplayed: boolean;
 	currentUserId: Guid;
 
 	cards: Card[] = [];
 	transfers: Transfer[] = [];
+	deposits: Deposit[] = [];
 
 	transferForm: FormGroup;
 	createCardForm: FormGroup;
@@ -56,8 +61,9 @@ export class WalletComponent implements OnInit {
 		private storageService: StorageService,
 		private transferService: TransferService,
 		private notificationService: NotificationService,
-		@Inject(FormBuilder) fb: FormBuilder
+		private depositService: DepositService
 	) {}
+
 	get receiverCardNumber() {
 		return this.transferForm.get("receiverCardNumber");
 	}
@@ -96,6 +102,8 @@ export class WalletComponent implements OnInit {
 
 		this.getCards();
 
+		this.getDeposits();
+
 		this.transferForm = new FormGroup({
 			receiverCardNumber: new FormControl("", [
 				Validators.required,
@@ -130,6 +138,16 @@ export class WalletComponent implements OnInit {
 					this.cardService.cardSubject.next(response);
 				});
 		}
+	}
+
+	getDeposits() {
+		this.depositService
+			.getDepositsForUser(Guid.parse(this.currentUserId.toString()))
+			.subscribe((deposits: any) => {
+				this.deposits = deposits;
+				console.log(deposits);
+				
+			});
 	}
 
 	cardNumberConvertor(cardNumber: string, showCard: boolean) {
@@ -211,6 +229,12 @@ export class WalletComponent implements OnInit {
 		this.openCardMenuIsDisplayed = !this.openCardMenuIsDisplayed;
 	}
 
+	openDepositMenu() {
+		this.hideAllMenus();
+		this.cardDataIsDisplayed = false;
+		this.openDepositMenuIsDisplayed = !this.openDepositMenuIsDisplayed;
+	}
+
 	createCard() {
 		const cardForCreatingForm = this.createCardForm.value;
 		cardForCreatingForm.userId = this.currentUserId;
@@ -221,8 +245,8 @@ export class WalletComponent implements OnInit {
 					this.notificationService.showErrorNotification(
 						"This type of card already exists",
 						""
-						);
-					} else {
+					);
+				} else {
 					this.cards.push(card);
 					this.notificationService.showSuccessfulNotification(
 						"Card was successfuly created",

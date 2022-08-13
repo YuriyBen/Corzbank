@@ -12,6 +12,8 @@ namespace Corzbank.Services.Interfaces
     {
         Task<IEnumerable<DepositDTO>> GetDeposits();
 
+        Task<IEnumerable<DepositDTO>> GetDepositsForUser(Guid userId);
+
         Task<DepositDTO> GetDepositById(Guid id);
 
         Task<DepositDTO> OpenDeposit(DepositModel deposit);

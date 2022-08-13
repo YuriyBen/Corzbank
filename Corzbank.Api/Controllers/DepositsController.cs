@@ -31,6 +31,15 @@ namespace Corzbank.Api.Controllers
             return Ok(result);
         }
 
+        [Route("users/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> GetDepositsForUser(Guid id)
+        {
+            var result = await _depositService.GetDepositsForUser(id);
+
+            return Ok(result);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetDepositById(Guid id)
         {
@@ -39,7 +48,7 @@ namespace Corzbank.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> OpenDeposit([FromBody] DepositModel card)
         {
             var result = await _depositService.OpenDeposit(card);

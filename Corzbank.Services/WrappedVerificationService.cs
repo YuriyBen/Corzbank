@@ -112,7 +112,7 @@ namespace Corzbank.Services
                     else if (verification.VerificationType == VerificationType.CloseDeposit)
                     {
                         var deposit = await _depositRepo.GetQueryable().FirstOrDefaultAsync(v=>v.Id == verification.DepositId);
-                        deposit.IsActive = DepositStatus.Closed;
+                        deposit.Status = DepositStatus.Closed;
 
                         await _depositRepo.Update(deposit);
 

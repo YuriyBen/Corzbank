@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,13 +20,15 @@ namespace Corzbank.Services
     public class DepositService : IDepositService
     {
         private readonly IGenericRepository<Deposit> _depositRepo;
+        private readonly IGenericRepository<Card> _cardRepo;
         private readonly IMapper _mapper;
         private readonly IWrappedVerificationService _verificationService;
 
         public DepositService(IGenericRepository<Deposit> depositRepo, IMapper mapper,
-            IWrappedVerificationService verificationService)
+            IWrappedVerificationService verificationService, IGenericRepository<Card> cardRepo)
         {
             _depositRepo = depositRepo;
+            _cardRepo = cardRepo;
             _mapper = mapper;
             _verificationService = verificationService;
         }
@@ -48,9 +51,23 @@ namespace Corzbank.Services
             return result;
         }
 
+        public async Task<IEnumerable<DepositDTO>> GetDepositsForUser(Guid userId)
+        {
+            var deposits = await _depositRepo
+                .GetQueryable()
+                .Include(c => c.Card).ThenInclude(u => u.User)
+                .Where(u => u.Card.User.Id == userId)
+                .ToListAsync();
+
+            var mappedDeposits = _mapper.Map<IEnumerable<DepositDTO>>(deposits);
+
+            return mappedDeposits;
+        }
+
         public async Task<DepositDTO> OpenDeposit(DepositModel deposit)
         {
             var mappedDeposit = _mapper.Map<Deposit>(deposit);
+            mappedDeposit.Card = _cardRepo.GetQueryable().FirstOrDefault(c => c.Id == deposit.CardId);
 
             var generatedDeposit = mappedDeposit.GenerateDeposit();
 

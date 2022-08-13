@@ -11,7 +11,7 @@
 			</div>
 		</div>
 		<div class="cards" *ngIf="cardsIsDisplayed">
-			<h1 *ngIf="cards.length === 0">You do not have any cards</h1>
+			<h1 *ngIf="cards.length === 0" class="none-items">You do not have any cards</h1>
 			<div
 				class="card"
 				[ngClass]="{
@@ -42,7 +42,7 @@
 					}}</span>
 				</div>
 			</div>
-			<div class="open-card submit-button">
+			<div class="submit-button" *ngIf="cards.length<3">
 				<button (click)="openCardMenu()">Open Card</button>
 			</div>
 		</div>
@@ -54,7 +54,16 @@
 				<hr />
 			</div>
 		</div>
-		<div class="deposits" *ngIf="depositsIsDisplayed"></div>
+		<div class="deposits" *ngIf="depositsIsDisplayed">
+			<h1 *ngIf="deposits.length === 0" class="none-items">You do not have any deposits</h1>
+			<h1 *ngIf="cards.length === 0" class="none-items">Firstly you need to create a card</h1>
+			<div class="deposit" *ngFor="let deposit of deposits">
+				<h1>{{deposit.amount}}</h1>
+			</div>
+			<div class="submit-button" *ngIf="cards.length<3">
+				<button (click)="openDepositMenu()">Open Deposit</button>
+			</div>
+		</div>
 	</div>
 	<div class="open-card-menu-block" *ngIf="openCardMenuIsDisplayed">
 		<div class="title-open-card-menu title-transactions">
@@ -171,7 +180,7 @@
 				<h2>Transactions</h2>
 			</div>
 			<div class="transactions">
-				<h1 *ngIf="transfers.length === 0">
+				<h1 *ngIf="transfers.length === 0" class="none-items">
 					You do not have any transfers
 				</h1>
 				<div

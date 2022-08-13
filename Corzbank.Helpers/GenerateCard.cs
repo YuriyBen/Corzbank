@@ -20,7 +20,7 @@ namespace Corzbank.Helpers
                 CardType = card.CardType,
                 SecretWord = card.SecretWord,
                 IsActive = true,
-                
+                Balance = 100
             };
 
             return cardForResponse;
