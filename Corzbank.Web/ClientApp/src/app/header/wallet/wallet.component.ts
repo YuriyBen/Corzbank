@@ -10,11 +10,11 @@ import { Card } from "src/app/data/dtos/card.dto";
 import { Deposit } from "src/app/data/dtos/deposit.dto";
 import { Transfer } from "src/app/data/dtos/transfer.dto";
 import { CardType } from "src/app/data/enums/card-type.enum";
-import { DepositStatus } from "src/app/data/enums/deposit-status.enum";
 import { PaymentSystem } from "src/app/data/enums/payment-system.enum";
 import { StorageTypeEnum } from "src/app/data/enums/storage-type.enum";
 import { TransferType } from "src/app/data/enums/transfer-type.enum";
 import { Constants } from "src/app/data/helpers/constants";
+import { DepositModel } from "src/app/data/models/deposit.model";
 import { TransferModel } from "src/app/data/models/transfer.model";
 import { CardService } from "src/app/data/services/card.service";
 import { DepositService } from "src/app/data/services/deposit.service";
@@ -48,6 +48,10 @@ export class WalletComponent implements OnInit {
 	openCardMenuIsDisplayed: boolean;
 	openDepositMenuIsDisplayed: boolean;
 	currentUserId: Guid;
+	durationOfDeposit: number = 1;
+	amountOfDeposit: number = 1;
+	profitForDeposit: number = 1;
+	cardForDeposit: Card;
 
 	cards: Card[] = [];
 	transfers: Transfer[] = [];
@@ -146,7 +150,6 @@ export class WalletComponent implements OnInit {
 			.subscribe((deposits: any) => {
 				this.deposits = deposits;
 				console.log(deposits);
-				
 			});
 	}
 
@@ -233,6 +236,7 @@ export class WalletComponent implements OnInit {
 		this.hideAllMenus();
 		this.cardDataIsDisplayed = false;
 		this.openDepositMenuIsDisplayed = !this.openDepositMenuIsDisplayed;
+		this.cardForDeposit = this.cards[0];
 	}
 
 	createCard() {
@@ -261,6 +265,30 @@ export class WalletComponent implements OnInit {
 		this.createCardForm.reset();
 	}
 
+	increment() {
+		if (this.durationOfDeposit < 24) this.durationOfDeposit += 1;
+	}
+	decrement() {
+		if (this.durationOfDeposit > 1) this.durationOfDeposit -= 1;
+	}
+
+	openDeposit() {
+		var depositModel: DepositModel = {
+			cardId: this.cardForDeposit.id,
+			amount: this.amountOfDeposit,
+			duration: this.durationOfDeposit,
+		};
+
+		this.depositService
+			.openDeposit(depositModel)
+			.subscribe((deposit: Deposit) => {
+				console.log(deposit);
+				this.deposits.push(deposit);
+			});
+		this.amountOfDeposit = 1;
+		this.durationOfDeposit = 1;
+	}
+
 	hideAllMenus() {
 		this.transactionsIsDisplayed = false;
 		this.transferMenuIsDisplayed = false;
@@ -270,5 +298,6 @@ export class WalletComponent implements OnInit {
 		this.transactionsIsDisplayed = false;
 		this.settingsIsDisplayed = false;
 		this.openCardMenuIsDisplayed = false;
+		this.openDepositMenuIsDisplayed = false;
 	}
 }

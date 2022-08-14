@@ -1,48 +1,42 @@
 <div class="wallet">
 	<div class="cards-deposits">
-		<div
-			class="option show-cards-title"
-			(click)="cardsIsDisplayed = !cardsIsDisplayed"
-		>
+		<div class="option show-cards-title" (click)="cardsIsDisplayed = !cardsIsDisplayed">
 			<div class="selected-option" *ngIf="cardsIsDisplayed"></div>
 			<div class="option-title">
+				<hr />
 				<h2>Cards</h2>
 				<hr />
 			</div>
 		</div>
 		<div class="cards" *ngIf="cardsIsDisplayed">
-			<h1 *ngIf="cards.length === 0" class="none-items">You do not have any cards</h1>
-			<div
-				class="card"
-				[ngClass]="{
+			<h1 *ngIf="cards.length === 0" class="none-items">
+				You do not have any cards
+			</h1>
+			<div class="card" [ngClass]="{
 					credit: card.cardType == 1,
 					debit: card.cardType == 2,
 					universal: card.cardType == 3
-				}"
-				*ngFor="let card of cards"
-				(click)="selectCard(card.id)"
-			>
+				}" *ngFor="let card of cards" (click)="selectCard(card.id)">
 				<div class="title">
 					<span class="bank-name">corzbank </span>
 					<small> | </small>
 					<span class="card-type">
-						{{ CardType[card.cardType] }} card</span
-					>
+						{{ CardType[card.cardType] }} card</span>
 				</div>
 				<div class="card-field">
 					<span class="card-number">{{
 						cardNumberConvertor(card.cardNumber, true)
-					}}</span>
+						}}</span>
 					<span class="expiration-date">{{ card.expirationDate }}</span>
 				</div>
 				<div class="card-field">
 					<span class="balance">{{ card.balance }}$</span>
 					<span class="payment-system">{{
 						PaymentSystem[card.paymentSystem]
-					}}</span>
+						}}</span>
 				</div>
 			</div>
-			<div class="submit-button" *ngIf="cards.length<3">
+			<div class="submit-button" *ngIf="cards.length < 3">
 				<button (click)="openCardMenu()">Open Card</button>
 			</div>
 		</div>
@@ -54,13 +48,23 @@
 				<hr />
 			</div>
 		</div>
-		<div class="deposits" *ngIf="depositsIsDisplayed">
-			<h1 *ngIf="deposits.length === 0" class="none-items">You do not have any deposits</h1>
-			<h1 *ngIf="cards.length === 0" class="none-items">Firstly you need to create a card</h1>
-			<div class="deposit" *ngFor="let deposit of deposits">
-				<h1>{{deposit.amount}}</h1>
+		<div class="deposits-block" *ngIf="depositsIsDisplayed">
+			<div class="deposits">
+				<h1 *ngIf="deposits.length === 0" class="none-items">
+					You do not have any deposits
+				</h1>
+				<h1 *ngIf="cards.length === 0" class="none-items">
+					Firstly you need to create a card
+				</h1>
+				<div class="deposit" *ngFor="let deposit of deposits.slice().reverse()">
+					<div class="deposit-title">
+						<span>{{ deposit.amount }}$</span>
+						<span>Duration: {{ deposit.duration }}m</span>
+					</div>
+					<h4>End date: {{ deposit.endDate | date: "dd-MM-yyyy" }}</h4>
+				</div>
 			</div>
-			<div class="submit-button" *ngIf="cards.length<3">
+			<div class="submit-button" *ngIf="cards.length < 3">
 				<button (click)="openDepositMenu()">Open Deposit</button>
 			</div>
 		</div>
@@ -74,52 +78,76 @@
 				<div class="card-type">
 					<span>Card Type:</span>
 					<select formControlName="cardType">
-						<option
-							*ngFor="let cardType of cardTypeKeys"
-							[value]="cardType"
-						>
+						<option *ngFor="let cardType of cardTypeKeys" [value]="cardType">
 							{{ CardType[cardType] }}
 						</option>
 					</select>
 				</div>
-				<small *ngIf="cardType && cardType.invalid && cardType.touched"
-					>Card Type is Required</small
-				>
+				<small *ngIf="cardType && cardType.invalid && cardType.touched">Card Type is Required</small>
 			</div>
 			<div class="field">
 				<div class="payment-system">
 					<span>Payment System:</span>
 					<select formControlName="paymentSystem">
-						<option
-							*ngFor="let paymentSystem of paymentSystemKeys"
-							[value]="paymentSystem"
-						>
+						<option *ngFor="let paymentSystem of paymentSystemKeys" [value]="paymentSystem">
 							{{ PaymentSystem[paymentSystem] }}
 						</option>
 					</select>
 				</div>
-				<small
-					*ngIf="
+				<small *ngIf="
 						paymentSystem &&
 						paymentSystem.invalid &&
 						paymentSystem.touched
-					"
-					>Payment System is Required</small
-				>
+					">Payment System is Required</small>
 			</div>
 			<div class="field">
 				<div class="secret-word">
 					<span>Secret Word:</span>
 					<input type="text" formControlName="secretWord" />
 				</div>
-				<small
-					*ngIf="secretWord && secretWord.invalid && secretWord.touched"
-					>Secret Word is Required</small
-				>
+				<small *ngIf="secretWord && secretWord.invalid && secretWord.touched">Secret Word is Required</small>
 			</div>
 			<div class="open-card submit-button">
 				<button (click)="createCard()" [disabled]="createCardForm.invalid">
 					Create Card
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="open-deposit-menu-block" *ngIf="openDepositMenuIsDisplayed">
+		<div class="title-open-deposit-menu title-transactions">
+			<h2>Open Deposit</h2>
+		</div>
+		<div class="open-deposit-menu">
+			<div class="field">
+				<div class="card">
+					<span>Select Card: </span>
+					<select [(ngModel)]="cardForDeposit.id">
+						<option *ngFor="let card of cards" [value]="card.id">
+							{{ card.cardNumber }}
+						</option>
+					</select>
+				</div>
+				<small *ngIf="cardForDeposit.balance < amountOfDeposit">Balance is not enough</small>
+			</div>
+			<div class="field">
+				<div class="amount">
+					<span>Amount:</span>
+					<input type="text" [(ngModel)]="amountOfDeposit" min="1" maxlength="7" />
+				</div>
+			</div>
+			<div class="duration">
+				<label>
+					<button (click)="decrement()">-</button>
+					Duration: {{ durationOfDeposit }}m
+					<button (click)="increment()">+</button>
+				</label>
+				<span>Profit:
+					{{ (durationOfDeposit * amountOfDeposit) / 100 | number }}$</span>
+			</div>
+			<div class="open-card submit-button">
+				<button (click)="openDeposit()" [disabled]="cardForDeposit.balance < amountOfDeposit">
+					Open
 				</button>
 			</div>
 		</div>
@@ -146,27 +174,19 @@
 			</div>
 			<div class="card-data">
 				<div class="main-data">
-					<span
-						class="card-number"
-						(click)="cardNumberIsDisplayed = !cardNumberIsDisplayed"
-						>{{
-							cardNumberConvertor(
-								selectedCard?.cardNumber,
-								!cardNumberIsDisplayed
-							)
-						}}</span
-					>
+					<span class="card-number" (click)="cardNumberIsDisplayed = !cardNumberIsDisplayed">{{
+						cardNumberConvertor(
+						selectedCard?.cardNumber,
+						!cardNumberIsDisplayed
+						)
+						}}</span>
 					<div class="date-cvv">
 						<span class="expiration-date">{{
 							selectedCard?.expirationDate
-						}}</span>
-						<span
-							class="cvv"
-							(click)="cvvIsDisplayed = !cvvIsDisplayed"
-							>{{
-								cvvIsDisplayed ? selectedCard?.cvvCode : "* * *"
-							}}</span
-						>
+							}}</span>
+						<span class="cvv" (click)="cvvIsDisplayed = !cvvIsDisplayed">{{
+							cvvIsDisplayed ? selectedCard?.cvvCode : "* * *"
+							}}</span>
 					</div>
 				</div>
 				<div class="balance">
@@ -183,22 +203,14 @@
 				<h1 *ngIf="transfers.length === 0" class="none-items">
 					You do not have any transfers
 				</h1>
-				<div
-					class="transaction"
-					*ngFor="let transfer of transfers.slice().reverse()"
-				>
+				<div class="transaction" *ngFor="let transfer of transfers.slice().reverse()">
 					<i class="fas fa-archive icon transfer-field"></i>
-					<span class="description transfer-field"
-						>{{ TransferType[transfer.transferType] }} transfer</span
-					>
+					<span class="description transfer-field">{{ TransferType[transfer.transferType] }} transfer</span>
 					<div class="price">
-						<span
-							*ngIf="
+						<span *ngIf="
 								transfer.senderCardId === selectedCard.id;
 								else transferToMe
-							"
-							>-</span
-						>
+							">-</span>
 						<ng-template #transferToMe>+</ng-template>
 						<span class="transfer-field">{{ transfer.amount }}$</span>
 					</div>
@@ -212,47 +224,23 @@
 			<form [formGroup]="transferForm">
 				<div class="transfer">
 					<div class="field">
-						<input
-							formControlName="receiverCardNumber"
-							type="text"
-							maxlength="28"
-							placeholder="**** **** **** ****"
-							maxlength="16"
-							class="form-control"
-						/>
-						<small
-							*ngIf="
+						<input formControlName="receiverCardNumber" type="text" maxlength="28"
+							placeholder="**** **** **** ****" maxlength="16" class="form-control" />
+						<small *ngIf="
 								receiverPhoneNumber &&
 								receiverPhoneNumber.invalid &&
 								receiverPhoneNumber.touched
-							"
-							>Card Number is Required</small
-						>
+							">Card Number is Required</small>
 					</div>
 					<div class="field">
-						<input
-							formControlName="note"
-							type="text"
-							placeholder="Note"
-							class="form-control"
-						/>
+						<input formControlName="note" type="text" placeholder="Note" class="form-control" />
 					</div>
 					<div class="field">
-						<input
-							formControlName="amount"
-							type="text"
-							placeholder="Amount"
-							class="form-control"
-						/>
-						<small *ngIf="amount && amount.invalid && amount.touched"
-							>Amount is Required</small
-						>
+						<input formControlName="amount" type="text" placeholder="Amount" class="form-control" />
+						<small *ngIf="amount && amount.invalid && amount.touched">Amount is Required</small>
 					</div>
 					<div class="submit-button">
-						<button
-							(click)="sendTransfer()"
-							[disabled]="transferForm.invalid"
-						>
+						<button (click)="sendTransfer()" [disabled]="transferForm.invalid">
 							Send
 						</button>
 					</div>

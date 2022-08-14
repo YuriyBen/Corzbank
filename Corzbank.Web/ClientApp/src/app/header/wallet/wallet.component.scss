@@ -45,7 +45,7 @@
 
             .selected-option {
                 border-left: 5px solid green;
-                height: 61px;
+                height: 62px;
             }
 
             .option-title {
@@ -143,12 +143,28 @@
     }
 }
 
-.deposits {
-    .deposit{
-        background-color: red;
-        margin: 35px 10px;
-        padding: 10px 15px 20px;
-        transition: 0.5s;
+.deposits-block {
+    .deposits {
+        max-height: 364px;
+        overflow: auto;
+
+        .deposit {
+            background-color: #9fbba4;
+            margin: 20px;
+            padding: 10px;
+            transition: .5s;
+            border-radius: 10px;
+
+            .deposit-title {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            h4 {
+                margin: 0;
+                text-align: end;
+            }
+        }
     }
 
     .submit-button {
@@ -319,7 +335,7 @@
     padding: 10px;
 
     small {
-        margin: 3px 40px;
+        margin: 3px 50px;
         color: red;
         font-size: 18px;
     }
@@ -375,14 +391,17 @@
     background-color: grey;
 }
 
-.open-card-menu-block {
+.open-card-menu-block,
+.open-deposit-menu-block {
     width: 100%;
 
-    .title-open-card-menu {
+    .title-open-card-menu,
+    .title-open-deposit-menu {
         margin: 0;
     }
 
-    .open-card-menu {
+    .open-card-menu,
+    .open-deposit-menu {
         background-color: #2b273f;
 
         .field {
@@ -395,10 +414,13 @@
 
             .payment-system,
             .card-type,
-            .secret-word {
+            .secret-word,
+            .amount,
+            .card {
                 display: flex;
                 justify-content: space-between;
                 width: 80%;
+                flex-direction: initial;
             }
 
             select {
@@ -406,7 +428,7 @@
             }
 
             small {
-                margin: 3px 40px;
+                margin: 3px 50px;
                 color: red;
                 font-size: 14px;
                 align-self: start;
@@ -416,6 +438,12 @@
                 font-size: 20px;
                 font-weight: 500;
                 color: #9f9f9f;
+            }
+
+            .card {
+                background: none;
+                align-items: center;
+                border: none;
             }
         }
 
@@ -434,6 +462,37 @@
                 &:hover[disabled] {
                     background-color: #4b4d58;
                     cursor: auto;
+                }
+            }
+        }
+
+        .duration {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 80%;
+
+            span {
+                font-size: 20px;
+                font-weight: 500;
+                color: #9f9f9f;
+            }
+
+            label {
+                background: #54818b;
+                margin: 20px 0;
+                font-size: 20px;
+                font-weight: 500;
+                padding: 4px;
+
+                button {
+                    font-size: 20px;
+                    font-weight: 700;
+                    background: #5e858d;
+                    outline: none;
+                    border: none;
+                    cursor: pointer;
+                    padding: 0 10px;
                 }
             }
         }

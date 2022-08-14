@@ -9,7 +9,6 @@ import { DepositModel } from "../models/deposit.model";
 	providedIn: "root",
 })
 export class DepositService {
-	cardSubject = new Subject();
 
 	url = this.baseUrl + "deposits/";
 
@@ -30,8 +29,8 @@ export class DepositService {
 		return this.http.get<Deposit[]>(this.url + "users/" + id);
 	}
 
-	openDeposit(card: DepositModel): Observable<Deposit> {
-		return this.http.post<Deposit>(this.url, card);
+	openDeposit(deposit: DepositModel): Observable<Deposit> {
+		return this.http.post<Deposit>(this.url, deposit);
 	}
 
 	closeDeposit(id: Guid): Observable<boolean> {

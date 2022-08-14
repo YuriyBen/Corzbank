@@ -66,8 +66,18 @@ namespace Corzbank.Services
 
         public async Task<DepositDTO> OpenDeposit(DepositModel deposit)
         {
+            var cardForDeposit = await _cardRepo.GetQueryable().FirstOrDefaultAsync(c => c.Id == deposit.CardId);
+
+            if (cardForDeposit.Balance < deposit.Amount)
+                return null;
+            else
+            {
+                cardForDeposit.Balance -= deposit.Amount;
+                await _cardRepo.Update(cardForDeposit);
+            }
+
             var mappedDeposit = _mapper.Map<Deposit>(deposit);
-            mappedDeposit.Card = _cardRepo.GetQueryable().FirstOrDefault(c => c.Id == deposit.CardId);
+            mappedDeposit.Card = cardForDeposit;
 
             var generatedDeposit = mappedDeposit.GenerateDeposit();
 
