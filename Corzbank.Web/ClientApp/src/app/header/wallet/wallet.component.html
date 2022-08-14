@@ -56,7 +56,8 @@
 				<h1 *ngIf="cards.length === 0" class="none-items">
 					Firstly you need to create a card
 				</h1>
-				<div class="deposit" *ngFor="let deposit of deposits.slice().reverse()">
+				<div class="deposit" *ngFor="let deposit of deposits.slice().reverse()"
+					(click)="selectDeposit(deposit.id)">
 					<div class="deposit-title">
 						<span>{{ deposit.amount }}$</span>
 						<span>Duration: {{ deposit.duration }}m</span>
@@ -69,7 +70,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="open-card-menu-block" *ngIf="openCardMenuIsDisplayed">
+	<div class="open-card-menu-block" *ngIf="openCardMenuIsDisplayed && cardsIsDisplayed">
 		<div class="title-open-card-menu title-transactions">
 			<h2>Open Card</h2>
 		</div>
@@ -114,7 +115,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="open-deposit-menu-block" *ngIf="openDepositMenuIsDisplayed">
+	<div class="open-deposit-menu-block" *ngIf="openDepositMenuIsDisplayed && depositsIsDisplayed">
 		<div class="title-open-deposit-menu title-transactions">
 			<h2>Open Deposit</h2>
 		</div>
@@ -145,14 +146,14 @@
 				<span>Profit:
 					{{ (durationOfDeposit * amountOfDeposit) / 100 | number }}$</span>
 			</div>
-			<div class="open-card submit-button">
+			<div class="submit-button">
 				<button (click)="openDeposit()" [disabled]="cardForDeposit.balance < amountOfDeposit">
 					Open
 				</button>
 			</div>
 		</div>
 	</div>
-	<div class="details-block" *ngIf="cardsIsDisplayed && cardDataIsDisplayed">
+	<div class="details-card-block" *ngIf="cardsIsDisplayed && cardDataIsDisplayed">
 		<div class="details">
 			<div class="option">
 				<div class="option-title">
@@ -257,5 +258,8 @@
 				<h1>Third setting</h1>
 			</div>
 		</div>
+	</div>
+	<div class="details-deposit-block" *ngIf="depositsIsDisplayed && depositDataIsDisplayed">
+		<h1>Hello</h1>
 	</div>
 </div>

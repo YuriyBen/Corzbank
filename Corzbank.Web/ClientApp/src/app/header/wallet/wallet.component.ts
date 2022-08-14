@@ -37,6 +37,7 @@ export class WalletComponent implements OnInit {
 	);
 
 	selectedCard: Card;
+	selectedDeposit: Deposit;
 	cardDataIsDisplayed: boolean;
 	cardNumberIsDisplayed: boolean;
 	cvvIsDisplayed: boolean;
@@ -47,6 +48,7 @@ export class WalletComponent implements OnInit {
 	settingsIsDisplayed: boolean;
 	openCardMenuIsDisplayed: boolean;
 	openDepositMenuIsDisplayed: boolean;
+	depositDataIsDisplayed:boolean;
 	currentUserId: Guid;
 	durationOfDeposit: number = 1;
 	amountOfDeposit: number = 1;
@@ -66,7 +68,7 @@ export class WalletComponent implements OnInit {
 		private transferService: TransferService,
 		private notificationService: NotificationService,
 		private depositService: DepositService
-	) {}
+	) { }
 
 	get receiverCardNumber() {
 		return this.transferForm.get("receiverCardNumber");
@@ -173,6 +175,7 @@ export class WalletComponent implements OnInit {
 		});
 		this.hideAllMenus();
 		this.cardDataIsDisplayed = true;
+		this.depositDataIsDisplayed = false;
 	}
 
 	getTransfers() {
@@ -287,6 +290,15 @@ export class WalletComponent implements OnInit {
 			});
 		this.amountOfDeposit = 1;
 		this.durationOfDeposit = 1;
+	}
+
+	selectDeposit(id: Guid) {
+		this.depositService.getDeposit(id).subscribe((response: Deposit) => {
+			this.selectedDeposit = response;
+		});
+		this.hideAllMenus();
+		this.depositDataIsDisplayed = true;
+		this.cardDataIsDisplayed = false;
 	}
 
 	hideAllMenus() {

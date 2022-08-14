@@ -147,13 +147,19 @@
     .deposits {
         max-height: 364px;
         overflow: auto;
+        width: 340px;
 
         .deposit {
-            background-color: #9fbba4;
+            background-color: #b9bcba;
             margin: 20px;
             padding: 10px;
             transition: .5s;
             border-radius: 10px;
+
+            &:hover {
+                background: radial-gradient(#b9bcba,#ffffff69);
+                cursor: pointer;
+            }
 
             .deposit-title {
                 display: flex;
@@ -187,7 +193,7 @@
     }
 }
 
-.details-block {
+.details-card-block {
     width: 100%;
 
     .details {
@@ -501,4 +507,8 @@
 
 .none-items {
     color: rgb(150, 149, 149);
+}
+
+.details-deposit-block{
+    background-color: red;
 }
