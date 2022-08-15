@@ -19,8 +19,7 @@ namespace Corzbank.Helpers
                 PaymentSystem = card.PaymentSystem,
                 CardType = card.CardType,
                 SecretWord = card.SecretWord,
-                IsActive = true,
-                Balance = 100
+                IsActive = true
             };
 
             return cardForResponse;

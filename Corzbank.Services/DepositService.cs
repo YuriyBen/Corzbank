@@ -56,7 +56,7 @@ namespace Corzbank.Services
             var deposits = await _depositRepo
                 .GetQueryable()
                 .Include(c => c.Card).ThenInclude(u => u.User)
-                .Where(u => u.Card.User.Id == userId)
+                .Where(u => u.Card.User.Id == userId && u.Status == DepositStatus.Opened)
                 .ToListAsync();
 
             var mappedDeposits = _mapper.Map<IEnumerable<DepositDTO>>(deposits);
@@ -95,7 +95,7 @@ namespace Corzbank.Services
                 .Include(c => c.Card).ThenInclude(u => u.User)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
-            if (deposit != null)
+            if (deposit != null && deposit.Status == DepositStatus.Opened)
             {
                 var verificationModel = new VerificationModel
                 {

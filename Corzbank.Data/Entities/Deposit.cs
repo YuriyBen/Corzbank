@@ -14,9 +14,9 @@ namespace Corzbank.Data.Entities
 
         public double APY { get; set; }
 
-        public DateTime OpenDate { get; set; }
+        public DateTime CreatedDate { get; set; }
 
-        public DateTime EndDate { get; set; }
+        public DateTime ExpirationDate { get; set; }
 
         public decimal Profit { get; set; }
 

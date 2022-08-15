@@ -6,9 +6,9 @@ export class Deposit {
 	amount: number;
 	duration: number;
 	apy: number;
-	openDate: Date;
-	endDate: Date;
+	createdDate: Date;
+	expirationDate: Date;
 	profit: number;
 	status: DepositStatus;
-	CardId: Guid;
+	cardId: Guid;
 }

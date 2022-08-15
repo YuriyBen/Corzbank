@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
 		private authenticationService: AuthenticationService,
 		private notificationService: NotificationService,
 		private storageService: StorageService
-	) {}
+	) { }
 
 	ngOnInit(): void {
 		this.loginForm = new FormGroup({

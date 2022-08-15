@@ -157,7 +157,7 @@
             border-radius: 10px;
 
             &:hover {
-                background: radial-gradient(#b9bcba,#ffffff69);
+                background: radial-gradient(#b9bcba, #ffffff69);
                 cursor: pointer;
             }
 
@@ -505,10 +505,77 @@
     }
 }
 
-.none-items {
+.empty-wallet {
     color: rgb(150, 149, 149);
 }
 
-.details-deposit-block{
-    background-color: red;
+.details-deposit-block {
+    width: 100%;
+
+    .details {
+        width: 100%;
+        background-color: #2b273f;
+        color: #cecece;
+
+        .option-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #021d01;
+        }
+
+        .deposit-data {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 15px;
+
+
+            .main-data,
+            .date {
+                display: flex;
+                flex-direction: column;
+
+                span {
+                    padding: 10px;
+                }
+            }
+
+            .main-data {
+                align-items: start;
+            }
+
+            .date {
+                align-items: end;
+            }
+
+            .close-btn {
+                padding: 10px;
+
+                button {
+                    background-color: red;
+                    width: 125px;
+                    height: 29px;
+                    font-size: 17px;
+                    border: none;
+                    outline: none;
+                    border-radius: 8px;
+                    transition: 1s;
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: #9c1d1d;
+                        transition: 1s;
+                    }
+                }
+            }
+        }
+    }
+}
+
+::ng-deep.mat-dialog-container {
+    overflow: hidden !important;
+}
+
+::ng-deep.mat-dialog-actions {
+    padding: 0 !important;
 }

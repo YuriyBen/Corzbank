@@ -3,8 +3,8 @@ import {
 	FormGroup,
 	FormControl,
 	Validators,
-	FormBuilder,
 } from "@angular/forms";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { Guid } from "guid-typescript";
 import { Card } from "src/app/data/dtos/card.dto";
 import { Deposit } from "src/app/data/dtos/deposit.dto";
@@ -21,6 +21,7 @@ import { DepositService } from "src/app/data/services/deposit.service";
 import { NotificationService } from "src/app/data/services/notification.service";
 import { StorageService } from "src/app/data/services/storage.service";
 import { TransferService } from "src/app/data/services/transfer.service";
+import { ConfirmDepositClosingComponent } from "./confirm-deposit-closing/confirm-deposit-closing.component";
 
 @Component({
 	selector: "app-wallet",
@@ -41,14 +42,14 @@ export class WalletComponent implements OnInit {
 	cardDataIsDisplayed: boolean;
 	cardNumberIsDisplayed: boolean;
 	cvvIsDisplayed: boolean;
-	cardsIsDisplayed: boolean = true;
-	depositsIsDisplayed: boolean;
-	transactionsIsDisplayed: boolean;
+	cardsAreDisplayed: boolean;
+	depositsAreDisplayed: boolean = true;
+	transactionsAreDisplayed: boolean;
 	transferMenuIsDisplayed: boolean;
-	settingsIsDisplayed: boolean;
+	settingsAreDisplayed: boolean;
 	openCardMenuIsDisplayed: boolean;
 	openDepositMenuIsDisplayed: boolean;
-	depositDataIsDisplayed:boolean;
+	depositDataIsDisplayed: boolean;
 	currentUserId: Guid;
 	durationOfDeposit: number = 1;
 	amountOfDeposit: number = 1;
@@ -67,7 +68,9 @@ export class WalletComponent implements OnInit {
 		private storageService: StorageService,
 		private transferService: TransferService,
 		private notificationService: NotificationService,
-		private depositService: DepositService
+		private depositService: DepositService,
+		private dialog: MatDialog,
+		private dialogRef: MatDialogRef<ConfirmDepositClosingComponent>,
 	) { }
 
 	get receiverCardNumber() {
@@ -95,16 +98,12 @@ export class WalletComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
+		if (this.getCurrentUserId)
+			this.currentUserId = this.getCurrentUserId;
+
 		this.cardService.cardSubject.subscribe((data: any) => {
 			this.cards = data;
 		});
-
-		this.currentUserId = JSON.parse(
-			this.storageService.getItem(
-				StorageTypeEnum.LocalStorage,
-				Constants.UserIdKey
-			)
-		);
 
 		this.getCards();
 
@@ -136,8 +135,19 @@ export class WalletComponent implements OnInit {
 		});
 	}
 
+	get getCurrentUserId() {
+		let currentUserId = JSON.parse(
+			this.storageService.getItem(
+				StorageTypeEnum.LocalStorage,
+				Constants.UserIdKey
+			)
+		);
+
+		return currentUserId;
+	}
+
 	getCards() {
-		if (this.currentUserId != null) {
+		if (this.currentUserId) {
 			this.cardService
 				.getCardsForUser(Guid.parse(this.currentUserId.toString()))
 				.subscribe((response: any) => {
@@ -151,7 +161,6 @@ export class WalletComponent implements OnInit {
 			.getDepositsForUser(Guid.parse(this.currentUserId.toString()))
 			.subscribe((deposits: any) => {
 				this.deposits = deposits;
-				console.log(deposits);
 			});
 	}
 
@@ -180,7 +189,7 @@ export class WalletComponent implements OnInit {
 
 	getTransfers() {
 		this.hideAllMenus();
-		this.transactionsIsDisplayed = !this.transactionsIsDisplayed;
+		this.transactionsAreDisplayed = !this.transactionsAreDisplayed;
 		this.transferService
 			.getTransfersForCard(this.selectedCard.id)
 			.subscribe((response: Transfer[]) => {
@@ -195,7 +204,7 @@ export class WalletComponent implements OnInit {
 
 	openSettings() {
 		this.hideAllMenus();
-		this.settingsIsDisplayed = !this.settingsIsDisplayed;
+		this.settingsAreDisplayed = !this.settingsAreDisplayed;
 	}
 
 	sendTransfer() {
@@ -211,7 +220,7 @@ export class WalletComponent implements OnInit {
 		this.transferService
 			.createTransfer(transferModel)
 			.subscribe((data: any) => {
-				if (data === null) {
+				if (!data) {
 					this.notificationService.showErrorNotification(
 						"Invalid data",
 						""
@@ -231,12 +240,14 @@ export class WalletComponent implements OnInit {
 
 	openCardMenu() {
 		this.hideAllMenus();
+		this.depositDataIsDisplayed = false;
 		this.cardDataIsDisplayed = false;
 		this.openCardMenuIsDisplayed = !this.openCardMenuIsDisplayed;
 	}
 
 	openDepositMenu() {
 		this.hideAllMenus();
+		this.depositDataIsDisplayed = false;
 		this.cardDataIsDisplayed = false;
 		this.openDepositMenuIsDisplayed = !this.openDepositMenuIsDisplayed;
 		this.cardForDeposit = this.cards[0];
@@ -247,8 +258,7 @@ export class WalletComponent implements OnInit {
 		cardForCreatingForm.userId = this.currentUserId;
 		this.cardService.createCard(this.createCardForm.value).subscribe(
 			(card) => {
-				console.log(card);
-				if (card === null) {
+				if (!card) {
 					this.notificationService.showErrorNotification(
 						"This type of card already exists",
 						""
@@ -269,10 +279,11 @@ export class WalletComponent implements OnInit {
 	}
 
 	increment() {
-		if (this.durationOfDeposit < 24) this.durationOfDeposit += 1;
+		if (this.durationOfDeposit < 24) this.durationOfDeposit++;
 	}
+
 	decrement() {
-		if (this.durationOfDeposit > 1) this.durationOfDeposit -= 1;
+		if (this.durationOfDeposit > 1) this.durationOfDeposit--;
 	}
 
 	openDeposit() {
@@ -285,7 +296,6 @@ export class WalletComponent implements OnInit {
 		this.depositService
 			.openDeposit(depositModel)
 			.subscribe((deposit: Deposit) => {
-				console.log(deposit);
 				this.deposits.push(deposit);
 			});
 		this.amountOfDeposit = 1;
@@ -301,14 +311,33 @@ export class WalletComponent implements OnInit {
 		this.cardDataIsDisplayed = false;
 	}
 
+	closeDeposit() {
+		this.notificationService.showWarningNotification("You really want to close this deposit?")
+			.afterClosed().subscribe((res: any) => {
+				if (res) {
+					this.depositService.closeDeposit(this.selectedDeposit.id).subscribe(response => {
+						if (response) {
+							this.dialogRef = this.dialog.open(ConfirmDepositClosingComponent, { data: this.selectedDeposit.id });
+
+							this.dialogRef.afterClosed().subscribe(data => {
+								this.depositDataIsDisplayed = false;
+								const index: number = this.deposits.findIndex(x => x.id === this.selectedDeposit?.id);
+								this.deposits.splice(index, 1);
+							})
+						}
+					})
+				}
+			})
+	}
+
 	hideAllMenus() {
-		this.transactionsIsDisplayed = false;
+		this.transactionsAreDisplayed = false;
 		this.transferMenuIsDisplayed = false;
-		this.transactionsIsDisplayed = false;
+		this.transactionsAreDisplayed = false;
 		this.cvvIsDisplayed = false;
 		this.cardNumberIsDisplayed = false;
-		this.transactionsIsDisplayed = false;
-		this.settingsIsDisplayed = false;
+		this.transactionsAreDisplayed = false;
+		this.settingsAreDisplayed = false;
 		this.openCardMenuIsDisplayed = false;
 		this.openDepositMenuIsDisplayed = false;
 	}

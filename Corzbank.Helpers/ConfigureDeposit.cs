@@ -15,8 +15,8 @@ namespace Corzbank.Helpers
             var sumProfit = yearProfit * (int)deposit.Duration;
 
             deposit.Profit = (decimal)sumProfit;
-            deposit.OpenDate = DateTime.Now;
-            deposit.EndDate = deposit.OpenDate.AddMonths((int)deposit.Duration);
+            deposit.CreatedDate = DateTime.Now;
+            deposit.ExpirationDate = deposit.CreatedDate.AddMonths((int)deposit.Duration);
             deposit.Status = DepositStatus.Opened;
 
             return deposit;

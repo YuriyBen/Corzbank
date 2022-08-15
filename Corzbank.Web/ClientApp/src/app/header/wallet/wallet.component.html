@@ -1,21 +1,21 @@
 <div class="wallet">
 	<div class="cards-deposits">
-		<div class="option show-cards-title" (click)="cardsIsDisplayed = !cardsIsDisplayed">
-			<div class="selected-option" *ngIf="cardsIsDisplayed"></div>
+		<div class="option show-cards-title" (click)="cardsAreDisplayed = !cardsAreDisplayed">
+			<div class="selected-option" *ngIf="cardsAreDisplayed"></div>
 			<div class="option-title">
 				<hr />
 				<h2>Cards</h2>
 				<hr />
 			</div>
 		</div>
-		<div class="cards" *ngIf="cardsIsDisplayed">
-			<h1 *ngIf="cards.length === 0" class="none-items">
+		<div class="cards" *ngIf="cardsAreDisplayed">
+			<h1 *ngIf="!cards.length" class="empty-wallet">
 				You do not have any cards
 			</h1>
 			<div class="card" [ngClass]="{
-					credit: card.cardType == 1,
-					debit: card.cardType == 2,
-					universal: card.cardType == 3
+					credit: card.cardType == CardType.Credit,
+					debit: card.cardType == CardType.Debit,
+					universal: card.cardType == CardType.Universal
 				}" *ngFor="let card of cards" (click)="selectCard(card.id)">
 				<div class="title">
 					<span class="bank-name">corzbank </span>
@@ -30,7 +30,7 @@
 					<span class="expiration-date">{{ card.expirationDate }}</span>
 				</div>
 				<div class="card-field">
-					<span class="balance">{{ card.balance }}$</span>
+					<span class="balance">${{ card.balance }}</span>
 					<span class="payment-system">{{
 						PaymentSystem[card.paymentSystem]
 						}}</span>
@@ -40,26 +40,26 @@
 				<button (click)="openCardMenu()">Open Card</button>
 			</div>
 		</div>
-		<div class="option" (click)="depositsIsDisplayed = !depositsIsDisplayed">
-			<div class="selected-option" *ngIf="depositsIsDisplayed"></div>
+		<div class="option" (click)="depositsAreDisplayed = !depositsAreDisplayed">
+			<div class="selected-option" *ngIf="depositsAreDisplayed"></div>
 			<div class="option-title">
 				<hr />
 				<h2>Deposits</h2>
 				<hr />
 			</div>
 		</div>
-		<div class="deposits-block" *ngIf="depositsIsDisplayed">
+		<div class="deposits-block" *ngIf="depositsAreDisplayed">
 			<div class="deposits">
-				<h1 *ngIf="deposits.length === 0" class="none-items">
+				<h1 *ngIf="!deposits.length" class="empty-wallet">
 					You do not have any deposits
 				</h1>
-				<h1 *ngIf="cards.length === 0" class="none-items">
+				<h1 *ngIf="!cards.length" class="empty-wallet">
 					Firstly you need to create a card
 				</h1>
 				<div class="deposit" *ngFor="let deposit of deposits.slice().reverse()"
 					(click)="selectDeposit(deposit.id)">
 					<div class="deposit-title">
-						<span>{{ deposit.amount }}$</span>
+						<span>${{ deposit.amount }}</span>
 						<span>Duration: {{ deposit.duration }}m</span>
 					</div>
 					<h4>End date: {{ deposit.endDate | date: "dd-MM-yyyy" }}</h4>
@@ -70,7 +70,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="open-card-menu-block" *ngIf="openCardMenuIsDisplayed && cardsIsDisplayed">
+	<div class="open-card-menu-block" *ngIf="openCardMenuIsDisplayed && cardsAreDisplayed">
 		<div class="title-open-card-menu title-transactions">
 			<h2>Open Card</h2>
 		</div>
@@ -115,7 +115,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="open-deposit-menu-block" *ngIf="openDepositMenuIsDisplayed && depositsIsDisplayed">
+	<div class="open-deposit-menu-block" *ngIf="openDepositMenuIsDisplayed && depositsAreDisplayed">
 		<div class="title-open-deposit-menu title-transactions">
 			<h2>Open Deposit</h2>
 		</div>
@@ -144,7 +144,7 @@
 					<button (click)="increment()">+</button>
 				</label>
 				<span>Profit:
-					{{ (durationOfDeposit * amountOfDeposit) / 100 | number }}$</span>
+					${{ (durationOfDeposit * amountOfDeposit) / 100 | number }}</span>
 			</div>
 			<div class="submit-button">
 				<button (click)="openDeposit()" [disabled]="cardForDeposit.balance < amountOfDeposit">
@@ -153,7 +153,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="details-card-block" *ngIf="cardsIsDisplayed && cardDataIsDisplayed">
+	<div class="details-card-block" *ngIf="cardsAreDisplayed && cardDataIsDisplayed">
 		<div class="details">
 			<div class="option">
 				<div class="option-title">
@@ -192,16 +192,16 @@
 				</div>
 				<div class="balance">
 					<h2>Balance</h2>
-					<h1>{{ selectedCard?.balance }}$</h1>
+					<h1>${{ selectedCard?.balance }}</h1>
 				</div>
 			</div>
 		</div>
-		<div *ngIf="transactionsIsDisplayed">
+		<div *ngIf="transactionsAreDisplayed">
 			<div class="title-transactions">
 				<h2>Transactions</h2>
 			</div>
 			<div class="transactions">
-				<h1 *ngIf="transfers.length === 0" class="none-items">
+				<h1 *ngIf="!transfers.length" class="empty-wallet">
 					You do not have any transfers
 				</h1>
 				<div class="transaction" *ngFor="let transfer of transfers.slice().reverse()">
@@ -213,7 +213,7 @@
 								else transferToMe
 							">-</span>
 						<ng-template #transferToMe>+</ng-template>
-						<span class="transfer-field">{{ transfer.amount }}$</span>
+						<span class="transfer-field">${{ transfer.amount }}</span>
 					</div>
 				</div>
 			</div>
@@ -225,7 +225,7 @@
 			<form [formGroup]="transferForm">
 				<div class="transfer">
 					<div class="field">
-						<input formControlName="receiverCardNumber" type="text" maxlength="28"
+						<input formControlName="receiverCardNumber" type="text"
 							placeholder="**** **** **** ****" maxlength="16" class="form-control" />
 						<small *ngIf="
 								receiverPhoneNumber &&
@@ -248,7 +248,7 @@
 				</div>
 			</form>
 		</div>
-		<div *ngIf="settingsIsDisplayed">
+		<div *ngIf="settingsAreDisplayed">
 			<div class="title-settings title-transactions">
 				<h2>Settings</h2>
 			</div>
@@ -259,7 +259,31 @@
 			</div>
 		</div>
 	</div>
-	<div class="details-deposit-block" *ngIf="depositsIsDisplayed && depositDataIsDisplayed">
-		<h1>Hello</h1>
+	<div class="details-deposit-block" *ngIf="depositsAreDisplayed && depositDataIsDisplayed">
+		<div class="details">
+			<div class="option">
+				<div class="option-title">
+					<div>
+						<h2>Deposit Details</h2>
+					</div>
+				</div>
+			</div>
+			<div class="deposit-data">
+				<div class="main-data">
+					<span class="duration">Duration: {{selectedDeposit?.duration}}m</span>
+					<span>Amount: ${{ selectedDeposit?.amount }}</span>
+					<span>Profit: ${{ selectedDeposit?.profit }}</span>
+				</div>
+				<div>
+					<div class="date">
+						<span class="openDate">Open Date: {{selectedDeposit?.openDate | date: "dd-MM-yyyy hh:mm a"}}</span>
+						<span class="endDate">End Date: {{selectedDeposit?.endDate | date: "dd-MM-yyyy hh:mm a"}}</span>
+					</div>
+					<div class="close-btn">
+						<button (click)="closeDeposit()">Close Deposit</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>

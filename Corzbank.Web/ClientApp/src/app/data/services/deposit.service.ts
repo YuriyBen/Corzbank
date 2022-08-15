@@ -3,19 +3,21 @@ import { Inject, Injectable } from "@angular/core";
 import { Guid } from "guid-typescript";
 import { Observable, Subject } from "rxjs";
 import { Deposit } from "../dtos/deposit.dto";
+import { ConfirmationModel } from "../models/confirmation.model";
 import { DepositModel } from "../models/deposit.model";
+import { VerificationModel } from "../models/verification.model";
 
 @Injectable({
 	providedIn: "root",
 })
 export class DepositService {
 
-	url = this.baseUrl + "deposits/";
+	private url = this.baseUrl + "deposits/";
 
 	constructor(
 		private http: HttpClient,
 		@Inject("BASE_API_URL") private baseUrl: string
-	) {}
+	) { }
 
 	getDeposits(): Observable<Deposit[]> {
 		return this.http.get<Deposit[]>(this.url);
@@ -35,5 +37,9 @@ export class DepositService {
 
 	closeDeposit(id: Guid): Observable<boolean> {
 		return this.http.delete<boolean>(this.url + id);
+	}
+
+	confirmClosingDeposit(confirmationModel: ConfirmationModel): Observable<boolean> {
+		return this.http.post<boolean>(this.url + "confirm-closing/", confirmationModel);
 	}
 }

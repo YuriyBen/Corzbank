@@ -11,7 +11,7 @@ import { CardModel } from "../models/card.model";
 export class CardService {
 	cardSubject = new Subject();
 
-	url = this.baseUrl + "cards/";
+	private url = this.baseUrl + "cards/";
 
 	constructor(
 		private http: HttpClient,

@@ -56,6 +56,14 @@ namespace Corzbank.Api.Controllers
             return Ok(result);
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> CloseDeposit(Guid id)
+        {
+            var result = await _depositService.CloseDeposit(id);
+
+            return Ok(result);
+        }
+
         [HttpPost("confirm-closing")]
         public async Task<IActionResult> ConfirmVerification(ConfirmationModel confirmationModel)
         {

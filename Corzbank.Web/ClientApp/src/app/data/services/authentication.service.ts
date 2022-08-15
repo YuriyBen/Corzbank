@@ -16,7 +16,7 @@ export class AuthenticationService {
     @Inject("BASE_API_URL") private baseUrl: string
   ) {}
 
-  url = this.baseUrl + "users/";
+  private url = this.baseUrl + "users/";
 
   registerUser(user: UserModel) {
     return this.http.post(this.url + "register", user);

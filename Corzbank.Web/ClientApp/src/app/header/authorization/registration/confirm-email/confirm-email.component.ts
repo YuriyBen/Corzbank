@@ -32,7 +32,7 @@ export class ConfirmEmailComponent implements OnInit {
 		@Inject(MAT_DIALOG_DATA)
 		public data,
 		private notificationService: NotificationService
-	) {}
+	) { }
 
 	ngOnInit(): void {
 		this.startTimer();
@@ -42,6 +42,7 @@ export class ConfirmEmailComponent implements OnInit {
 		var confirmationModel: ConfirmationModel = {
 			email: this.data,
 			verificationCode: this.code,
+			verificationType: VerificationType.Email
 		};
 
 		this.authenticationService

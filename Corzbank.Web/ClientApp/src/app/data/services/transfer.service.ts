@@ -12,9 +12,9 @@ export class TransferService {
 	constructor(
 		private http: HttpClient,
 		@Inject("BASE_API_URL") private baseUrl: string
-	) {}
+	) { }
 
-	url = this.baseUrl + "transfers/";
+	private url = this.baseUrl + "transfers/";
 
 	getTransfers(): Observable<Transfer[]> {
 		return this.http.get<Transfer[]>(this.url);
