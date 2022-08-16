@@ -1,189 +1,189 @@
 <div class="navbar">
-	<div class="block">
-		<div class="home">
-			<a [routerLink]="['']">
-				<div class="logo">
-					<img src="assets/images/logo.png" alt="logo" />
-				</div>
-			</a>
-		</div>
-		<div class="wallet">
-			<a [routerLink]="['wallet']">Wallet</a>
-		</div>
-		<div class="services-dropdown">
-			<ul>
-				<li>
-					<div class="services">
-						<span>Services</span>
-						<i class="fa fa-angle-down"></i>
-					</div>
-					<ul class="dropdown">
-						<li>
-							<div class="money-transfers function">
-								<div class="icon">
-									<i class="fas fa-angle-right fa-lg"></i>
-									<i class="fas fa-angle-right fa-lg"></i>
-								</div>
-								<div class="service">
-									<h3>Money Transfers</h3>
-									<i class="fas fa-chevron-right fa-lg"></i>
-								</div>
-							</div>
-							<ul>
-								<li>
-									<div class="money-transfers function">
-										<div class="icon">
-											<i class="fas fa-credit-card"></i>
-										</div>
-										<div class="service">
-											<h3>Transfer to a card</h3>
-										</div>
-									</div>
-								</li>
-							</ul>
-						</li>
-						<li>
-							<div class="payments function">
-								<div class="icon">
-									<i>$</i>
-								</div>
-								<div class="service">
-									<h3>Payments</h3>
-									<i class="fas fa-chevron-right fa-lg"></i>
-								</div>
-							</div>
-							<ul>
-								<li>
-									<div class="payments function">
-										<div class="icon">
-											<i>$</i>
-										</div>
-										<div class="service">
-											<h3>Payments1</h3>
-										</div>
-									</div>
-								</li>
-								<li>
-									<div class="payments function">
-										<div class="icon">
-											<i>$</i>
-										</div>
-										<div class="service">
-											<h3>Payments2</h3>
-										</div>
-									</div>
-								</li>
-							</ul>
-						</li>
-						<li>
-							<div class="deposits function">
-								<div class="icon">
-									<i>%</i>
-								</div>
-								<div class="service">
-									<h3>Deposits</h3>
-									<i class="fas fa-chevron-right fa-lg"></i>
-								</div>
-							</div>
-							<ul>
-								<li>
-									<div class="deposits function">
-										<div class="icon">
-											<i>+</i>
-										</div>
-										<div class="service">
-											<h3>Open Deposit</h3>
-										</div>
-									</div>
-								</li>
-								<li>
-									<div class="deposits function">
-										<div class="icon">
-											<i>%</i>
-										</div>
-										<div class="service">
-											<h3>My Deposits</h3>
-										</div>
-									</div>
-								</li>
-							</ul>
-						</li>
-						<li>
-							<div class="telecomunications function">
-								<div class="icon">
-									<i class="fas fa-signal"></i>
-								</div>
-								<div class="service">
-									<h3>Telecomunications</h3>
-									<i class="fas fa-chevron-right fa-lg"></i>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="transports function">
-								<div class="icon">
-									<i class="fas fa-bus"></i>
-								</div>
-								<div class="service">
-									<h3>Transports</h3>
-									<i class="fas fa-chevron-right fa-lg"></i>
-								</div>
-							</div>
-							<ul>
-								<li>
-									<div class="transports function">
-										<div class="icon">
-											<i class="fas fa-bus"></i>
-										</div>
-										<div class="service">
-											<h3>Bus Tickets</h3>
-										</div>
-									</div>
-								</li>
-								<li>
-									<div class="transports function">
-										<div class="icon">
-											<i class="fas plane fa-plane"></i>
-										</div>
-										<div class="service">
-											<h3>Flight Tickets</h3>
-										</div>
-									</div>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</li>
-			</ul>
-		</div>
-	</div>
-	<div class="block">
-		<div class="exchange">
-			<span>$ 32.487 / 36.579</span>
-		</div>
-		<div
-			class="not-authenticated"
-			(click)="openDialog()"
-			*ngIf="!isAuthenticated; else isAuthenticatedTemplate"
-		>
-			<i class="far fa-user"></i>
-			<p>Sign in</p>
-		</div>
-		<ng-template #isAuthenticatedTemplate>
-			<div class="authentication-dropdown">
-				<a>
-					<div class="not-authenticated authenticated">
-						<i class="far fa-user"></i>
-						<p>Profile</p>
-					</div>
-				</a>
-				<div class="dropdown-content">
-					<a (click)="logout()">Logout</a>
-					<a (click)="logout()">Logout</a>
-					<a (click)="logout()">Logout</a>
-				</div>
-			</div>
-		</ng-template>
-	</div>
+  <div class="block">
+    <div class="home">
+      <a [routerLink]="['']">
+        <div class="logo">
+          <img src="assets/images/logo.png" alt="logo" />
+        </div>
+      </a>
+    </div>
+    <div class="wallet">
+      <a [routerLink]="['wallet']">Wallet</a>
+    </div>
+    <div class="services-dropdown">
+      <ul>
+        <li>
+          <div class="services">
+            <span>Services</span>
+            <i class="fa fa-angle-down"></i>
+          </div>
+          <ul class="dropdown">
+            <li>
+              <div class="money-transfers function">
+                <div class="icon">
+                  <i class="fas fa-angle-right fa-lg"></i>
+                  <i class="fas fa-angle-right fa-lg"></i>
+                </div>
+                <div class="service">
+                  <h3>Money Transfers</h3>
+                  <i class="fas fa-chevron-right fa-lg"></i>
+                </div>
+              </div>
+              <ul>
+                <li>
+                  <div class="money-transfers function">
+                    <div class="icon">
+                      <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div class="service">
+                      <h3>Transfer to a card</h3>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <div class="payments function">
+                <div class="icon">
+                  <i>$</i>
+                </div>
+                <div class="service">
+                  <h3>Payments</h3>
+                  <i class="fas fa-chevron-right fa-lg"></i>
+                </div>
+              </div>
+              <ul>
+                <li>
+                  <div class="payments function">
+                    <div class="icon">
+                      <i>$</i>
+                    </div>
+                    <div class="service">
+                      <h3>Payments1</h3>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="payments function">
+                    <div class="icon">
+                      <i>$</i>
+                    </div>
+                    <div class="service">
+                      <h3>Payments2</h3>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <div class="deposits function">
+                <div class="icon">
+                  <i>%</i>
+                </div>
+                <div class="service">
+                  <h3>Deposits</h3>
+                  <i class="fas fa-chevron-right fa-lg"></i>
+                </div>
+              </div>
+              <ul>
+                <li>
+                  <div class="deposits function">
+                    <div class="icon">
+                      <i>+</i>
+                    </div>
+                    <div class="service">
+                      <h3>Open Deposit</h3>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="deposits function">
+                    <div class="icon">
+                      <i>%</i>
+                    </div>
+                    <div class="service">
+                      <h3>My Deposits</h3>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <div class="telecomunications function">
+                <div class="icon">
+                  <i class="fas fa-signal"></i>
+                </div>
+                <div class="service">
+                  <h3>Telecomunications</h3>
+                  <i class="fas fa-chevron-right fa-lg"></i>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="transports function">
+                <div class="icon">
+                  <i class="fas fa-bus"></i>
+                </div>
+                <div class="service">
+                  <h3>Transports</h3>
+                  <i class="fas fa-chevron-right fa-lg"></i>
+                </div>
+              </div>
+              <ul>
+                <li>
+                  <div class="transports function">
+                    <div class="icon">
+                      <i class="fas fa-bus"></i>
+                    </div>
+                    <div class="service">
+                      <h3>Bus Tickets</h3>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="transports function">
+                    <div class="icon">
+                      <i class="fas plane fa-plane"></i>
+                    </div>
+                    <div class="service">
+                      <h3>Flight Tickets</h3>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="block">
+    <div class="exchange">
+      <span>$ 32.487 / 36.579</span>
+    </div>
+    <div
+      class="not-authenticated"
+      (click)="openDialog()"
+      *ngIf="!isAuthenticated; else isAuthenticatedTemplate"
+    >
+      <i class="far fa-user"></i>
+      <p>Sign in</p>
+    </div>
+    <ng-template #isAuthenticatedTemplate>
+      <div class="authentication-dropdown">
+        <a>
+          <div class="not-authenticated authenticated">
+            <i class="far fa-user"></i>
+            <p>Profile</p>
+          </div>
+        </a>
+        <div class="dropdown-content">
+          <a (click)="logout()">Logout</a>
+          <a (click)="logout()">Logout</a>
+          <a (click)="logout()">Logout</a>
+        </div>
+      </div>
+    </ng-template>
+  </div>
 </div>
 <hr />
