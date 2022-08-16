@@ -51,9 +51,8 @@ export class WalletComponent implements OnInit {
 	openDepositMenuIsDisplayed: boolean;
 	depositDataIsDisplayed: boolean;
 	currentUserId: Guid;
-	durationOfDeposit: number = 1;
-	amountOfDeposit: number = 1;
-	profitForDeposit: number = 1;
+	depositDuration: number = 1;
+	depositAmount: number = 1;
 	cardForDeposit: Card;
 
 	cards: Card[] = [];
@@ -279,18 +278,18 @@ export class WalletComponent implements OnInit {
 	}
 
 	increment() {
-		if (this.durationOfDeposit < 24) this.durationOfDeposit++;
+		if (this.depositDuration < 24) this.depositDuration++;
 	}
 
 	decrement() {
-		if (this.durationOfDeposit > 1) this.durationOfDeposit--;
+		if (this.depositDuration > 1) this.depositDuration--;
 	}
 
 	openDeposit() {
 		var depositModel: DepositModel = {
 			cardId: this.cardForDeposit.id,
-			amount: this.amountOfDeposit,
-			duration: this.durationOfDeposit,
+			amount: this.depositAmount,
+			duration: this.depositDuration,
 		};
 
 		this.depositService
@@ -298,8 +297,8 @@ export class WalletComponent implements OnInit {
 			.subscribe((deposit: Deposit) => {
 				this.deposits.push(deposit);
 			});
-		this.amountOfDeposit = 1;
-		this.durationOfDeposit = 1;
+		this.depositAmount = 1;
+		this.depositDuration = 1;
 	}
 
 	selectDeposit(id: Guid) {

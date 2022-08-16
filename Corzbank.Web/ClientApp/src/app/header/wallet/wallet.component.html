@@ -129,25 +129,25 @@
 						</option>
 					</select>
 				</div>
-				<small *ngIf="cardForDeposit.balance < amountOfDeposit">Balance is not enough</small>
+				<small *ngIf="cardForDeposit.balance < depositAmount">Balance is not enough</small>
 			</div>
 			<div class="field">
 				<div class="amount">
 					<span>Amount:</span>
-					<input type="text" [(ngModel)]="amountOfDeposit" min="1" maxlength="7" />
+					<input type="text" [(ngModel)]="depositAmount" min="1" maxlength="7" />
 				</div>
 			</div>
 			<div class="duration">
 				<label>
 					<button (click)="decrement()">-</button>
-					Duration: {{ durationOfDeposit }}m
+					Duration: {{ depositDuration }}m
 					<button (click)="increment()">+</button>
 				</label>
 				<span>Profit:
-					${{ (durationOfDeposit * amountOfDeposit) / 100 | number }}</span>
+					${{ (depositDuration * depositAmount) / 100 | number }}</span>
 			</div>
 			<div class="submit-button">
-				<button (click)="openDeposit()" [disabled]="cardForDeposit.balance < amountOfDeposit">
+				<button (click)="openDeposit()" [disabled]="cardForDeposit.balance < depositAmount">
 					Open
 				</button>
 			</div>
@@ -276,8 +276,8 @@
 				</div>
 				<div>
 					<div class="date">
-						<span class="openDate">Open Date: {{selectedDeposit?.openDate | date: "dd-MM-yyyy hh:mm a"}}</span>
-						<span class="endDate">End Date: {{selectedDeposit?.endDate | date: "dd-MM-yyyy hh:mm a"}}</span>
+						<span class="openDate">Created Date: {{selectedDeposit?.createdDate | date: "dd-MM-yyyy hh:mm a"}}</span>
+						<span class="endDate">Expiration Date: {{selectedDeposit?.expirationDate | date: "dd-MM-yyyy hh:mm a"}}</span>
 					</div>
 					<div class="close-btn">
 						<button (click)="closeDeposit()">Close Deposit</button>
