@@ -1,7 +1,7 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { MatDialogModule, MatDialogRef } from "@angular/material/dialog";
 import { CodeInputModule } from "angular-code-input";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
@@ -28,6 +28,7 @@ import { WalletComponent } from "./header/wallet/wallet.component";
 import { environment } from "src/environments/environment";
 import { WarningNotificationComponent } from './data/helpers/warning-notification/warning-notification.component';
 import { ConfirmDepositClosingComponent } from './header/wallet/confirm-deposit-closing/confirm-deposit-closing.component';
+import { ErrorHandlingInterceptor } from "./data/interceptors/error-handling.interceptor";
 
 function tokenGetter() {
 	return localStorage.getItem(Constants.AccessTokenKey);
@@ -73,6 +74,11 @@ function tokenGetter() {
 		[CookieService],
 		{ provide: "BASE_API_URL", useValue: environment.apiUrl },
 		{ provide: MatDialogRef, useValue: {} },
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: ErrorHandlingInterceptor,
+			multi: true
+		},
 	],
 	bootstrap: [AppComponent],
 })

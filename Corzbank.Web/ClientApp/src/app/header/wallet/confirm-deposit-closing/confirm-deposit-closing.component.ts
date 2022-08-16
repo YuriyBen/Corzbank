@@ -31,7 +31,8 @@ export class ConfirmDepositClosingComponent implements OnInit {
 		var confirmationModel: ConfirmationModel = {
 			depositId: this.data,
 			verificationCode: this.code,
-			verificationType: VerificationType.CloseDeposit
+			verificationType: VerificationType.CloseDeposit,
+			email: null
 		};
 
 		this.depositService
@@ -60,7 +61,7 @@ export class ConfirmDepositClosingComponent implements OnInit {
 			.closeDeposit(this.data)
 			.subscribe(data => {
 				this.notificationService.showSuccessfulNotification(
-					"Verification Code was successfully send",
+					"Verification Code was successfully sent",
 					""
 				);
 			});

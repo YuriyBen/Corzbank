@@ -8,60 +8,60 @@ import { UserForLoginModel } from "../models/userForLogin.model";
 import { VerificationModel } from "../models/verification.model";
 
 @Injectable({
-  providedIn: "root",
+    providedIn: "root",
 })
 export class AuthenticationService {
-  constructor(
-    private http: HttpClient,
-    @Inject("BASE_API_URL") private baseUrl: string
-  ) {}
+    constructor(
+        private http: HttpClient,
+        @Inject("BASE_API_URL") private baseUrl: string
+    ) { }
 
-  private url = this.baseUrl + "users/";
+    private url = this.baseUrl + "users/";
 
-  registerUser(user: UserModel) {
-    return this.http.post(this.url + "register", user);
-  }
+    registerUser(user: UserModel) {
+        return this.http.post(this.url + "register", user);
+    }
 
-  loginUser(user: UserForLoginModel) {
-    return this.http.post(this.url + "login", user);
-  }
+    loginUser(user: UserForLoginModel) {
+        return this.http.post(this.url + "login", user);
+    }
 
-  refreshTokensForUser(refreshToken: string) {
-    return this.http.post(
-      this.url + "refresh-tokens",
-      JSON.stringify(refreshToken)
-    );
-  }
+    refreshTokensForUser(refreshToken: string) {
+        return this.http.post(
+            this.url + "refresh-tokens",
+            JSON.stringify(refreshToken)
+        );
+    }
 
-  forgotPassword(verificationModel: VerificationModel) {
-    return this.http.post(this.url + "forgot-password", verificationModel);
-  }
+    forgotPassword(verificationModel: VerificationModel) {
+        return this.http.post(this.url + "forgot-password", verificationModel);
+    }
 
-  resendVerification(verificationModel: VerificationModel) {
-    return this.http.post(this.url + "resend-verification", verificationModel);
-  }
+    resendVerification(verificationModel: VerificationModel) {
+        return this.http.post(this.url + "resend-verification", verificationModel);
+    }
 
-  confirmVerification(confirmationModel: ConfirmationModel) {
-    return this.http.post(this.url + "confirm-verification", confirmationModel);
-  }
+    confirmVerification(confirmationModel: ConfirmationModel) {
+        return this.http.post(this.url + "confirm-verification", confirmationModel);
+    }
 
-  setNewPassword(newPassword: SetNewPasswordModel) {
-    return this.http.post(this.url + "set-new-password", newPassword);
-  }
+    setNewPassword(newPassword: SetNewPasswordModel) {
+        return this.http.post(this.url + "set-new-password", newPassword);
+    }
 
-  getUsers() {
-    return this.http.get(this.url);
-  }
+    getUsers() {
+        return this.http.get(this.url);
+    }
 
-  getUser(id: Guid) {
-    return this.http.get(this.url + id);
-  }
+    getUser(id: Guid) {
+        return this.http.get(this.url + id);
+    }
 
-  updateUser(id: Guid, user: UserModel) {
-    return this.http.put(this.url + id, user);
-  }
+    updateUser(id: Guid, user: UserModel) {
+        return this.http.put(this.url + id, user);
+    }
 
-  deleteUser(id: Guid) {
-    return this.http.delete(this.url + id);
-  }
+    deleteUser(id: Guid) {
+        return this.http.delete(this.url + id);
+    }
 }

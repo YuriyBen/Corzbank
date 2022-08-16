@@ -1,11 +1,10 @@
 import { HttpClient } from "@angular/common/http";
 import { Inject, Injectable } from "@angular/core";
 import { Guid } from "guid-typescript";
-import { Observable, Subject } from "rxjs";
+import { Observable } from "rxjs";
 import { Deposit } from "../dtos/deposit.dto";
 import { ConfirmationModel } from "../models/confirmation.model";
 import { DepositModel } from "../models/deposit.model";
-import { VerificationModel } from "../models/verification.model";
 
 @Injectable({
 	providedIn: "root",

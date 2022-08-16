@@ -225,8 +225,8 @@
 			<form [formGroup]="transferForm">
 				<div class="transfer">
 					<div class="field">
-						<input formControlName="receiverCardNumber" type="text"
-							placeholder="**** **** **** ****" maxlength="16" class="form-control" />
+						<input formControlName="receiverCardNumber" type="text" placeholder="**** **** **** ****"
+							maxlength="16" class="form-control" />
 						<small *ngIf="
 								receiverPhoneNumber &&
 								receiverPhoneNumber.invalid &&
@@ -276,8 +276,10 @@
 				</div>
 				<div>
 					<div class="date">
-						<span class="openDate">Created Date: {{selectedDeposit?.createdDate | date: "dd-MM-yyyy hh:mm a"}}</span>
-						<span class="endDate">Expiration Date: {{selectedDeposit?.expirationDate | date: "dd-MM-yyyy hh:mm a"}}</span>
+						<span class="openDate">Created Date: {{selectedDeposit?.createdDate | date: "dd-MM-yyyy hh:mm
+							a"}}</span>
+						<span class="endDate">Expiration Date: {{selectedDeposit?.expirationDate | date: "dd-MM-yyyy
+							hh:mm a"}}</span>
 					</div>
 					<div class="close-btn">
 						<button (click)="closeDeposit()">Close Deposit</button>

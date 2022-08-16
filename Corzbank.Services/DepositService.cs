@@ -4,6 +4,7 @@ using Corzbank.Data.Entities.DTOs;
 using Corzbank.Data.Entities.Models;
 using Corzbank.Data.Enums;
 using Corzbank.Helpers;
+using Corzbank.Helpers.Exceptions;
 using Corzbank.Repository.Interfaces;
 using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -69,7 +70,7 @@ namespace Corzbank.Services
             var cardForDeposit = await _cardRepo.GetQueryable().FirstOrDefaultAsync(c => c.Id == deposit.CardId);
 
             if (cardForDeposit.Balance < deposit.Amount)
-                return null;
+                throw new ForbiddenException();
             else
             {
                 cardForDeposit.Balance -= deposit.Amount;

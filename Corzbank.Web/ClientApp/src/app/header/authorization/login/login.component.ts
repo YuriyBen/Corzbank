@@ -91,7 +91,6 @@ export class LoginComponent implements OnInit {
 				);
 			},
 			(error: any) => {
-				console.log(error);
 				this.notificationService.showErrorNotification(
 					"Email is unverified",
 					""

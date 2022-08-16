@@ -27,7 +27,7 @@ export class ConfirmResettingComponent implements OnInit {
     public dialogRef: MatDialogRef<ForgotPasswordComponent>,
     @Inject(MAT_DIALOG_DATA) public data,
     private notificationService: NotificationService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.startTimer();
@@ -70,7 +70,7 @@ export class ConfirmResettingComponent implements OnInit {
       .forgotPassword(resendVerification)
       .subscribe(() => {
         this.notificationService.showSuccessfulNotification(
-          "Verification Code was successfully send",
+          "Verification Code was successfully sent",
           ""
         );
       });

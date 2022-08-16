@@ -3,6 +3,7 @@ using Corzbank.Data.Entities;
 using Corzbank.Data.Entities.DTOs;
 using Corzbank.Data.Entities.Models;
 using Corzbank.Data.Enums;
+using Corzbank.Helpers.Exceptions;
 using Corzbank.Repository.Interfaces;
 using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -64,20 +65,20 @@ namespace Corzbank.Services
                 transferRequest.ReceiverPhoneNumber = null;
 
                 if (transferRequest.ReceiverCardNumber == null)
-                    return null;
+                    throw new ForbiddenException();
             }
             else
             {
                 transferRequest.ReceiverCardNumber = null;
 
                 if (transferRequest.ReceiverPhoneNumber == null)
-                    return null;
+                    throw new ForbiddenException();
             }
 
             var senderCard = await _cardRepo.GetQueryable().FirstOrDefaultAsync(c => c.Id == transferRequest.SenderCardId);
 
             if (senderCard.Balance <= transferRequest.Amount)
-                return null;
+                throw new ForbiddenException();
 
             senderCard.Balance -= transferRequest.Amount;
 
@@ -90,7 +91,7 @@ namespace Corzbank.Services
                 var receiverCard = await _cardRepo.GetQueryable().FirstOrDefaultAsync(c => c.CardNumber == transferRequest.ReceiverCardNumber) ?? null;
 
                 if (receiverCard == null || senderCard.Id == receiverCard.Id)
-                    return null;
+                    throw new ForbiddenException();
 
                 receiverCard.Balance += transferRequest.Amount;
 
