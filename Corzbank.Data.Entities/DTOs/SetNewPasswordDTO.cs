@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Corzbank.Data.Entities.Models
+namespace Corzbank.Data.Models.DTOs
 {
-    public class SetNewPasswordModel
+    public class SetNewPasswordDTO
     {
         [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; }

@@ -1,5 +1,5 @@
-﻿using Corzbank.Data.Entities;
-using Corzbank.Data.Entities.Models;
+﻿using Corzbank.Data.Models;
+using Corzbank.Data.Models.DTOs;
 using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -26,7 +26,7 @@ namespace Corzbank.Services
             _configuration = configuration;
         }
 
-        public async Task<bool> ValidateUser(UserForLoginModel userForAuth)
+        public async Task<bool> ValidateUser(UserForLoginDTO userForAuth)
         {
             user = await _userManager.FindByEmailAsync(userForAuth.Email);
 

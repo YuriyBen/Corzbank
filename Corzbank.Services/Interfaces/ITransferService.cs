@@ -1,6 +1,5 @@
-﻿using Corzbank.Data.Entities;
-using Corzbank.Data.Entities.DTOs;
-using Corzbank.Data.Entities.Models;
+﻿using Corzbank.Data.Models;
+using Corzbank.Data.Models.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,13 +9,13 @@ namespace Corzbank.Services.Interfaces
 {
     public interface ITransferService
     {
-        Task<IEnumerable<TransferDTO>> GetTransfers();
+        Task<IEnumerable<TransferDetailsDTO>> GetTransfers();
 
-        Task<TransferDTO> GetTransferById(Guid id);
+        Task<TransferDetailsDTO> GetTransferById(Guid id);
 
-        Task<IEnumerable<TransferDTO>> GetTransfersForCard(Guid cardId);
+        Task<IEnumerable<TransferDetailsDTO>> GetTransfersForCard(Guid cardId);
 
-        Task<TransferDTO> CreateTransfer(TransferModel transferRequest);
+        Task<TransferDetailsDTO> CreateTransfer(TransferDTO transferRequest);
 
         Task<bool> DeleteTransfer(Guid id);
     }

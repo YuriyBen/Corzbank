@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using Corzbank.Data.Entities;
-using Corzbank.Data.Entities.DTOs;
-using Corzbank.Data.Entities.Models;
+using Corzbank.Data.Models;
+using Corzbank.Data.Models.DTOs;
 using Corzbank.Data.Enums;
 using Corzbank.Helpers.Exceptions;
 using Corzbank.Repository.Interfaces;
@@ -31,47 +30,47 @@ namespace Corzbank.Services
             _cardRepo = cardRepo;
         }
 
-        public async Task<IEnumerable<TransferDTO>> GetTransfers()
+        public async Task<IEnumerable<TransferDetailsDTO>> GetTransfers()
         {
             var transfers = await _transferRepo.GetQueryable().ToListAsync();
 
-            var result = _mapper.Map<IEnumerable<TransferDTO>>(transfers);
+            var result = _mapper.Map<IEnumerable<TransferDetailsDTO>>(transfers);
 
             return result;
         }
 
-        public async Task<TransferDTO> GetTransferById(Guid id)
+        public async Task<TransferDetailsDTO> GetTransferById(Guid id)
         {
             var transfer = await _transferRepo.GetQueryable().FirstOrDefaultAsync(c => c.Id == id);
 
-            var result = _mapper.Map<TransferDTO>(transfer);
+            var result = _mapper.Map<TransferDetailsDTO>(transfer);
 
             return result;
         }
 
-        public async Task<IEnumerable<TransferDTO>> GetTransfersForCard(Guid cardId)
+        public async Task<IEnumerable<TransferDetailsDTO>> GetTransfersForCard(Guid cardId)
         {
             var transfers = await _transferRepo.GetQueryable().Where(c => c.SenderCardId == cardId || c.ReceiverCardId == cardId).ToListAsync();
 
-            var result = _mapper.Map<IEnumerable<TransferDTO>>(transfers);
+            var result = _mapper.Map<IEnumerable<TransferDetailsDTO>>(transfers);
 
             return result;
         }
 
-        public async Task<TransferDTO> CreateTransfer(TransferModel transferRequest)
+        public async Task<TransferDetailsDTO> CreateTransfer(TransferDTO transferRequest)
         {
             if (transferRequest.TransferType == TransferType.Card)
             {
                 transferRequest.ReceiverPhoneNumber = null;
 
-                if (transferRequest.ReceiverCardNumber == null)
+                if (string.IsNullOrWhiteSpace(transferRequest.ReceiverCardNumber))
                     throw new ForbiddenException();
             }
             else
             {
                 transferRequest.ReceiverCardNumber = null;
 
-                if (transferRequest.ReceiverPhoneNumber == null)
+                if (string.IsNullOrWhiteSpace(transferRequest.ReceiverPhoneNumber))
                     throw new ForbiddenException();
             }
 
@@ -86,7 +85,7 @@ namespace Corzbank.Services
 
             var transfer = _mapper.Map<Transfer>(transferRequest);
 
-            if (transferRequest.ReceiverCardNumber != null)
+            if (!string.IsNullOrWhiteSpace(transferRequest.ReceiverCardNumber))
             {
                 var receiverCard = await _cardRepo.GetQueryable().FirstOrDefaultAsync(c => c.CardNumber == transferRequest.ReceiverCardNumber) ?? null;
 
@@ -104,7 +103,7 @@ namespace Corzbank.Services
 
             await _transferRepo.Insert(transfer);
 
-            var result = _mapper.Map<TransferDTO>(transfer);
+            var result = _mapper.Map<TransferDetailsDTO>(transfer);
 
             return result;
         }

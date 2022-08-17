@@ -1,5 +1,5 @@
-﻿using Corzbank.Data.Entities;
-using Corzbank.Data.Entities.Models;
+﻿using Corzbank.Data.Models;
+using Corzbank.Data.Models.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,8 +9,8 @@ namespace Corzbank.Services.Interfaces
 {
     public interface IWrappedVerificationService
     {
-        Task<bool> Verify(VerificationModel verificationModel);
+        Task<bool> Verify(VerificationDTO verificationModel);
 
-        Task<bool> ConfirmVerification(ConfirmationModel confirmationModel);
+        Task<bool> ConfirmVerification(ConfirmationDTO confirmationModel);
     }
 }

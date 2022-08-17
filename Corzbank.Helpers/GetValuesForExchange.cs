@@ -1,4 +1,4 @@
-﻿using Corzbank.Data.Entities.Models;
+﻿using Corzbank.Data.Models.DTOs;
 using Corzbank.Data.Enums;
 using Newtonsoft.Json;
 using System;
@@ -11,19 +11,19 @@ namespace Corzbank.Helpers
 {
     public static class GetValuesForExchange
     {
-        public static IEnumerable<ExchangeModel> GetValues()
+        public static IEnumerable<ExchangeDTO> GetValues()
         {
             WebClient wc = new WebClient();
 
             var parsedString = wc.DownloadString("https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5");
 
-            var valuesArray = JsonConvert.DeserializeObject<ExchangeModelForParsing[]>(parsedString);
+            var valuesArray = JsonConvert.DeserializeObject<ExchangeDTOForParsing[]>(parsedString);
 
-            List<ExchangeModel> exchangeList = new List<ExchangeModel>();
+            List<ExchangeDTO> exchangeList = new List<ExchangeDTO>();
 
             foreach (var value in valuesArray)
             {
-                ExchangeModel exchangeModel = new ExchangeModel
+                ExchangeDTO exchangeModel = new ExchangeDTO
                 {
                     BaseCurrency = (Currency)Enum.Parse(typeof(Currency), value.base_ccy),
                     ExchangeCurrency = (Currency)Enum.Parse(typeof(Currency), value.ccy),

@@ -1,4 +1,4 @@
-﻿using Corzbank.Data.Entities;
+﻿using Corzbank.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System;

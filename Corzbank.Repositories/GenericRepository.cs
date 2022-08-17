@@ -1,5 +1,5 @@
 ﻿using Corzbank.Data;
-using Corzbank.Data.Entities;
+using Corzbank.Data.Models;
 using Corzbank.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;

@@ -1,6 +1,5 @@
-﻿using Corzbank.Data.Entities;
-using Corzbank.Data.Entities.DTOs;
-using Corzbank.Data.Entities.Models;
+﻿using Corzbank.Data.Models;
+using Corzbank.Data.Models.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,13 +9,13 @@ namespace Corzbank.Services.Interfaces
 {
     public interface IDepositService
     {
-        Task<IEnumerable<DepositDTO>> GetDeposits();
+        Task<IEnumerable<DepositDetailsDTO>> GetDeposits();
 
-        Task<IEnumerable<DepositDTO>> GetDepositsForUser(Guid userId);
+        Task<IEnumerable<DepositDetailsDTO>> GetDepositsForUser(Guid userId);
 
-        Task<DepositDTO> GetDepositById(Guid id);
+        Task<DepositDetailsDTO> GetDepositById(Guid id);
 
-        Task<DepositDTO> OpenDeposit(DepositModel deposit);
+        Task<DepositDetailsDTO> OpenDeposit(DepositDTO deposit);
 
         Task<bool> CloseDeposit(Guid id);
     }

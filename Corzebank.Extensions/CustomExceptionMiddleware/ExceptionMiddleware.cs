@@ -1,4 +1,4 @@
-﻿using Corzbank.Data.Entities.Models;
+﻿using Corzbank.Data.Models.DTOs;
 using Corzbank.Helpers.Exceptions;
 using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -46,7 +46,7 @@ namespace Corzbank.Extensions
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = exception.StatusCode;
 
-            await context.Response.WriteAsync(new ErrorDetailsModel()
+            await context.Response.WriteAsync(new ErrorDetailsDTO()
             {
                 StatusCode = exception.StatusCode,
                 Message = exception.Message

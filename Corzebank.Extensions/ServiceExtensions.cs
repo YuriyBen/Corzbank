@@ -1,7 +1,7 @@
 ﻿using BackgroundJobs;
 using Corzbank.Data;
-using Corzbank.Data.Entities;
-using Corzbank.Data.Entities.Models;
+using Corzbank.Data.Models;
+using Corzbank.Data.Models.DTOs;
 using Corzbank.Helpers.Validations;
 using Corzbank.Services;
 using Corzbank.Services.Interfaces;
@@ -87,12 +87,12 @@ namespace Corzbank.Extensions
 
         public static void ConfigureAppSettings(this IServiceCollection services, IConfiguration configuration)
         {
-            var backgroundJobExchange = new BackgroundJobModel();
-            new ConfigureFromConfigurationOptions<BackgroundJobModel>(configuration.GetSection("BackgroundJob:Exchange")).Configure(backgroundJobExchange);
+            var backgroundJobExchange = new BackgroundJobDTO();
+            new ConfigureFromConfigurationOptions<BackgroundJobDTO>(configuration.GetSection("BackgroundJob:Exchange")).Configure(backgroundJobExchange);
             services.AddSingleton(backgroundJobExchange);
 
-            var emailSettings = new EmailSettingsModel();
-            new ConfigureFromConfigurationOptions<EmailSettingsModel>(configuration.GetSection("EmailSettings")).Configure(emailSettings);
+            var emailSettings = new EmailSettingsDTO();
+            new ConfigureFromConfigurationOptions<EmailSettingsDTO>(configuration.GetSection("EmailSettings")).Configure(emailSettings);
             services.AddSingleton(emailSettings);
         }
     }

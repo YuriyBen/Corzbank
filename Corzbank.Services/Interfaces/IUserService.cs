@@ -1,5 +1,5 @@
-﻿using Corzbank.Data.Entities;
-using Corzbank.Data.Entities.Models;
+﻿using Corzbank.Data.Models;
+using Corzbank.Data.Models.DTOs;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -14,11 +14,11 @@ namespace Corzbank.Services.Interfaces
 
         Task<User> GetUserById(Guid id);
 
-        Task<Token> Login(UserForLoginModel user);
+        Task<Token> Login(UserForLoginDTO user);
 
-        Task<IEnumerable<IdentityResult>> UpdateUser(Guid id, UserModel userForUpdate);
+        Task<IEnumerable<IdentityResult>> UpdateUser(Guid id, UserDTO userForUpdate);
 
-        Task<IEnumerable<IdentityResult>> RegisterUser(UserModel user);
+        Task<IEnumerable<IdentityResult>> RegisterUser(UserDTO user);
 
         Task<bool> DeleteUser(Guid id);
 

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Corzbank.Data.Entities.Models
+namespace Corzbank.Data.Models.DTOs
 {
-    public class EmailSettingsModel
+    public class EmailSettingsDTO
     {
         public string Server { get; set; }
 

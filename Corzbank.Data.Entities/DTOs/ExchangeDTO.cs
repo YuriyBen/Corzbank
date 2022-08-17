@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Corzbank.Data.Entities.Models
+namespace Corzbank.Data.Models.DTOs
 {
-    public class ExchangeModel
+    public class ExchangeDTO
     {
         public Currency ExchangeCurrency { get; set; }
 
