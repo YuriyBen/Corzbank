@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Corzbank.Data.Entities\Corzbank.Data.Entities.csproj" />
+    <ProjectReference Include="..\Corzbank.Data.Entities\Corzbank.Data.Models.csproj" />
   </ItemGroup>
 
 </Project>

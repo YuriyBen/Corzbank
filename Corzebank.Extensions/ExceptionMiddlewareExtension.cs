@@ -1,5 +1,4 @@
-﻿using Corzbank.Data.Entities.Models;
-using Corzbank.Services.Interfaces;
+﻿using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;

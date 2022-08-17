@@ -1,5 +1,5 @@
-﻿using Corzbank.Data.Entities;
-using Corzbank.Data.Entities.Models;
+﻿using Corzbank.Data.Models;
+using Corzbank.Data.Models.DTOs;
 using Corzbank.Data.Enums;
 using Corzbank.Helpers;
 using Corzbank.Repository.Interfaces;
@@ -31,7 +31,7 @@ namespace Corzbank.Services
             _depositRepo = depositRepo;
         }
 
-        public async Task<bool> Verify(VerificationModel verificationModel)
+        public async Task<bool> Verify(VerificationDTO verificationModel)
         {
             var user = await _userManager.FindByEmailAsync(verificationModel.Email);
 
@@ -80,7 +80,7 @@ namespace Corzbank.Services
             return false;
         }
 
-        public async Task<bool> ConfirmVerification(ConfirmationModel confirmationModel)
+        public async Task<bool> ConfirmVerification(ConfirmationDTO confirmationModel)
         {
             Verification verification = null;
 

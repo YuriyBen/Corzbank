@@ -1,4 +1,4 @@
-﻿using Corzbank.Data.Entities.Models;
+﻿using Corzbank.Data.Models.DTOs;
 using Corzbank.Services;
 using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -50,7 +50,7 @@ namespace Corzbank.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCard([FromBody] CardModel card)
+        public async Task<IActionResult> CreateCard([FromBody] CardDTO card)
         {
             var result = await _cardService.CreateCard(card);
 
@@ -66,7 +66,7 @@ namespace Corzbank.Api.Controllers
         }
 
         [HttpPost("confirm-closing")]
-        public async Task<IActionResult> ConfirmVerification(ConfirmationModel confirmationModel)
+        public async Task<IActionResult> ConfirmVerification(ConfirmationDTO confirmationModel)
         {
             var result = await _verificationService.ConfirmVerification(confirmationModel);
 

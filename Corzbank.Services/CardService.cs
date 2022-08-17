@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Corzbank.Data;
-using Corzbank.Data.Entities;
-using Corzbank.Data.Entities.DTOs;
-using Corzbank.Data.Entities.Models;
+using Corzbank.Data.Models;
+using Corzbank.Data.Models.DTOs;
+using Corzbank.Data.Models.DTOs.Details;
 using Corzbank.Data.Enums;
 using Corzbank.Helpers;
 using Corzbank.Repository.Interfaces;
@@ -35,36 +35,36 @@ namespace Corzbank.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CardDTO>> GetCards()
+        public async Task<IEnumerable<CardDetails>> GetCards()
         {
             var cards = await _cardRepo.GetQueryable().ToListAsync();
 
-            var result = _mapper.Map<IEnumerable<CardDTO>>(cards);
+            var result = _mapper.Map<IEnumerable<CardDetails>>(cards);
 
             return result;
         }
 
-        public async Task<IEnumerable<CardDTO>> GetCardsForUser(Guid userId)
+        public async Task<IEnumerable<CardDetails>> GetCardsForUser(Guid userId)
         {
             var cards = await _cardRepo.GetQueryable()
                 .Include(u => u.User)
                 .Where(c => c.User.Id == userId).ToListAsync();
 
-            var result = _mapper.Map<IEnumerable<CardDTO>>(cards);
+            var result = _mapper.Map<IEnumerable<CardDetails>>(cards);
 
             return result;
         }
 
-        public async Task<CardDTO> GetById(Guid id)
+        public async Task<CardDetails> GetById(Guid id)
         {
             var card = await _cardRepo.GetQueryable().FirstOrDefaultAsync(c => c.Id == id);
 
-            var result = _mapper.Map<CardDTO>(card);
+            var result = _mapper.Map<CardDetails>(card);
 
             return result;
         }
 
-        public async Task<CardDTO> CreateCard(CardModel cardFromRequest)
+        public async Task<CardDetails> CreateCard(CardDTO cardFromRequest)
         {
             var currentUser = await _userManager.FindByIdAsync(cardFromRequest.UserId.ToString());
 
@@ -86,7 +86,7 @@ namespace Corzbank.Services
 
             await _cardRepo.Insert(card);
 
-            var result = _mapper.Map<CardDTO>(card);
+            var result = _mapper.Map<CardDetails>(card);
 
             return result;
         }
@@ -98,7 +98,7 @@ namespace Corzbank.Services
             if (card == null)
                 return false;
 
-            var verificationModel = new VerificationModel
+            var verificationModel = new VerificationDTO
             {
                 Email = card.User.Email,
                 VerificationType = VerificationType.CloseCard,

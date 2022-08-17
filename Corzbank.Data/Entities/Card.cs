@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Corzbank.Data.Entities
+namespace Corzbank.Data.Models
 {
     public class Card : KeyEntity
     {

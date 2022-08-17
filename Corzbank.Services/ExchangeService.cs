@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Corzbank.Data.Entities;
-using Corzbank.Data.Entities.Models;
+using Corzbank.Data.Models;
+using Corzbank.Data.Models.DTOs;
 using Corzbank.Data.Enums;
 using Corzbank.Helpers;
 using Corzbank.Repository.Interfaces;

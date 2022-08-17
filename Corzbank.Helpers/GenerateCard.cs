@@ -1,5 +1,5 @@
-﻿using Corzbank.Data.Entities;
-using Corzbank.Data.Entities.Models;
+﻿using Corzbank.Data.Models;
+using Corzbank.Data.Models.DTOs;
 using Corzbank.Data.Enums;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ namespace Corzbank.Helpers
 {
     public static class CardGenerator
     {
-        public static Card GenerateCard(this CardModel card)
+        public static Card GenerateCard(this CardDTO card)
         {
             Card cardForResponse = new Card
             {

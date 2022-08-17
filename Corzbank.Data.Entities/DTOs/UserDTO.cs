@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Corzbank.Data.Entities.Models
+namespace Corzbank.Data.Models.DTOs
 {
-    public class UserModel
+    public class UserDTO
     {
         public string Firstname { get; set; }
 

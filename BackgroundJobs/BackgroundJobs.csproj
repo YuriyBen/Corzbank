@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Corzbank.Data.Entities\Corzbank.Data.Models.csproj" />
     <ProjectReference Include="..\Corzbank.Services\Corzbank.Services.csproj" />
   </ItemGroup>
 

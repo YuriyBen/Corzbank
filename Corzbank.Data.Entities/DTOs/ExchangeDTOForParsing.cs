@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Corzbank.Data.Entities.Models
+namespace Corzbank.Data.Models.DTOs
 {
-    public class ExchangeModelForParsing
+    public class ExchangeDTOForParsing
     {
         public string ccy { get; set; }
 

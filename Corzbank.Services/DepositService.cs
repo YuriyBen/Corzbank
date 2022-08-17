@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Corzbank.Data.Entities;
-using Corzbank.Data.Entities.DTOs;
-using Corzbank.Data.Entities.Models;
+using Corzbank.Data.Models;
+using Corzbank.Data.Models.DTOs;
+using Corzbank.Data.Models.DTOs.Details;
 using Corzbank.Data.Enums;
 using Corzbank.Helpers;
 using Corzbank.Helpers.Exceptions;
@@ -34,25 +34,25 @@ namespace Corzbank.Services
             _verificationService = verificationService;
         }
 
-        public async Task<IEnumerable<DepositDTO>> GetDeposits()
+        public async Task<IEnumerable<DepositDetails>> GetDeposits()
         {
             var deposits = await _depositRepo.GetQueryable().ToListAsync();
 
-            var result = _mapper.Map<IEnumerable<DepositDTO>>(deposits);
+            var result = _mapper.Map<IEnumerable<DepositDetails>>(deposits);
 
             return result;
         }
 
-        public async Task<DepositDTO> GetDepositById(Guid id)
+        public async Task<DepositDetails> GetDepositById(Guid id)
         {
             var deposit = await _depositRepo.GetQueryable().FirstOrDefaultAsync(c => c.Id == id);
 
-            var result = _mapper.Map<DepositDTO>(deposit);
+            var result = _mapper.Map<DepositDetails>(deposit);
 
             return result;
         }
 
-        public async Task<IEnumerable<DepositDTO>> GetDepositsForUser(Guid userId)
+        public async Task<IEnumerable<DepositDetails>> GetDepositsForUser(Guid userId)
         {
             var deposits = await _depositRepo
                 .GetQueryable()
@@ -60,12 +60,12 @@ namespace Corzbank.Services
                 .Where(u => u.Card.User.Id == userId && u.Status == DepositStatus.Opened)
                 .ToListAsync();
 
-            var mappedDeposits = _mapper.Map<IEnumerable<DepositDTO>>(deposits);
+            var mappedDeposits = _mapper.Map<IEnumerable<DepositDetails>>(deposits);
 
             return mappedDeposits;
         }
 
-        public async Task<DepositDTO> OpenDeposit(DepositModel deposit)
+        public async Task<DepositDetails> OpenDeposit(DepositDTO deposit)
         {
             var cardForDeposit = await _cardRepo.GetQueryable().FirstOrDefaultAsync(c => c.Id == deposit.CardId);
 
@@ -84,7 +84,7 @@ namespace Corzbank.Services
 
             await _depositRepo.Insert(generatedDeposit);
 
-            var result = _mapper.Map<DepositDTO>(generatedDeposit);
+            var result = _mapper.Map<DepositDetails>(generatedDeposit);
 
             return result;
         }
@@ -98,7 +98,7 @@ namespace Corzbank.Services
 
             if (deposit != null && deposit.Status == DepositStatus.Opened)
             {
-                var verificationModel = new VerificationModel
+                var verificationModel = new VerificationDTO
                 {
                     Email = deposit.Card.User.Email,
                     VerificationType = VerificationType.CloseDeposit,

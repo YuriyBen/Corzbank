@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Corzbank.Data.Entities;
-using Corzbank.Data.Entities.Models;
+using Corzbank.Data.Models;
+using Corzbank.Data.Models.DTOs;
 using Corzbank.Data.Enums;
 using Corzbank.Helpers.Validations;
 using Corzbank.Repository.Interfaces;
@@ -48,7 +48,7 @@ namespace Corzbank.Services
             return result;
         }
 
-        public async Task<Token> Login(UserForLoginModel userForLogin)
+        public async Task<Token> Login(UserForLoginDTO userForLogin)
         {
             var userIsValid = await _authenticationService.ValidateUser(userForLogin);
 
@@ -76,7 +76,7 @@ namespace Corzbank.Services
             return tokens;
         }
 
-        public async Task<IEnumerable<IdentityResult>> RegisterUser(UserModel userForRegistration)
+        public async Task<IEnumerable<IdentityResult>> RegisterUser(UserDTO userForRegistration)
         {
             if (userForRegistration == null)
                 return null;
@@ -102,7 +102,7 @@ namespace Corzbank.Services
             {
                 var validUser = await _userManager.CreateAsync(mappedUser, userForRegistration.Password);
 
-                var verificationModel = new VerificationModel
+                var verificationModel = new VerificationDTO
                 {
                     Email = mappedUser.Email,
                     VerificationType = VerificationType.Email
@@ -123,7 +123,7 @@ namespace Corzbank.Services
             return null;
         }
 
-        public async Task<IEnumerable<IdentityResult>> UpdateUser(Guid id, UserModel userForUpdate)
+        public async Task<IEnumerable<IdentityResult>> UpdateUser(Guid id, UserDTO userForUpdate)
         {
             if (userForUpdate == null)
                 return null;
@@ -181,7 +181,7 @@ namespace Corzbank.Services
             var generatedAccessToken = await _authenticationService.GenerateAccessToken(user);
             var generatedRefreshToken = await _authenticationService.GenerateRefreshToken();
 
-            TokenModel newlyToken = new TokenModel
+            TokenDTO newlyToken = new TokenDTO
             {
                 AccessToken = generatedAccessToken,
                 RefreshToken = generatedRefreshToken,

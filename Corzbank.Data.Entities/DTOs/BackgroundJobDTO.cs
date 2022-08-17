@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Corzbank.Data.Entities.Models
+namespace Corzbank.Data.Models.DTOs
 {
-    public class BackgroundJobModel
+    public class BackgroundJobDTO
     {
         public bool IsActive { get; set; }
 

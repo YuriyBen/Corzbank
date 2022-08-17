@@ -2,7 +2,6 @@
 using AutoMapper;
 using BackgroundJobs;
 using Corzbank.Data;
-using Corzbank.Data.Entities.Models;
 using Corzbank.Extensions;
 using Corzbank.Helpers;
 using Corzbank.Services.Interfaces;

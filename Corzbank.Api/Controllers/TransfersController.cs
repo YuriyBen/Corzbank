@@ -1,4 +1,4 @@
-﻿using Corzbank.Data.Entities.Models;
+﻿using Corzbank.Data.Models.DTOs;
 using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -47,7 +47,7 @@ namespace Corzbank.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTransfer([FromBody] TransferModel transfer)
+        public async Task<IActionResult> CreateTransfer([FromBody] TransferDTO transfer)
         {
             var result = await _transferService.CreateTransfer(transfer);
 

@@ -1,4 +1,4 @@
-﻿using Corzbank.Data.Entities.Models;
+﻿using Corzbank.Data.Models.DTOs;
 using Corzbank.Services.Interfaces;
 using MailKit.Net.Smtp;
 using MailKit.Security;
@@ -16,9 +16,9 @@ namespace Corzbank.Services
 {
     public class EmailRegistrationService : IEmailRegistrationService
     {
-        private readonly EmailSettingsModel _emailSettings;
+        private readonly EmailSettingsDTO _emailSettings;
 
-        public EmailRegistrationService(EmailSettingsModel emailSettings)
+        public EmailRegistrationService(EmailSettingsDTO emailSettings)
         {
             _emailSettings = emailSettings;
         }

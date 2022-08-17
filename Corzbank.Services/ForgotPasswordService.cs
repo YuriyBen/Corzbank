@@ -1,5 +1,5 @@
-﻿using Corzbank.Data.Entities;
-using Corzbank.Data.Entities.Models;
+﻿using Corzbank.Data.Models;
+using Corzbank.Data.Models.DTOs;
 using Corzbank.Helpers;
 using Corzbank.Repository.Interfaces;
 using Corzbank.Services.Interfaces;
@@ -23,7 +23,7 @@ namespace Corzbank.Services
             _verificationRepo = verificationRepo;
         }
 
-        public async Task<bool> SetNewPassword(SetNewPasswordModel newPasswordModel)
+        public async Task<bool> SetNewPassword(SetNewPasswordDTO newPasswordModel)
         {
             var user = await _userManager.FindByEmailAsync(newPasswordModel.Email);
 

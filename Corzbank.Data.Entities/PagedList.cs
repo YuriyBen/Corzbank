@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Corzbank.Data.Entities
+namespace Corzbank.Data.Models
 {
     public class PagedList<T>
     {

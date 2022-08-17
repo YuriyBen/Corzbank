@@ -1,5 +1,4 @@
-﻿using Corzbank.Data.Entities;
-using Corzbank.Data.Entities.Models;
+﻿using Corzbank.Data.Models.DTOs;
 using Corzbank.Helpers;
 using Corzbank.Services;
 using Corzbank.Services.Interfaces;
@@ -40,7 +39,7 @@ namespace Corzbank.Api.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] UserForLoginModel user)
+        public async Task<IActionResult> Login([FromBody] UserForLoginDTO user)
         {
             var result = await _userService.Login(user);
 
@@ -51,7 +50,7 @@ namespace Corzbank.Api.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> RegsiterUser([FromBody] UserModel user)
+        public async Task<IActionResult> RegsiterUser([FromBody] UserDTO user)
         {
             var result = await _userService.RegisterUser(user);
 
@@ -64,7 +63,7 @@ namespace Corzbank.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdsteUser(Guid id, [FromBody] UserModel user)
+        public async Task<IActionResult> UpdsteUser(Guid id, [FromBody] UserDTO user)
         {
             var result = await _userService.UpdateUser(id, user);
 
@@ -93,7 +92,7 @@ namespace Corzbank.Api.Controllers
         }
 
         [HttpPost("forgot-password")]
-        public async Task<IActionResult> ForgotPassword(VerificationModel verificationModel)
+        public async Task<IActionResult> ForgotPassword(VerificationDTO verificationModel)
         {
             var result = await _verificationService.Verify(verificationModel);
 
@@ -101,7 +100,7 @@ namespace Corzbank.Api.Controllers
         }
 
         [HttpPost("confirm-verification")]
-        public async Task<IActionResult> ConfirmVerification(ConfirmationModel confirmationModel)
+        public async Task<IActionResult> ConfirmVerification(ConfirmationDTO confirmationModel)
         {
             var result = await _verificationService.ConfirmVerification(confirmationModel);
 
@@ -109,7 +108,7 @@ namespace Corzbank.Api.Controllers
         }
 
         [HttpPost("set-new-password")]
-        public async Task<IActionResult> SetNewPassword(SetNewPasswordModel setNewPassword)
+        public async Task<IActionResult> SetNewPassword(SetNewPasswordDTO setNewPassword)
         {
             var result = await _forgotPasswordService.SetNewPassword(setNewPassword);
 
@@ -117,7 +116,7 @@ namespace Corzbank.Api.Controllers
         }
 
         [HttpPost("resend-verification")]
-        public async Task<IActionResult> ResendVerification(VerificationModel verificationModel)
+        public async Task<IActionResult> ResendVerification(VerificationDTO verificationModel)
         {
             var result = await _verificationService.Verify(verificationModel);
 

@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corzbank.Api", "Corzbank.Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corzbank.Data", "Corzbank.Data\Corzbank.Data.csproj", "{293F2A34-7136-4DED-B170-4C068E0024AE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corzbank.Data.Entities", "Corzbank.Data.Entities\Corzbank.Data.Entities.csproj", "{29129B67-118E-4216-B7B9-9CF2BAF423FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corzbank.Data.Models", "Corzbank.Data.Entities\Corzbank.Data.Models.csproj", "{29129B67-118E-4216-B7B9-9CF2BAF423FC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corzbank.Services", "Corzbank.Services\Corzbank.Services.csproj", "{AE846397-4EA6-4C1E-91C0-F791042097FF}"
 EndProject
@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corzbank.Extensions", "Corz
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackgroundJobs", "BackgroundJobs\BackgroundJobs.csproj", "{3E64FE98-401D-4123-8AA6-8FAC7B7D10C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Corzbank.Repositories", "Corzbank.Repositories\Corzbank.Repositories.csproj", "{33DDE92C-575D-484A-A747-722669529D30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corzbank.Repositories", "Corzbank.Repositories\Corzbank.Repositories.csproj", "{33DDE92C-575D-484A-A747-722669529D30}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

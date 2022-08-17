@@ -1,4 +1,4 @@
-﻿using Corzbank.Data.Entities.Models;
+﻿using Corzbank.Data.Models.DTOs;
 using Corzbank.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,9 +15,9 @@ namespace BackgroundJobs
     {
         private readonly ILogger<BackgroundExchangeService> _logger;
         private readonly IServiceProvider _serviceProvider;
-        private readonly BackgroundJobModel _backgroundModel;
+        private readonly BackgroundJobDTO _backgroundModel;
 
-        public BackgroundExchangeService(ILogger<BackgroundExchangeService> logger, IServiceProvider serviceProvider, BackgroundJobModel backgroundModel)
+        public BackgroundExchangeService(ILogger<BackgroundExchangeService> logger, IServiceProvider serviceProvider, BackgroundJobDTO backgroundModel)
         {
             _logger = logger;
             _serviceProvider = serviceProvider;

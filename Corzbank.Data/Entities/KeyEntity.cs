@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Corzbank.Data.Entities
+namespace Corzbank.Data.Models
 {
     public abstract class KeyEntity
     {

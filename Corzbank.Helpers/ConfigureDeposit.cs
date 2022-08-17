@@ -1,4 +1,4 @@
-﻿using Corzbank.Data.Entities;
+﻿using Corzbank.Data.Models;
 using Corzbank.Data.Enums;
 using System;
 using System.Collections.Generic;

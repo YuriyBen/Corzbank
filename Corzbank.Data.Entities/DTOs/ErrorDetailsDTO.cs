@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
 
-namespace Corzbank.Data.Entities.Models
+namespace Corzbank.Data.Models.DTOs
 {
-    public class ErrorDetailsModel
+    public class ErrorDetailsDTO
     {
         public int StatusCode { get; set; }
 
