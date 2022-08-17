@@ -1,0 +1,9 @@
+<div class="notification-block">
+    <h1 mat-dialog-content>{{textForNotification}}</h1>
+    <div class="btns-block">
+        <mat-dialog-actions>
+            <button class="delete-ok" [mat-dialog-close]="true">OK</button>
+            <button class="delete-cancel" [mat-dialog-close]="false">Cancel</button>
+        </mat-dialog-actions>
+    </div>
+</div>

@@ -23,6 +23,8 @@ namespace Corzbank.Helpers
 
             CreateMap<DepositModel, Deposit>().ReverseMap();
 
+            CreateMap<Deposit, DepositDTO>().ReverseMap();
+
             CreateMap<ExchangeModel, Exchange>();
 
             CreateMap<TokenModel, Token>();

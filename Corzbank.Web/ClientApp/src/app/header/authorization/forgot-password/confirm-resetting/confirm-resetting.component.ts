@@ -4,9 +4,7 @@ import {
   MatDialog,
   MAT_DIALOG_DATA,
 } from "@angular/material/dialog";
-import { Router } from "@angular/router";
 import { AuthenticationService } from "src/app/data/services/authentication.service";
-import { HomepageComponent } from "src/app/homepage/homepage.component";
 import { SetNewPasswordComponent } from "../set-new-password/set-new-password.component";
 import { ConfirmationModel } from "src/app/data/models/confirmation.model";
 import { ForgotPasswordComponent } from "../forgot-password.component";
@@ -29,7 +27,7 @@ export class ConfirmResettingComponent implements OnInit {
     public dialogRef: MatDialogRef<ForgotPasswordComponent>,
     @Inject(MAT_DIALOG_DATA) public data,
     private notificationService: NotificationService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.startTimer();
@@ -39,6 +37,7 @@ export class ConfirmResettingComponent implements OnInit {
     var confirmationModel: ConfirmationModel = {
       email: this.data,
       verificationCode: this.code,
+      verificationType: VerificationType.ResetPassword
     };
 
     this.authenticationService
@@ -69,9 +68,9 @@ export class ConfirmResettingComponent implements OnInit {
 
     this.authenticationService
       .forgotPassword(resendVerification)
-      .subscribe((data) => {
+      .subscribe(() => {
         this.notificationService.showSuccessfulNotification(
-          "Verification Code was successfully send",
+          "Verification Code was successfully sent",
           ""
         );
       });

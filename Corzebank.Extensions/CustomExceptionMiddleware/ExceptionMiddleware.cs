@@ -1,4 +1,5 @@
 ﻿using Corzbank.Data.Entities.Models;
+using Corzbank.Helpers.Exceptions;
 using Corzbank.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,13 +27,13 @@ namespace Corzbank.Extensions
         {
             using (var scope = _serviceProvider.CreateScope())
             {
-                logger = scope.ServiceProvider.GetRequiredService<ILoggerManager>(); 
+                logger = scope.ServiceProvider.GetRequiredService<ILoggerManager>();
 
                 try
                 {
                     await _next(httpContext);
                 }
-                catch (Exception ex)
+                catch (RequestException ex)
                 {
                     logger.LogError($"Something went wrong: {ex}");
                     await HandleExceptionAsync(httpContext, ex);
@@ -40,14 +41,14 @@ namespace Corzbank.Extensions
             }
         }
 
-        private async Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private async Task HandleExceptionAsync(HttpContext context, RequestException exception)
         {
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            context.Response.StatusCode = exception.StatusCode;
 
             await context.Response.WriteAsync(new ErrorDetailsModel()
             {
-                StatusCode = context.Response.StatusCode,
+                StatusCode = exception.StatusCode,
                 Message = exception.Message
             }.ToString());
         }

@@ -1,0 +1,36 @@
+.notification-block {
+    background-color: #969f8e;
+    width: 500px;
+    height: 85px;
+    border-radius: 15px;
+    color: black;
+
+    h1 {
+        margin: 5px;
+    }
+
+    .btns-block {
+        display: flex;
+        justify-content: center;
+
+        button {
+            width: 80px;
+            height: 30px;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            font-size: 17px;
+            font-weight: 700;
+            border-radius: 8px;
+        }
+
+        .delete-ok {
+            background-color: #48c348;
+            margin-right: 20px;
+        }
+
+        .delete-cancel {
+            background-color: red;
+        }
+    }
+}

@@ -52,7 +52,8 @@ namespace Corzbank.Services
                     ValidTo = DateTime.Now.AddMinutes(10),
                     User = user,
                     VerificationType = verificationModel.VerificationType,
-                    CardId = verificationModel.CardId
+                    CardId = verificationModel.CardId,
+                    DepositId = verificationModel.DepositId
                 };
 
                 await _verificationRepo.Insert(verification);
@@ -81,49 +82,53 @@ namespace Corzbank.Services
 
         public async Task<bool> ConfirmVerification(ConfirmationModel confirmationModel)
         {
-            var user = await _userManager.FindByEmailAsync(confirmationModel.Email);
+            Verification verification = null;
 
-            Verification verification = await _verificationRepo.GetQueryable().FirstOrDefaultAsync(u => u.User == user);
+            if (confirmationModel.VerificationType == VerificationType.Email || confirmationModel.VerificationType == VerificationType.ResetPassword)
+                verification = await _verificationRepo.GetQueryable().FirstOrDefaultAsync(v => v.User.Email == confirmationModel.Email);
+            else if (confirmationModel.VerificationType == VerificationType.CloseCard)
+                verification = await _verificationRepo.GetQueryable().FirstOrDefaultAsync(v => v.CardId == confirmationModel.CardId);
+            else if (confirmationModel.VerificationType == VerificationType.CloseDeposit)
+                verification = await _verificationRepo.GetQueryable().FirstOrDefaultAsync(v => v.DepositId == confirmationModel.DepositId);
 
-            if (verification != null)
+            if (verification == null || verification.ValidTo < DateTime.Now || verification.VerificationCode != confirmationModel.VerificationCode)
+                return false;
+
+            verification.IsVerified = true;
+
+            await _verificationRepo.Update(verification);
+
+            if (verification.VerificationType == VerificationType.Email || verification.VerificationType == VerificationType.ResetPassword)
             {
-                if (verification.ValidTo > DateTime.Now && verification.VerificationCode == confirmationModel.VerificationCode)
-                {
-                    verification.IsVerified = true;
+                var user = await _userManager.FindByEmailAsync(confirmationModel.Email);
 
-                    await _verificationRepo.Update(verification);
+                user.EmailConfirmed = true;
+                await _userManager.UpdateAsync(user);
+            }
+            else if (verification.VerificationType == VerificationType.CloseCard)
+            {
+                var card = await _cardRepo.GetQueryable().FirstOrDefaultAsync(v => v.Id == verification.CardId);
+                card.IsActive = false;
 
-                    if (verification.VerificationType == VerificationType.Email)
-                    {
-                        user.EmailConfirmed = true;
-                        await _userManager.UpdateAsync(user);
+                await _cardRepo.Update(card);
+            }
+            else if (verification.VerificationType == VerificationType.CloseDeposit)
+            {
+                var deposit = await _depositRepo.GetQueryable().Include(c => c.Card).FirstOrDefaultAsync(v => v.Id == verification.DepositId);
+                deposit.Status = DepositStatus.Closed;
 
-                        await _verificationRepo.Remove(verification);
-                    }
-                    else if (verification.VerificationType == VerificationType.CloseCard)
-                    {
-                        var card = await _cardRepo.GetQueryable().FirstOrDefaultAsync(v=>v.Id == verification.CardId);
-                        card.IsActive = false;
+                await _depositRepo.Update(deposit);
 
-                        await _cardRepo.Update(card);
+                var card = await _cardRepo.GetQueryable().FirstOrDefaultAsync(c => c.Id == deposit.Card.Id);
+                card.Balance += deposit.Amount;
 
-                        await _verificationRepo.Remove(verification);
-                    }
-                    else if (verification.VerificationType == VerificationType.CloseDeposit)
-                    {
-                        var deposit = await _depositRepo.GetQueryable().FirstOrDefaultAsync(v=>v.Id == verification.DepositId);
-                        deposit.IsActive = DepositStatus.Closed;
-
-                        await _depositRepo.Update(deposit);
-
-                        await _verificationRepo.Remove(verification);
-                    }
-
-                    return true;
-                }
+                await _cardRepo.Update(card);
             }
 
-            return false;
+            if (verification.VerificationType != VerificationType.ResetPassword)
+                await _verificationRepo.Remove(verification);
+
+            return true;
         }
     }
 }

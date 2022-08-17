@@ -11,12 +11,12 @@ import { CardModel } from "../models/card.model";
 export class CardService {
 	cardSubject = new Subject();
 
-	url = this.baseUrl + "cards/";
+	private url = this.baseUrl + "cards/";
 
 	constructor(
 		private http: HttpClient,
 		@Inject("BASE_API_URL") private baseUrl: string
-	) {}
+	) { }
 
 	getCards(): Observable<Card[]> {
 		return this.http.get<Card[]>(this.url);

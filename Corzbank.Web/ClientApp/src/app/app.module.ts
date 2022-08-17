@@ -1,8 +1,8 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { HttpClientModule } from "@angular/common/http";
-import { MatDialogModule } from "@angular/material/dialog";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { MatDialogModule, MatDialogRef } from "@angular/material/dialog";
 import { CodeInputModule } from "angular-code-input";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 
@@ -26,6 +26,9 @@ import { CookieService } from "ngx-cookie-service";
 import { Constants } from "./data/helpers/constants";
 import { WalletComponent } from "./header/wallet/wallet.component";
 import { environment } from "src/environments/environment";
+import { WarningNotificationComponent } from './data/helpers/warning-notification/warning-notification.component';
+import { ConfirmDepositClosingComponent } from './header/wallet/confirm-deposit-closing/confirm-deposit-closing.component';
+import { ErrorHandlingInterceptor } from "./data/interceptors/error-handling.interceptor";
 
 function tokenGetter() {
 	return localStorage.getItem(Constants.AccessTokenKey);
@@ -47,6 +50,8 @@ function tokenGetter() {
 		SetNewPasswordComponent,
 		ConfirmResettingComponent,
 		WalletComponent,
+		WarningNotificationComponent,
+		ConfirmDepositClosingComponent,
 	],
 	imports: [
 		BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
@@ -58,6 +63,7 @@ function tokenGetter() {
 		MatDialogModule,
 		CodeInputModule,
 		MatSnackBarModule,
+		MatDialogModule,
 		JwtModule.forRoot({
 			config: {
 				tokenGetter: tokenGetter,
@@ -67,7 +73,13 @@ function tokenGetter() {
 	providers: [
 		[CookieService],
 		{ provide: "BASE_API_URL", useValue: environment.apiUrl },
+		{ provide: MatDialogRef, useValue: {} },
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: ErrorHandlingInterceptor,
+			multi: true
+		},
 	],
 	bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
