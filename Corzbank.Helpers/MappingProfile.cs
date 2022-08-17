@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Corzbank.Data.Models;
 using Corzbank.Data.Models.DTOs;
-using Corzbank.Data.Models.DTOs.Details;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -19,17 +18,17 @@ namespace Corzbank.Helpers
             CreateMap<TransferDTO, Transfer>()
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(src => DateTime.Now));
 
-            CreateMap<Transfer, TransferDetails>().ReverseMap();
+            CreateMap<Transfer, TransferDetailsDTO>().ReverseMap();
 
             CreateMap<DepositDTO, Deposit>().ReverseMap();
 
-            CreateMap<Deposit, DepositDetails>().ReverseMap();
+            CreateMap<Deposit, DepositDetailsDTO>().ReverseMap();
 
             CreateMap<ExchangeDTO, Exchange>();
 
             CreateMap<TokenDTO, Token>();
 
-            CreateMap<Card, CardDetails>().ReverseMap();
+            CreateMap<Card, CardDetailsDTO>().ReverseMap();
         }
     }
 }

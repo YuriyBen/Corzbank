@@ -2,7 +2,6 @@
 using Corzbank.Data;
 using Corzbank.Data.Models;
 using Corzbank.Data.Models.DTOs;
-using Corzbank.Data.Models.DTOs.Details;
 using Corzbank.Data.Enums;
 using Corzbank.Helpers;
 using Corzbank.Repository.Interfaces;
@@ -35,36 +34,36 @@ namespace Corzbank.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CardDetails>> GetCards()
+        public async Task<IEnumerable<CardDetailsDTO>> GetCards()
         {
             var cards = await _cardRepo.GetQueryable().ToListAsync();
 
-            var result = _mapper.Map<IEnumerable<CardDetails>>(cards);
+            var result = _mapper.Map<IEnumerable<CardDetailsDTO>>(cards);
 
             return result;
         }
 
-        public async Task<IEnumerable<CardDetails>> GetCardsForUser(Guid userId)
+        public async Task<IEnumerable<CardDetailsDTO>> GetCardsForUser(Guid userId)
         {
             var cards = await _cardRepo.GetQueryable()
                 .Include(u => u.User)
                 .Where(c => c.User.Id == userId).ToListAsync();
 
-            var result = _mapper.Map<IEnumerable<CardDetails>>(cards);
+            var result = _mapper.Map<IEnumerable<CardDetailsDTO>>(cards);
 
             return result;
         }
 
-        public async Task<CardDetails> GetById(Guid id)
+        public async Task<CardDetailsDTO> GetById(Guid id)
         {
             var card = await _cardRepo.GetQueryable().FirstOrDefaultAsync(c => c.Id == id);
 
-            var result = _mapper.Map<CardDetails>(card);
+            var result = _mapper.Map<CardDetailsDTO>(card);
 
             return result;
         }
 
-        public async Task<CardDetails> CreateCard(CardDTO cardFromRequest)
+        public async Task<CardDetailsDTO> CreateCard(CardDTO cardFromRequest)
         {
             var currentUser = await _userManager.FindByIdAsync(cardFromRequest.UserId.ToString());
 
@@ -86,7 +85,7 @@ namespace Corzbank.Services
 
             await _cardRepo.Insert(card);
 
-            var result = _mapper.Map<CardDetails>(card);
+            var result = _mapper.Map<CardDetailsDTO>(card);
 
             return result;
         }

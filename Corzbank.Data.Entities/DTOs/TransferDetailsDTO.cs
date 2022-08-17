@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Corzbank.Data.Models.DTOs.Details
+namespace Corzbank.Data.Models.DTOs
 {
-    public class TransferDetails : TransferDTO
+    public class TransferDetailsDTO : TransferDTO
     {
         public Guid Id { get; set; }
 

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Corzbank.Data.Models;
 using Corzbank.Data.Models.DTOs;
-using Corzbank.Data.Models.DTOs.Details;
 using Corzbank.Data.Enums;
 using Corzbank.Helpers.Exceptions;
 using Corzbank.Repository.Interfaces;
@@ -31,34 +30,34 @@ namespace Corzbank.Services
             _cardRepo = cardRepo;
         }
 
-        public async Task<IEnumerable<TransferDetails>> GetTransfers()
+        public async Task<IEnumerable<TransferDetailsDTO>> GetTransfers()
         {
             var transfers = await _transferRepo.GetQueryable().ToListAsync();
 
-            var result = _mapper.Map<IEnumerable<TransferDetails>>(transfers);
+            var result = _mapper.Map<IEnumerable<TransferDetailsDTO>>(transfers);
 
             return result;
         }
 
-        public async Task<TransferDetails> GetTransferById(Guid id)
+        public async Task<TransferDetailsDTO> GetTransferById(Guid id)
         {
             var transfer = await _transferRepo.GetQueryable().FirstOrDefaultAsync(c => c.Id == id);
 
-            var result = _mapper.Map<TransferDetails>(transfer);
+            var result = _mapper.Map<TransferDetailsDTO>(transfer);
 
             return result;
         }
 
-        public async Task<IEnumerable<TransferDetails>> GetTransfersForCard(Guid cardId)
+        public async Task<IEnumerable<TransferDetailsDTO>> GetTransfersForCard(Guid cardId)
         {
             var transfers = await _transferRepo.GetQueryable().Where(c => c.SenderCardId == cardId || c.ReceiverCardId == cardId).ToListAsync();
 
-            var result = _mapper.Map<IEnumerable<TransferDetails>>(transfers);
+            var result = _mapper.Map<IEnumerable<TransferDetailsDTO>>(transfers);
 
             return result;
         }
 
-        public async Task<TransferDetails> CreateTransfer(TransferDTO transferRequest)
+        public async Task<TransferDetailsDTO> CreateTransfer(TransferDTO transferRequest)
         {
             if (transferRequest.TransferType == TransferType.Card)
             {
@@ -104,7 +103,7 @@ namespace Corzbank.Services
 
             await _transferRepo.Insert(transfer);
 
-            var result = _mapper.Map<TransferDetails>(transfer);
+            var result = _mapper.Map<TransferDetailsDTO>(transfer);
 
             return result;
         }
